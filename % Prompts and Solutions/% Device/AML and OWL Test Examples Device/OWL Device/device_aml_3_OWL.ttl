@@ -1,0 +1,73 @@
+<https://w3id.org/hsu-aut/AutomationML#EK2%2FTypeIdentifier%2FTemplateIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TemplateIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "GlobalLib://TemplateLibrary/Master copies/S7-1500/preconfigured/PLCs/s7-1518F" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TemplateIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#EK2%2FComment>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Comment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "Please consider that the type is of cruicial importance in interdependence for distribution of the rail system." ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Comment" .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#EK2%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "System:Device.SafetyCoupler" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#EK2%2FTypeIdentifier%2FTemplateIdentifier> .
+
+<https://w3id.org/hsu-aut/AutomationML#33D50E6F-7C92-4324-8322-AAC1DB1ACF85>
+        a       <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> , <https://w3id.org/hsu-aut/AutomationML#InternalElement> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "EK2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#EK2%2FTypeIdentifier> , <https://w3id.org/hsu-aut/AutomationML#EK2%2FManufacturer> , <https://w3id.org/hsu-aut/AutomationML#EK2%2FComment> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#EK2%2FManufacturer> , <https://w3id.org/hsu-aut/AutomationML#EK2%2FComment> , <https://w3id.org/hsu-aut/AutomationML#EK2%2FTypeIdentifier> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "EK2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseSystemUnitClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectSystemUnitClassLib%2FDevice> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> .
+
+<https://w3id.org/hsu-aut/AutomationML#EK2%2FManufacturer>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Manufacturer" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "EKS InTec GmbH" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Manufacturer" .

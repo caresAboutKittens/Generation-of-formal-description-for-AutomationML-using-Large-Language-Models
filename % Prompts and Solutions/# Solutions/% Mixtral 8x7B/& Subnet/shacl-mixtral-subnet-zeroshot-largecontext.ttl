@@ -1,0 +1,35 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix AutomationML: <https://w3id.org/hsu-aut/AutomationML#> .
+
+AutomationML:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass AutomationML:Subnet ;
+    sh:property [
+        sh:path AutomationML:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path AutomationML:Subnet/Type ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path AutomationML:Subnet/CustomAttributes ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:qualifiedValueShape [
+            sh:path AutomationML:CustomAttributes/AttributeName ;
+            sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:maxCount 1 ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path AutomationML:LogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .

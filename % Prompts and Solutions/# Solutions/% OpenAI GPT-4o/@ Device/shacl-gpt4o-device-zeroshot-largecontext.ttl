@@ -1,0 +1,41 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix autaml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+# SHACL shape for Device
+autaml:DeviceShape a sh:NodeShape ;
+    sh:targetClass autaml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+    sh:property [
+        sh:path autaml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "The attribute 'Name' defines the name of the device. This attribute is mandatory."
+    ] ;
+    sh:property [
+        sh:path autaml:Device%2FTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'TypeIdentifier' defines the family identifier of the device type. This attribute is optional."
+    ] ;
+    sh:property [
+        sh:path autaml:Device%2FTypeIdentifier%2FTemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'TemplateIdentifier' references the path of a template element. This attribute is optional."
+    ] ;
+    sh:property [
+        sh:path autaml:Device%2FManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'Manufacturer' defines the manufacturer of the device. This attribute is optional."
+    ] ;
+    sh:property [
+        sh:path autaml:Device%2FComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'Comment' defines a comment for the device. This attribute is optional."
+    ] ;
+    sh:description "SHACL shape for validating Device objects based on the AutomationML AR APC Whitepaper."
+    .

@@ -1,0 +1,176 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# SHACL Shape for DeviceItem
+aml:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+    
+    # Constraints for "Name" (mandatory, standard attribute)
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    
+    # Constraints for "TypeName" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FTypeName ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "DeviceItemType" and "Customized" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FDeviceItemType ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:DeviceItem%2FDeviceItemType%2FCustomized ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:defaultValue false ;
+    ] ;
+    
+    # Constraints for "PositionNumber" (optional or mandatory in specific cases)
+    sh:property [
+        sh:path aml:DeviceItem%2FPositionNumber ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "BuiltIn" (optional, default=false)
+    sh:property [
+        sh:path aml:DeviceItem%2FBuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:defaultValue false ;
+    ] ;
+    
+    # Constraints for "TypeIdentifier" and "TemplateIdentifier"
+    sh:property [
+        sh:path aml:DeviceItem%2FTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:DeviceItem%2FTypeIdentifier%2FTemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "Manufacturer" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "CustomAttributes" and nested attributes
+    sh:property [
+        sh:path aml:DeviceItem%2FCustomAttributes ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aml:DeviceItem%2FCustomAttributes%2FAttributeName1 ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:DeviceItem%2FCustomAttributes%2FAttributeName2 ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+        ] ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "FirmwareVersion" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FFirmwareVersion ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "Comment" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "Address" and nested attributes
+    sh:property [
+        sh:path aml:DeviceItem%2FAddress ;
+        sh:node [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aml:DeviceItem%2FAddress%2F1%2FStartAddress ;
+                sh:datatype xsd:int ;
+                sh:minCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:DeviceItem%2FAddress%2F1%2FLength ;
+                sh:datatype xsd:int ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:DeviceItem%2FAddress%2F1%2FIoType ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:DeviceItem%2FAddress%2F1%2FBitOffset ;
+                sh:datatype xsd:int ;
+                sh:maxCount 1 ;
+                sh:defaultValue 0 ;
+            ] ;
+        ] ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "PlantDesignation IEC"
+    sh:property [
+        sh:path aml:DeviceItem%2FPlantDesignation%20IEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "LocationIdentifier IEC"
+    sh:property [
+        sh:path aml:DeviceItem%2FLocationIdentifier%20IEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "ProductDesignation IEC"
+    sh:property [
+        sh:path aml:DeviceItem%2FProductDesignation%20IEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Constraints for "InstallationDate" (optional)
+    sh:property [
+        sh:path aml:DeviceItem%2FInstallationDate ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Interfaces
+    sh:property [
+        sh:path aml:0bfb4d8a-63d2-4d32-ad0a-3bb3f6673165 ;
+        sh:class aml:AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:110c6f0b-75b7-4c3c-9d05-1b28eeeec5df ;
+        sh:class aml:AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment ;
+        sh:maxCount 1 ;
+    ] ;
+    .

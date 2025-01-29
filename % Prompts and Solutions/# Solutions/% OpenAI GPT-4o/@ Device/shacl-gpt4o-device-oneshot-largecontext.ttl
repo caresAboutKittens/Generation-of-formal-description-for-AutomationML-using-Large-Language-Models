@@ -1,0 +1,62 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:    <http://www.example.org/#> .
+
+# Node shape for Device
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ; 
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;  # Mandatory attribute
+        sh:maxCount 1 ;
+        sh:message "Device must have exactly one Name attribute."@en ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttribute ; 
+        sh:class aml:Attribute ; 
+        sh:or ( 
+            [ 
+                sh:path aml:hasName ;
+                sh:hasValue "TypeIdentifier" ;
+                sh:datatype xsd:string ;
+                sh:maxCount 1 ;
+                sh:message "TypeIdentifier must be a string and optional."@en ;
+            ]
+            [
+                sh:path aml:hasPart ; # For nested TemplateIdentifier under TypeIdentifier
+                sh:class aml:Attribute ;
+                sh:property [
+                    sh:path aml:hasName ;
+                    sh:hasValue "TemplateIdentifier" ;
+                    sh:datatype xsd:string ;
+                    sh:maxCount 1 ;
+                    sh:message "TemplateIdentifier must be a string and optional if TypeIdentifier exists."@en ;
+                ] ;
+            ]
+        ) ;
+        sh:message "Device may optionally have TypeIdentifier and TemplateIdentifier attributes."@en ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:Attribute ;
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional attribute
+        sh:message "Manufacturer is optional but must be a string if present."@en ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:Attribute ;
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional attribute
+        sh:message "Comment is optional but must be a string if present."@en ;
+    ] ;
+    .

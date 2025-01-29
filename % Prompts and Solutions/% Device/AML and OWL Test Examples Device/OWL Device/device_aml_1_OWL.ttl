@@ -1,0 +1,43 @@
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#EK1%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "System:Device.Coupler" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#2689ECE0-A607-411D-B42D-5D7C49F17A78>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "EK1" ;
+        <http://www.ontologydesignpatterns.org/cp/owl/partof.owl#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#4998454D-6D83-4A63-A89A-C1B6ED777CBD> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#EK1%2FTypeIdentifier> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#EK1%2FTypeIdentifier> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "EK1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseSystemUnitClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectSystemUnitClassLib%2FDevice> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> .
+
+<https://w3id.org/hsu-aut/AutomationML#4998454D-6D83-4A63-A89A-C1B6ED777CBD>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseSystemUnitClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectSystemUnitClassLib%2FDeviceItem> .

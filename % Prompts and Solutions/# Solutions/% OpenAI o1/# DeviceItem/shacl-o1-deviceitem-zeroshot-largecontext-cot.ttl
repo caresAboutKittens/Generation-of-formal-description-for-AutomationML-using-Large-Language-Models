@@ -1,0 +1,520 @@
+###############################################################################
+# Prefixes
+###############################################################################
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+# If you need others (e.g. rdf:, rdfs:), define them here as well
+# but only if actually used.
+
+###############################################################################
+# Top-level shape for DeviceItem
+###############################################################################
+aut:DeviceItemShape
+    a sh:NodeShape ;
+    
+    # This is crucial: target anything that is typed as "DeviceItem" in AML/OWL
+    # i.e. <...> a aut:AutomationProjectConfigurationRoleClassLib%2FDeviceItem
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+
+    ############################################################################
+    # 1) "Name" (built-in CAEX/AML Name property) - mandatory (minCount=1)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:name "Name" ;
+        sh:description "Mandatory built-in name property of the InternalElement (DeviceItem)." 
+    ] ;
+
+    ############################################################################
+    # 2) "TypeName" (sub-Attribute, optional)
+    #    <Attribute Name="TypeName" AttributeDataType="xs:string" ... />
+    ############################################################################
+    sh:property [
+        # The parent node (the DeviceItem) hasPart sub-attributes.
+        # We look for exactly zero or one sub-attribute named "TypeName".
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "TypeName" ;
+        sh:description "Optional attribute 'TypeName' (xs:string)." ;
+        
+        # If present, it must conform to the following shape:
+        sh:nodeShape [
+            a sh:NodeShape ;
+            # Must be an AML Attribute named "TypeName"
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^TypeName$" ;
+                sh:description "Checks that the sub-attribute is actually named 'TypeName'." ;
+            ] ;
+            # Must have attribute-data-type = "xs:string"
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+                sh:description "Checks that 'TypeName' has xs:string as its AML data type." ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 3) "DeviceItemType" (sub-Attribute, optional)
+    #    with sub-attribute "Customized" (xs:boolean, optional)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "DeviceItemType" ;
+        sh:description "Optional 'DeviceItemType' (xs:string); may have sub-attribute 'Customized' (xs:boolean)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            # Must be named "DeviceItemType"
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^DeviceItemType$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+
+            # Sub-attribute "Customized" is optional (0..1).
+            sh:property [
+                sh:path aut:hasPart ;
+                sh:maxCount 1 ;
+                sh:description "Optional sub-attribute 'Customized' (xs:boolean)." ;
+                sh:nodeShape [
+                    a sh:NodeShape ;
+                    sh:property [
+                        sh:path aut:hasName ;
+                        sh:pattern "^Customized$" ;
+                    ] ;
+                    sh:property [
+                        sh:path aut:hasAttributeDataType ;
+                        sh:hasValue "xs:boolean" ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 4) "PositionNumber" (sub-Attribute, optional, xs:int)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "PositionNumber" ;
+        sh:description "Optional 'PositionNumber' (xs:int)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^PositionNumber$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:int" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 5) "BuiltIn" (sub-Attribute, optional, xs:boolean, default=false)
+    #    SHACL cannot enforce default values, but we can check if it's boolean.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "BuiltIn" ;
+        sh:description "Optional 'BuiltIn' (xs:boolean). Default in AML is 'false' if omitted." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^BuiltIn$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:boolean" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 6) "TypeIdentifier" (sub-Attribute)
+    #    - Mandatory IF BuiltIn="false", optional if BuiltIn="true". 
+    #      (For simplicity below, we set minCount=0, maxCount=1 unconditionally;
+    #       advanced logic can be done via SHACL SPARQL if needed.)
+    #    - Has sub-attribute "TemplateIdentifier" (xs:string, optional)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "TypeIdentifier" ;
+        sh:description "Optional or conditionally-mandatory 'TypeIdentifier' (xs:string); may include 'TemplateIdentifier'." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            # Must be named "TypeIdentifier"
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^TypeIdentifier$" ;
+            ] ;
+            # Must be string
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+
+            # Sub-attribute "TemplateIdentifier" is optional
+            sh:property [
+                sh:path aut:hasPart ;
+                sh:maxCount 1 ;
+                sh:description "Optional sub-attribute 'TemplateIdentifier' (xs:string)." ;
+                
+                sh:nodeShape [
+                    a sh:NodeShape ;
+                    sh:property [
+                        sh:path aut:hasName ;
+                        sh:pattern "^TemplateIdentifier$" ;
+                    ] ;
+                    sh:property [
+                        sh:path aut:hasAttributeDataType ;
+                        sh:hasValue "xs:string" ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 7) "Manufacturer" (sub-Attribute, optional, xs:string)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "Manufacturer" ;
+        sh:description "Optional 'Manufacturer' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^Manufacturer$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 8) "CustomAttributes" (sub-Attribute, 0..n).
+    #    Each "CustomAttributes" can contain any number of sub-attributes,
+    #    each must at least have a name. For simplicity, we do not enforce
+    #    uniqueness or require them to be named "AttributeName1"/"AttributeName2".
+    #    You can expand with additional sub-shapes as needed.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        # Whitepaper says [0..n], so no maxCount => can appear multiple times
+        sh:name "CustomAttributes" ;
+        sh:description "Optional repeated attribute 'CustomAttributes' [0..n]." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^CustomAttributes$" ;
+            ] ;
+            # If you need further constraints on the sub-sub-attributes, define them here.
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 9) "FirmwareVersion" (sub-Attribute, optional, xs:string)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "FirmwareVersion" ;
+        sh:description "Optional 'FirmwareVersion' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^FirmwareVersion$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 10) "Comment" (sub-Attribute, optional, xs:string)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "Comment" ;
+        sh:description "Optional 'Comment' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^Comment$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 11) "Address" (OrderedListType)[0..n]
+    #     Each "Address" can have sub-attributes named "1", "2", "3", etc.
+    #     Inside each numeric sub-attribute, mandatory StartAddress & IoType,
+    #     optional Length & BitOffset. We illustrate the pattern below.
+    #     This can be repeated for each "Address" node.  
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:name "Address" ;
+        sh:description "Optional 'Address' attribute(s) [0..n], each containing sub-attributes named '1','2','3', etc." ;
+        
+        # 0..n => no maxCount
+        sh:nodeShape [
+            a sh:NodeShape ;
+            # Must be named "Address"
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^Address$" ;
+            ] ;
+            
+            # The Whitepaper shows sub-Attributes named "1","2","3" ...
+            # We'll create a shape that says: for each numeric sub-Attribute,
+            # we check StartAddress (mandatory), IoType (mandatory), etc.
+            # This is highly schematic. In practice, you might do advanced pattern checks.
+
+            sh:property [
+                sh:path aut:hasPart ;
+                sh:description "Each numeric sub-attribute (e.g. '1', '2', '3') has StartAddress/IoType mandatory, others optional." ;
+                
+                # We won't limit how many numeric sub-attributes appear.
+                sh:nodeShape [
+                    a sh:NodeShape ;
+                    # The sub-attribute must have some name, often a digit
+                    # We won't strictly enforce pattern "^[0-9]+$", but you could do so if desired:
+                    # sh:property [
+                    #   sh:path aut:hasName ;
+                    #   sh:pattern "^[0-9]+$" ;
+                    # ]
+
+                    # Inside each "1"/"2"/"3" node, we look for hasPart => StartAddress, IoType, etc.
+                    sh:property [
+                        sh:path aut:hasPart ;
+                        sh:nodeShape [
+                            a sh:NodeShape ;
+                            sh:property [
+                                sh:path aut:hasName ;
+                                sh:pattern "^StartAddress$" ;
+                            ] ;
+                            sh:property [
+                                sh:path aut:hasAttributeDataType ;
+                                sh:hasValue "xs:int" ;
+                            ] ;
+                        ] ;
+                        sh:minCount 1 ;
+                        sh:name "StartAddress" ;
+                        sh:description "Mandatory if 'Address' exists." ;
+                    ] ;
+                    
+                    sh:property [
+                        sh:path aut:hasPart ;
+                        sh:nodeShape [
+                            a sh:NodeShape ;
+                            sh:property [
+                                sh:path aut:hasName ;
+                                sh:pattern "^IoType$" ;
+                            ] ;
+                            sh:property [
+                                sh:path aut:hasAttributeDataType ;
+                                sh:hasValue "xs:string" ;
+                            ] ;
+                        ] ;
+                        sh:minCount 1 ;
+                        sh:name "IoType" ;
+                        sh:description "Mandatory if 'Address' exists (INPUT or OUTPUT)." ;
+                    ] ;
+
+                    # "Length" optional
+                    sh:property [
+                        sh:path aut:hasPart ;
+                        sh:maxCount 1 ;
+                        sh:name "Length" ;
+                        sh:description "Optional (xs:int)." ;
+                        sh:nodeShape [
+                            a sh:NodeShape ;
+                            sh:property [
+                                sh:path aut:hasName ;
+                                sh:pattern "^Length$" ;
+                            ] ;
+                            sh:property [
+                                sh:path aut:hasAttributeDataType ;
+                                sh:hasValue "xs:int" ;
+                            ] ;
+                        ] ;
+                    ] ;
+
+                    # "BitOffset" optional (default=0)
+                    sh:property [
+                        sh:path aut:hasPart ;
+                        sh:maxCount 1 ;
+                        sh:name "BitOffset" ;
+                        sh:description "Optional (xs:int). Default=0 if omitted." ;
+                        sh:nodeShape [
+                            a sh:NodeShape ;
+                            sh:property [
+                                sh:path aut:hasName ;
+                                sh:pattern "^BitOffset$" ;
+                            ] ;
+                            sh:property [
+                                sh:path aut:hasAttributeDataType ;
+                                sh:hasValue "xs:int" ;
+                            ] ;
+                        ] ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 12) "PlantDesignation IEC", "LocationIdentifier IEC", "ProductDesignation IEC"
+    #     All optional (xs:string) with specific RefSemantic.
+    #     We'll simply check they are named correctly & typed xs:string.
+    #     Checking the presence of the "IEC 81346" semanticRef could be done
+    #     with an additional property shape if needed.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "PlantDesignation IEC" ;
+        sh:description "Optional 'PlantDesignation IEC' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^PlantDesignation IEC$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "LocationIdentifier IEC" ;
+        sh:description "Optional 'LocationIdentifier IEC' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^LocationIdentifier IEC$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "ProductDesignation IEC" ;
+        sh:description "Optional 'ProductDesignation IEC' (xs:string)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^ProductDesignation IEC$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 13) "InstallationDate" (optional, xs:dateTime)
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:name "InstallationDate" ;
+        sh:description "Optional 'InstallationDate' (xs:dateTime)." ;
+        
+        sh:nodeShape [
+            a sh:NodeShape ;
+            sh:property [
+                sh:path aut:hasName ;
+                sh:pattern "^InstallationDate$" ;
+            ] ;
+            sh:property [
+                sh:path aut:hasAttributeDataType ;
+                sh:hasValue "xs:dateTime" ;
+            ] ;
+        ] ;
+    ] ;
+
+    ############################################################################
+    # 14) Interfaces: "ModuleAssignment" and "CommunicationPortProxyInterface"
+    #     Both optional.  Typically appear as ExternalInterface in AML → 
+    #     in OWL: a aut:ExternalInterface , typed with 
+    #     "AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment"
+    #     or 
+    #     "AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface"
+    #     If you want to ensure they exist, or check cardinalities, you can 
+    #     define a sub-shape that checks for an external interface referencing 
+    #     those classes, etc.  Below is an illustrative example that checks 0..1.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasExternalInterface ;
+        sh:maxCount 1 ;
+        sh:name "ModuleAssignment" ;
+        sh:description "Optional 'ModuleAssignment' interface." ;
+        
+        sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:class aut:AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment ;
+    ] ;
+
+    sh:property [
+        sh:path aut:hasExternalInterface ;
+        sh:maxCount 1 ;
+        sh:name "CommunicationPortProxyInterface" ;
+        sh:description "Optional 'CommunicationPortProxyInterface' interface." ;
+        
+        sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:class aut:AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface ;
+    ] ;
+
+    .

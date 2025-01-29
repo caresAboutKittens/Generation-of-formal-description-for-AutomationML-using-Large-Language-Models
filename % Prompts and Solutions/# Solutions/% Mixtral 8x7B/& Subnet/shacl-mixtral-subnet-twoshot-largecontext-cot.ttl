@@ -1,0 +1,60 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:    <http://www.example.org/#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix aml:   <https://w3id.org/i40/aml#> .
+
+ex:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FCustomAttributes ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasInterface ;
+        sh:class aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:CustomAttributeShape
+    a sh:NodeShape ;
+    sh:targetClass aml:CustomAttribute ;
+    sh:property [
+        sh:path aml:hasAttributeName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:LogicalEndPointShape
+    a sh:NodeShape ;
+    sh:targetClass aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .

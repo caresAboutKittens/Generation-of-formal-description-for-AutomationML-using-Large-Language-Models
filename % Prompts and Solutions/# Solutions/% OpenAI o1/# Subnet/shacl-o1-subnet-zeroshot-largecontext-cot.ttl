@@ -1,0 +1,158 @@
+###############################################################################
+# Prefix Definitions
+###############################################################################
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:  <http://example.org/shapes#> .
+
+###############################################################################
+# Top-Level Shape for Subnet
+###############################################################################
+ex:SubnetShape
+    a sh:NodeShape ;
+    # Target all individuals that are typed (rdf:type) as Subnet in APC
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+
+    ############################################################################
+    # 1) Name (Mandatory)
+    #    "Name" in AML is represented as the built-in 'Name' of the InternalElement
+    #    => In OWL, it appears as aut:hasName on the instance node.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;           # Mandatory
+        sh:maxCount 1 ;           # Typically only one 'Name'
+        sh:description "Subnet must have a 'Name' (mandatory, exactly 1)." ;
+    ] ;
+
+    ############################################################################
+    # 2) Type (Mandatory)
+    #    AML Whitepaper says "Type" is a mandatory sub-attribute.
+    #    In OWL, that sub-attribute is typically an aut:Attribute node
+    #    (reachable via aut:hasPart) that itself hasName "Type".
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node ex:TypeAttributeShape ;
+        sh:minCount 1 ;           # Must have exactly one Type attribute
+        sh:maxCount 1 ;
+        sh:description "Subnet must have exactly one 'Type' attribute." ;
+    ] ;
+
+    ############################################################################
+    # 3) CustomAttributes (Optional)
+    #    The Whitepaper states: "CustomAttributes" [0..n]. 
+    #    If present, we have one parent attribute named "CustomAttributes"
+    #    which can contain 0..n child attributes, each child’s name is mandatory.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node ex:CustomAttributesShape ;
+        sh:maxCount 1 ;   # Typically only one 'CustomAttributes' attribute node
+        sh:description "Optional 'CustomAttributes' attribute, if it exists it can appear at most once." ;
+    ] ;
+
+    ############################################################################
+    # 4) LogicalEndPoint (Mandatory, exactly 1)
+    #    The Whitepaper: "A Subnet has exactly one LogicalEndPoint interface."
+    #    In the AML-to-OWL conversion, external interfaces often appear as
+    #    separate nodes typed as aut:ExternalInterface and
+    #    aut:CommunicationInterfaceClassLib%2FLogicalEndPoint.
+    #    They are commonly connected by aut:hasPart or a similar property.
+    #    Here we assume aut:hasPart is used.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node ex:LogicalEndPointShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "Exactly one ExternalInterface typed as LogicalEndPoint." ;
+    ] .
+    
+
+###############################################################################
+# Shape for the mandatory "Type" attribute.
+# - Must haveName = "Type"
+# - Must have an AttributeDataType
+# - Must have a string value.
+###############################################################################
+ex:TypeAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "Type" ;
+        sh:description "The sub-attribute's name must be exactly 'Type'." ;
+    ] ;
+    sh:property [
+        sh:path aut:hasAttributeDataType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "Mandatory data type for the 'Type' attribute." ;
+    ] ;
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "Mandatory string value for the 'Type' attribute." ;
+    ] .
+
+
+###############################################################################
+# Shape for "CustomAttributes".
+# - If this attribute node exists, it must haveName = "CustomAttributes".
+# - It can contain 0..n child attributes (each child must have a name).
+###############################################################################
+ex:CustomAttributesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "CustomAttributes" ;
+        sh:description "This node must represent the 'CustomAttributes' attribute." ;
+    ] ;
+    # Each child is a custom attribute node that must have a (string) name.
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node ex:CustomAttributeShape ;
+        sh:minCount 0 ;  # 0..n child attributes
+    ] .
+
+
+###############################################################################
+# Shape for each custom attribute within "CustomAttributes".
+# - Must have a name (sh:minCount 1).
+# - Value is optional (but if present, must be a string).
+# - (Uniqueness of names can be checked in advanced ways, omitted here.)
+###############################################################################
+ex:CustomAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "Custom attribute must have a name." ;
+    ] ;
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:description "If present, the custom attribute value must be a string." ;
+    ] .
+
+
+###############################################################################
+# Shape for the one LogicalEndPoint external interface.
+# - Must be typed as an ExternalInterface
+# - Must also be typed as CommunicationInterfaceClassLib%2FLogicalEndPoint
+###############################################################################
+ex:LogicalEndPointShape
+    a sh:NodeShape ;
+    # Require that the node is typed as both ExternalInterface and
+    # CommunicationInterfaceClassLib%2FLogicalEndPoint
+    sh:and (
+        [ sh:class aut:ExternalInterface ]
+        [ sh:class aut:CommunicationInterfaceClassLib%2FLogicalEndPoint ]
+    ) ;
+    sh:description
+       "Ensures that the node is an ExternalInterface of type 'LogicalEndPoint'." .

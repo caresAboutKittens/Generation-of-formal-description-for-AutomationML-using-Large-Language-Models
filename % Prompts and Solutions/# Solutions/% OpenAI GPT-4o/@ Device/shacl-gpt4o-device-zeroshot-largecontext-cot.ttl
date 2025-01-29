@@ -1,0 +1,41 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+aut:DeviceShape a sh:NodeShape ;
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "The 'Name' attribute defines the name of the device. It is mandatory and modeled by the standard attribute Name of the relevant CAEX object." ;
+    ] ;
+    sh:property [
+        sh:path aut:Device%2FTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The 'TypeIdentifier' attribute defines the family identifier of the device type. It is optional." ;
+    ] ;
+    sh:property [
+        sh:path aut:Device%2FTypeIdentifier%2FTemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The 'TemplateIdentifier' attribute references the path of a template element, for instance a library. This attribute is optional." ;
+    ] ;
+    sh:property [
+        sh:path aut:Device%2FManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The 'Manufacturer' attribute defines the manufacturer of the device. The name must be unambiguous and uniquely assigned to the manufacturer. This attribute is optional." ;
+    ] ;
+    sh:property [
+        sh:path aut:Device%2FComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:description "The 'Comment' attribute defines a comment for the device. It follows the Best Practice Recommendation Multilingual expressions in AutomationML. This attribute is optional." ;
+    ] ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:description "SHACL Shape for validating the 'Device' element according to the AutomationML AR APC Whitepaper." .

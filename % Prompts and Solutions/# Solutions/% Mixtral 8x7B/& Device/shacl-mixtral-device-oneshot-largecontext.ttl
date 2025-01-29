@@ -1,0 +1,37 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:    <http://www.example.org/#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix aml:   <https://w3id.org/i40/aml#> .
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Device%2FTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Device%2FTypeIdentifier%2FTemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Device%2FManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Device%2FComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] .

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Example was left as is, Channel kept for noise. -->
+<CAEXFile>
+    <InternalElement Name="3" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/DeviceItem" ID="37BAABEB-670C-47B4-A376-D8D859A3DAFE">
+        <Attribute Name="PositionNumber" AttributeDataType="xs:int">
+            <Value>3</Value>
+        </Attribute>
+        <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+            <Value>OrderNumber:EL2008</Value>
+        </Attribute>
+        <Attribute Name="PlantDesignation IEC" AttributeDataType="xs:string">
+            <Value>=A1</Value>
+        </Attribute>
+        <Attribute Name="LocationIdentifier IEC" AttributeDataType="xs:string">
+            <Value>+S1-DO1</Value>
+        </Attribute>
+        <Attribute Name="Address">
+            <RefSemantic CorrespondingAttributePath="OrderedListType"/>
+            <Attribute Name="1">
+                <Attribute Name="StartAddress" AttributeDataType="xs:int">
+                    <Value>0</Value>
+                </Attribute>
+                <Attribute Name="IoType" AttributeDataType="xs:string">
+                    <Value>Output</Value>
+                </Attribute>
+            </Attribute>
+        </Attribute>
+        <ExternalInterface Name="Channel_DO_Channel 1" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/Channel" ID="068FED71-B04A-4C9F-921B-16E1E9C22778">
+            <Attribute Name="Type" AttributeDataType="xs:string">
+                <Value>Digital</Value>
+            </Attribute>
+            <Attribute Name="IoType" AttributeDataType="xs:string">
+                <Value>Output</Value>
+            </Attribute>
+            <Attribute Name="Number" AttributeDataType="xs:int">
+                <Value>1</Value>
+            </Attribute>
+            <Attribute Name="Length" AttributeDataType="xs:int">
+                <Value>1</Value>
+            </Attribute>
+        </ExternalInterface>
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/DeviceItem"/>
+    </InternalElement>
+</CAEXFile>

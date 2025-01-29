@@ -1,0 +1,570 @@
+################################################################
+# Prefixes
+################################################################
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:    <http://example.org/ns#> .
+
+################################################################
+# Top-Level Shape for DeviceItem
+#
+# In many AutomationML->OWL mappings, there is no dedicated 
+# class "aml:DeviceItem" for the instance; instead, the resource 
+# might just have the "Name" = "DeviceItem" or be recognized by 
+# a RoleClass reference. Below, we assume a class (or some 
+# targeting mechanism) so that every RDF node that represents 
+# a DeviceItem is validated here. 
+################################################################
+ex:DeviceItemShape
+    a sh:NodeShape ;
+    # In real usage, pick an appropriate way to target the DeviceItem node.
+    # For example: all nodes that have aml:hasName "DeviceItem", or
+    # a known resource URI for the device item, or a custom class, etc.
+    # Here we assume a custom class: aml:DeviceItem
+    sh:targetClass aml:DeviceItem ;  
+    
+    # The Whitepaper demands a "Name" attribute (mandatory).
+    # NOTE: This "Name" is often the main CAEX-object name, but
+    # in some AML->RDF mappings you may see it as an Attribute node.
+    # Below we interpret: the top-level node must have at least one 
+    # name-literal. If your mapping differs, adjust accordingly.
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; 
+        sh:message "A DeviceItem must have a 'Name' (AML name) of type xsd:string." 
+    ] ;
+    
+    ################################################################
+    # Check for the presence (or absence) of child Attributes. 
+    #
+    # In many AutomationML->RDF mappings:
+    #   The DeviceItem node  --(aml:hasPart)-->   each sub-Attribute node
+    #
+    # Then each sub-Attribute node has aml:hasName "Xxx" to identify 
+    # which attribute it is (e.g., "TypeName", "DeviceItemType", etc.), 
+    # plus aml:hasAttributeDataType "xs:string"/"xs:int"/"xs:boolean".
+    #
+    # We define sub-shapes to validate each known attribute structure.
+    ################################################################
+
+    # -- TypeName is OPTIONAL; if present, it must match TypeNameShape
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TypeNameShape ;
+        sh:description "If a TypeName Attribute node exists, it must conform to TypeNameShape." ;
+        # Whitepaper says 'TypeName' is optional -> minCount 0 is allowed 
+        # If we want at most 1, use sh:maxCount 1 
+    ] ;
+
+    # -- DeviceItemType is OPTIONAL; if present, must have a sub-attribute "Customized"
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:DeviceItemTypeShape ;
+        sh:description "If a DeviceItemType attribute exists, it must conform to DeviceItemTypeShape (which also checks 'Customized')."
+    ] ;
+
+    # -- PositionNumber is OPTIONAL, but might be mandatory if pluggable, etc. 
+    #    For simplicity, we model it as optional. 
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:PositionNumberShape ;
+        sh:description "PositionNumber is optional, but if present must be an xs:int."
+    ] ;
+
+    # -- BuiltIn is OPTIONAL with default = false
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:BuiltInShape ;
+        sh:description "BuiltIn is optional, if present must be a boolean with default 'false'."
+    ] ;
+
+    # -- TypeIdentifier is MANDATORY if BuiltIn=false, OPTIONAL otherwise.
+    #    For a simpler demonstration, we declare it as optional. 
+    #    In a real scenario, you might define a rule with sh:if/sh:then 
+    #    to require TypeIdentifier when BuiltIn=false. 
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TypeIdentifierShape ;
+        sh:description "TypeIdentifier is conditionally mandatory by the Whitepaper. For demonstration, we treat it as optional if present."
+    ] ;
+
+    # -- Manufacturer is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:ManufacturerShape ;
+        sh:description "Manufacturer is optional; if present must be xs:string."
+    ] ;
+
+    # -- CustomAttributes is OPTIONAL; if present, child attributes (AttributeNameX) must be unique
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:CustomAttributesShape ;
+        sh:description "CustomAttributes is optional. If it exists, it references subattributes with 'AttributeNameX'."
+    ] ;
+
+    # -- FirmwareVersion is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:FirmwareVersionShape ;
+        sh:description "FirmwareVersion is optional; if present must be xs:string."
+    ] ;
+
+    # -- Comment is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:CommentShape ;
+        sh:description "Comment is optional; if present must be xs:string."
+    ] ;
+
+    # -- Address is OPTIONAL, but if present, each subelement '1','2',... must have StartAddress & IoType mandatory, etc.
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:AddressShape ;
+        sh:description "Address is an ordered list, optional. If present, each sub-attribute must conform to the sub-shape constraints."
+    ] ;
+
+    # -- PlantDesignation IEC is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:PlantDesignationIECShape ;
+        sh:description "PlantDesignation IEC is optional; if present must be xs:string, with a specific refSemantic."
+    ] ;
+
+    # -- LocationIdentifier IEC is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:LocationIdentifierIECShape ;
+        sh:description "LocationIdentifier IEC is optional; if present must be xs:string, with a specific refSemantic."
+    ] ;
+
+    # -- ProductDesignation IEC is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:ProductDesignationIECShape ;
+        sh:description "ProductDesignation IEC is optional; if present must be xs:string, with a specific refSemantic."
+    ] ;
+
+    # -- InstallationDate is OPTIONAL
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:InstallationDateShape ;
+        sh:description "InstallationDate is optional; if present must be xs:dateTime."
+    ] ;
+
+    # External Interfaces (ModuleAssignment, CommunicationPortProxyInterface) 
+    # are not shown here as property shapes for brevity, 
+    # but one could similarly define them to be optional or mandatory, 
+    # referencing e.g. aml:ExternalInterface classes. 
+
+    sh:closed false ;
+    sh:message "A DeviceItem must follow the constraints specified in the AutomationML Communication Whitepaper (Table 6)." 
+.
+
+
+################################################################
+# Sub-Shapes for Individual Attributes
+################################################################
+
+##########
+# TypeName (optional, xs:string)
+##########
+ex:TypeNameShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeName" ;
+        sh:message "Attribute node must be named 'TypeName'." 
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "TypeName must have AML data type 'xs:string'." 
+    ] ;
+.
+
+##########
+# DeviceItemType (optional, xs:string) 
+#   + has a subattribute 'Customized' (boolean, default="false")
+##########
+ex:DeviceItemTypeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "DeviceItemType" ;
+        sh:message "Attribute node must be named 'DeviceItemType'." 
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "DeviceItemType must have AML data type 'xs:string'." 
+    ] ;
+    # sub-attribute "Customized"
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:CustomizedShape ;
+        sh:description "Customized sub-attribute if present, must be boolean with default='false'."
+        # The Whitepaper says "Customized" is optional.
+        # If you want to require it when "DeviceItemType" is present, add sh:minCount 1
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+.
+
+# The sub-attribute "Customized" itself
+ex:CustomizedShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Customized" ;
+        sh:message "Subattribute must be named 'Customized'." 
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:boolean" ;
+        sh:message "Customized must have AML data type 'xs:boolean'." 
+    ] ;
+    # defaultValue = "false"
+    sh:property [
+        sh:path aml:hasDefaultValue ;
+        sh:hasValue "false" ;
+        sh:message "Customized default value must be 'false'." 
+    ] ;
+.
+
+##########
+# PositionNumber (optional, xs:int)
+##########
+ex:PositionNumberShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "PositionNumber" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:int" ;
+    ] ;
+.
+
+##########
+# BuiltIn (optional, xs:boolean, default="false")
+##########
+ex:BuiltInShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "BuiltIn" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:boolean" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDefaultValue ;
+        sh:hasValue "false" ;
+    ] ;
+.
+
+##########
+# TypeIdentifier (optional or mandatory if BuiltIn=false). 
+#   + sub-attribute TemplateIdentifier (xs:string)
+##########
+ex:TypeIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+    # optional sub-attribute: TemplateIdentifier
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TemplateIdentifierShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+.
+
+ex:TemplateIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+.
+
+##########
+# Manufacturer (optional, xs:string)
+##########
+ex:ManufacturerShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+.
+
+##########
+# CustomAttributes (optional) with subattributes "AttributeNameX" (xs:string)
+##########
+ex:CustomAttributesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "CustomAttributes" ;
+    ] ;
+    # The Whitepaper says each sub-attribute "AttributeNameX" must be unique.  
+    # This requires more advanced checking of sub-attributes' names for uniqueness. 
+    # A partial approach: check that each sub-attribute is xsd:string typed. 
+    sh:property [
+        sh:path aml:hasPart ; 
+        sh:node ex:AnyStringAttributeShape ;
+        sh:minCount 0 ;
+        sh:description "Any subattribute under CustomAttributes must be a string-typed attribute. Uniqueness can be enforced with sh:uniqueLang or advanced constraints."
+    ] ;
+.
+
+# A generic shape that checks an AML attribute hasName is any string 
+# (like "AttributeName1", "AttributeName2"), and hasAttributeDataType = xs:string
+ex:AnyStringAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string"
+    ] ;
+.
+
+##########
+# FirmwareVersion (optional, xs:string)
+##########
+ex:FirmwareVersionShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "FirmwareVersion" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+.
+
+##########
+# Comment (optional, xs:string)
+##########
+ex:CommentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+.
+
+##########
+# Address (optional, ordered list of subattributes "1", "2", "3", ...)
+#   - StartAddress (xs:int) mandatory
+#   - IoType (xs:string) mandatory
+#   - Length (xs:int) optional
+#   - BitOffset (xs:int) optional, default=0
+##########
+ex:AddressShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Address" ;
+    ] ;
+    # The Whitepaper allows multiple (0..n) sub-attributes "1", "2", "3", ...
+    # Each of these is validated by ex:AddressEntryShape
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:AddressEntryShape ;
+        sh:minCount 0 ;  # any number of entries
+    ] ;
+.
+
+# Each "Address" entry is named "1", "2", "3", ...
+# Inside, we have StartAddress (MANDATORY), IoType (MANDATORY), Length (OPTIONAL), BitOffset (OPTIONAL)
+ex:AddressEntryShape
+    a sh:NodeShape ;
+    # The name of this node might be "1","2","3", etc. We won't force it to be numeric here. 
+    # Check presence of sub-parts:
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:StartAddressShape ;
+        sh:minCount 1 ;
+        sh:message "StartAddress is mandatory if 'Address' exists." 
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:IoTypeShape ;
+        sh:minCount 1 ;
+        sh:message "IoType is mandatory if 'Address' exists." 
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:LengthShape ;
+        sh:minCount 0 ;
+        sh:message "Length is optional." 
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:BitOffsetShape ;
+        sh:minCount 0 ;
+        sh:message "BitOffset is optional (default=0)." 
+    ] ;
+.
+
+# StartAddress (xs:int)
+ex:StartAddressShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "StartAddress" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:int" ;
+    ] ;
+.
+
+# IoType (xs:string) - typically used for "INPUT" / "OUTPUT"
+ex:IoTypeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "IoType" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+.
+
+# Length (xs:int)
+ex:LengthShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Length" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:int" ;
+    ] ;
+.
+
+# BitOffset (xs:int) optional, default=0
+ex:BitOffsetShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "BitOffset" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:int" ;
+    ] ;
+    # If you wish to enforce the default=0, you can:
+    #  sh:property [
+    #      sh:path aml:hasDefaultValue ;
+    #      sh:hasValue "0" ;
+    #  ] ;
+.
+
+##########
+# PlantDesignation IEC (optional, xs:string, specific refSemantic)
+##########
+ex:PlantDesignationIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "PlantDesignation IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+    # If you want to check for a required refSemantic value:
+    # sh:property [
+    #     sh:path aml:hasSemanticRef ;
+    #     sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.3%20-%20Function-oriented%20structure> ;
+    # ] ;
+.
+
+##########
+# LocationIdentifier IEC (optional, xs:string, specific refSemantic)
+##########
+ex:LocationIdentifierIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "LocationIdentifier IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+    # Similarly, if you want to verify refSemantic:
+    # sh:property [
+    #     sh:path aml:hasSemanticRef ;
+    #     sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.5%20-%20Location-oriented%20structure> ;
+    # ] ;
+.
+
+##########
+# ProductDesignation IEC (optional, xs:string, specific refSemantic)
+##########
+ex:ProductDesignationIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "ProductDesignation IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+    # Possibly check the refSemantic:
+    # sh:property [
+    #     sh:path aml:hasSemanticRef ;
+    #     sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.4%20-%20Product-oriented%20structure> ;
+    # ] ;
+.
+
+##########
+# InstallationDate (optional, xs:dateTime)
+##########
+ex:InstallationDateShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "InstallationDate" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:dateTime" ;
+    ] ;
+.
+
+################################################################
+# End of example SHACL
+################################################################
+

@@ -1,0 +1,13 @@
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#0372b881-9ce7-47d4-a346-eee6f3e4d3d2>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "DeviceMR-J5-10G-RJ" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "DeviceMR-J5-10G-RJ" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDevice> .

@@ -1,0 +1,168 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/ex#> .
+
+#################################################################
+## SHACL Shapes for the AR APC "Device" Whitepaper Excerpt
+##
+## Targets instances of the OWL class:
+##    aml:AutomationProjectConfigurationRoleClassLib%2FDevice
+##
+## Constraints:
+##  - A Device must have exactly one aml:hasName (xsd:string)
+##  - The "TypeIdentifier" attribute is optional but, if present,
+##    must have aml:hasName "TypeIdentifier" and 
+##    aml:hasAttributeDataType "xs:string". It may also contain
+##    an optional "TemplateIdentifier" sub-attribute.
+##  - The "TemplateIdentifier" sub-attribute (optional) must have
+##    aml:hasName "TemplateIdentifier" and
+##    aml:hasAttributeDataType "xs:string" if present.
+##  - "Manufacturer" is an optional attribute. If present, it must
+##    have aml:hasName "Manufacturer" and 
+##    aml:hasAttributeDataType "xs:string".
+##  - "Comment" is an optional attribute. If present, it must
+##    have aml:hasName "Comment" and
+##    aml:hasAttributeDataType "xs:string".
+#################################################################
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+
+    ## 1) Device must have a Name (the built-in CAEX/AML "Name")
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Device must have exactly one 'Name' (xsd:string)." ;
+    ] ;
+
+    ## 2) Optional 'TypeIdentifier' attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:Device_TypeIdentifier_Shape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "If 'TypeIdentifier' is present, it must conform to the specified constraints." ;
+    ] ;
+
+    ## 3) Optional 'Manufacturer' attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:Device_Manufacturer_Shape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "If 'Manufacturer' is present, it must conform to the specified constraints." ;
+    ] ;
+
+    ## 4) Optional 'Comment' attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:Device_Comment_Shape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "If 'Comment' is present, it must conform to the specified constraints." ;
+    ] ;
+    .
+
+
+#################################################################
+## Shape for the 'TypeIdentifier' attribute
+##   - Must have aml:hasName == "TypeIdentifier"
+##   - Must have aml:hasAttributeDataType == "xs:string"
+##   - Optionally has one 'TemplateIdentifier' sub-attribute
+#################################################################
+ex:Device_TypeIdentifier_Shape
+    a sh:NodeShape ;
+
+    ## Must have the Name "TypeIdentifier"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+        sh:message "Attribute must be named 'TypeIdentifier'." ;
+    ] ;
+
+    ## Must have aml:hasAttributeDataType == "xs:string"
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "TypeIdentifier must declare 'xs:string' as its data type." ;
+    ] ;
+
+    ## Optional "TemplateIdentifier" sub-attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:Device_TemplateIdentifier_Shape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "If 'TemplateIdentifier' sub-attribute is present, it must conform to the specified constraints." ;
+    ] ;
+    .
+
+
+#################################################################
+## Shape for the "TemplateIdentifier" sub-attribute 
+##   - Must have aml:hasName == "TemplateIdentifier"
+##   - Must have aml:hasAttributeDataType == "xs:string"
+#################################################################
+ex:Device_TemplateIdentifier_Shape
+    a sh:NodeShape ;
+
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+        sh:message "Sub-attribute must be named 'TemplateIdentifier'." ;
+    ] ;
+
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "TemplateIdentifier must declare 'xs:string' as its data type." ;
+    ] ;
+    .
+
+
+#################################################################
+## Shape for the optional "Manufacturer" attribute
+##   - Must have aml:hasName == "Manufacturer"
+##   - Must have aml:hasAttributeDataType == "xs:string"
+#################################################################
+ex:Device_Manufacturer_Shape
+    a sh:NodeShape ;
+
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+        sh:message "Attribute must be named 'Manufacturer'." ;
+    ] ;
+
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "Manufacturer must declare 'xs:string' as its data type." ;
+    ] ;
+    .
+
+
+#################################################################
+## Shape for the optional "Comment" attribute
+##   - Must have aml:hasName == "Comment"
+##   - Must have aml:hasAttributeDataType == "xs:string"
+#################################################################
+ex:Device_Comment_Shape
+    a sh:NodeShape ;
+
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+        sh:message "Attribute must be named 'Comment'." ;
+    ] ;
+
+    sh:property [
+        sh:path aml:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "Comment must declare 'xs:string' as its data type." ;
+    ] ;
+    .

@@ -1,0 +1,73 @@
+<https://w3id.org/hsu-aut/AutomationML#4998454D-6D83-4A63-A89A-C1B6ED777CBD>
+        a       <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDeviceItem> , <https://w3id.org/hsu-aut/AutomationML#InternalElement> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#0%2FPositionNumber> , <https://w3id.org/hsu-aut/AutomationML#0%2FTypeIdentifier> , <https://w3id.org/hsu-aut/AutomationML#0%2FPlantDesignation%20IEC> , <https://w3id.org/hsu-aut/AutomationML#0%2FLocationIdentifier%20IEC> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#0%2FLocationIdentifier%20IEC> , <https://w3id.org/hsu-aut/AutomationML#0%2FTypeIdentifier> , <https://w3id.org/hsu-aut/AutomationML#0%2FPlantDesignation%20IEC> , <https://w3id.org/hsu-aut/AutomationML#0%2FPositionNumber> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseSystemUnitClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectSystemUnitClassLib%2FDeviceItem> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDeviceItem> .
+
+<https://w3id.org/hsu-aut/AutomationML#0%2FPlantDesignation%20IEC>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PlantDesignation IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "=A1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PlantDesignation IEC" .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#0%2FLocationIdentifier%20IEC>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "LocationIdentifier IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "+S1-EK1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "LocationIdentifier IEC" .
+
+<https://w3id.org/hsu-aut/AutomationML#0%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "OrderNumber:EK1100" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#0%2FPositionNumber>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PositionNumber" ;
+        <http://www.ontology-of-units-of-measure.org/resource/om-2#hasNumericalValue>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PositionNumber" .

@@ -1,0 +1,66 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+# Shape for Subnet
+<SubnetShape> a sh:NodeShape ;
+    sh:targetClass aml:RoleClass ;  # Target the RoleClass type
+    sh:property [
+        sh:path aml:hasName ;  # Check "Name" attribute
+        sh:datatype xsd:string ;  # "Name" must be a string
+        sh:minCount 1 ;  # "Name" is mandatory
+    ] ;
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;  # "Type" must be a string
+                sh:minCount 1 ;  # "Type" is mandatory
+                sh:pattern "Type" ;  # Ensure the attribute name is "Type"
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeDataType ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:in ("xs:string") ;  # Ensure the data type is "xs:string"
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:pattern "CustomAttributes" ;  # Ensure the name is "CustomAttributes"
+            ] ;
+            sh:property [
+                sh:path aml:hasPart ;  # CustomAttributes has parts (list of attributes)
+                sh:node [
+                    sh:property [
+                        sh:path aml:hasName ;
+                        sh:datatype xsd:string ;  # Attribute names are strings
+                        sh:uniqueLang true ;  # Ensure AttributeName is unique
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path aml:hasExternalInterface ;  # Check LogicalEndPoint interface
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:pattern "LogicalEndPoint" ;  # Ensure name is LogicalEndPoint
+            ] ;
+            sh:property [
+                sh:path aml:hasRefBaseClass ;
+                sh:pattern "CommunicationInterfaceClassLib/LogicalEndPoint" ;  # RefBaseClassPath
+            ] ;
+        ] ;
+        sh:minCount 1 ;  # Exactly one LogicalEndPoint
+        sh:maxCount 1 ;
+    ] ;
+    sh:closed true ;  # No additional properties are allowed
+    sh:ignoredProperties (rdf:type) .  # Allow rdf:type as a default property

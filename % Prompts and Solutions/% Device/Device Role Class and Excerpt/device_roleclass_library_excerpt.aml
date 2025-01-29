@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+    <RoleClass Name="Device" RefBaseClassPath="CommunicationRoleClassLib/PhysicalDevice">
+      <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+        <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="Comment" AttributeDataType="xs:string" />
+      <Attribute Name="Manufacturer" AttributeDataType="xs:string" />
+    </RoleClass>
+</CAEXFile>

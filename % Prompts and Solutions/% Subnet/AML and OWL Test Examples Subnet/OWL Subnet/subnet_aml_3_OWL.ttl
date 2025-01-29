@@ -1,0 +1,39 @@
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#f0e33c9f-63fa-4e90-bd0b-6d82af5bae29>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSubnet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CC-Link IE TSN" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#CC-Link%20IE%20TSN%2FType> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#CC-Link%20IE%20TSN%2FType> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasInterface>
+                <https://w3id.org/hsu-aut/AutomationML#34ac4a07-5da8-41bf-b22f-85f0cb77c810> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CC-Link IE TSN" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSubnet> .
+
+<https://w3id.org/hsu-aut/AutomationML#34ac4a07-5da8-41bf-b22f-85f0cb77c810>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "LogicalEndPoint" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "LogicalEndPoint" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> .
+
+<https://w3id.org/hsu-aut/AutomationML#CC-Link%20IE%20TSN%2FType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Type" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "CC-Link IE TSN" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Type" .

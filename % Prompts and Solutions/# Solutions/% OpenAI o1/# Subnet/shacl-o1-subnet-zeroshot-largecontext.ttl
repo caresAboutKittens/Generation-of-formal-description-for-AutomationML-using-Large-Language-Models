@@ -1,0 +1,196 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/shapes#> .
+
+################################################################################
+# SHACL Shape for an AML object that is typed as a “Subnet” according to
+# the AR APC Whitepaper excerpt provided.
+#
+# Note: In the OWL conversion, a Subnet instance typically has:
+#    rdf:type aut:InternalElement ,
+#             aut:AutomationProjectConfigurationRoleClassLib%2FSubnet .
+# Therefore, we target aut:AutomationProjectConfigurationRoleClassLib%2FSubnet.
+################################################################################
+
+ex:SubnetShape
+    a sh:NodeShape ;
+    # Target anything that is typed as “Subnet”
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+
+    ############################################################################
+    # 1) Name is mandatory
+    #
+    #   Whitepaper says:
+    #     “Name” (AttributeDataType=”xs:string”): The attribute “Name” defines 
+    #      the name of the subnet. 
+    #     Note: This attribute is modeled by the standard attribute Name of 
+    #           the relevant CAEX object.
+    #     This attribute is mandatory.
+    #
+    #   In OWL, the standard CAEX "Name" appears as aut:hasName on the InternalElement.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:description "Subnet must have a standard CAEX Name (aut:hasName) of type xsd:string (mandatory)." ;
+    ] ;
+
+    ############################################################################
+    # 2) "Type" is mandatory
+    #
+    #   Whitepaper says:
+    #     “Type” (AttributeDataType=”xs:string”): The attribute “Type” defines 
+    #      the identifier of the type of the subnet. 
+    #     This attribute is mandatory.
+    #
+    #   In AML, “Type” is a sub-Attribute (Name="Type"). 
+    #   In OWL, such sub-attributes are typically related via aut:hasPart (or
+    #   aut:hasAttribute) to the parent, then have:
+    #     aut:hasName "Type"
+    #     aut:hasAttributeDataType "xs:string"
+    #     aut:hasAttributeValue (some string literal)
+    ############################################################################
+    sh:property [
+        # The parent Subnet must have exactly one “Type” Attribute.
+        sh:path aut:hasPart ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node ex:SubnetTypeAttributeShape ;
+        sh:description "Subnet must contain exactly one mandatory 'Type' sub-attribute." ;
+    ] ;
+
+    ############################################################################
+    # 3) CustomAttributes [0..n]
+    #
+    #   Whitepaper says:
+    #     “CustomAttributes” (ListType)[0..n];
+    #       Each contained custom attribute has a mandatory name 
+    #       (AttributeName) if the “CustomAttributes” container exists.
+    #     “CustomAttributes” is optional overall, but if it is present,
+    #       it may contain 0..n custom attributes. Each must have a name.
+    #
+    #   In AML, “CustomAttributes” is itself an Attribute named “CustomAttributes”
+    #   with aut:hasSemanticRef = aut:ListType.
+    #   Its sub-attributes appear via aut:hasPart.
+    ############################################################################
+    sh:property [
+        # The "CustomAttributes" container itself is optional -> minCount=0
+        # Usually there's only one "CustomAttributes" attribute, so maxCount=1
+        sh:path aut:hasPart ;
+        sh:maxCount 1 ;
+        sh:node ex:SubnetCustomAttributesShape ;
+        sh:description "Subnet may have an optional 'CustomAttributes' attribute (ListType) containing 0..n custom sub-attributes." ;
+    ] ;
+
+    ############################################################################
+    # 4) Exactly one LogicalEndPoint interface
+    #
+    #   Whitepaper says:
+    #     "Interfaces 'LogicalEndPoint' (RefBaseClassPath='CommunicationInterfaceClassLib/LogicalEndPoint'):
+    #      A Subnet has exactly one LogicalEndpoint to connect the subnet to Nodes."
+    #
+    #   In OWL, an ExternalInterface is typically typed as:
+    #     a aut:ExternalInterface ,
+    #       aut:CommunicationInterfaceClassLib%2FLogicalEndPoint
+    #   and is often nested/related to the parent via a property such as aut:hasPart
+    #   (or, in some AML->OWL mappings, aut:hasExternalInterface).
+    #
+    #   We enforce exactly one such interface here.
+    ############################################################################
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node ex:SubnetLogicalEndpointInterfaceShape ;
+        sh:description "Subnet has exactly one ExternalInterface typed as a LogicalEndPoint." ;
+    ] .
+    
+
+################################################################################
+# Shape for the “Type” sub-attribute
+################################################################################
+ex:SubnetTypeAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        # Must be named “Type”
+        sh:path aut:hasName ;
+        sh:hasValue "Type" ;
+    ] ;
+    sh:property [
+        # Must carry an AML data type of "xs:string"
+        sh:path aut:hasAttributeDataType ;
+        sh:hasValue "xs:string" ;
+    ] ;
+    sh:property [
+        # Must have a literal value (hasAttributeValue)
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] .
+
+
+################################################################################
+# Shape for the “CustomAttributes” container attribute
+################################################################################
+ex:SubnetCustomAttributesShape
+    a sh:NodeShape ;
+    sh:property [
+        # Must be named “CustomAttributes”
+        sh:path aut:hasName ;
+        sh:hasValue "CustomAttributes" ;
+    ] ;
+    sh:property [
+        # Should have a reference to aut:ListType
+        sh:path aut:hasSemanticRef ;
+        sh:hasValue aut:ListType ;
+    ] ;
+    sh:property [
+        # Its sub-attributes (0..n). Each is a "custom attribute" that must have a name.
+        sh:path aut:hasPart ;
+        sh:node ex:CustomAttributeShape ;
+        sh:minCount 0 ;
+    ] .
+
+
+################################################################################
+# Shape for each custom attribute under “CustomAttributes”
+################################################################################
+ex:CustomAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        # Must have a name (the custom attribute’s key)
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] .
+    
+
+################################################################################
+# Shape for the “LogicalEndPoint” external interface
+################################################################################
+ex:SubnetLogicalEndpointInterfaceShape
+    a sh:NodeShape ;
+
+    # Must be typed as ExternalInterface and CommunicationInterfaceClassLib%2FLogicalEndPoint
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue aut:ExternalInterface ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue aut:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Must have a standard CAEX name “LogicalEndPoint”
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "LogicalEndPoint" ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .

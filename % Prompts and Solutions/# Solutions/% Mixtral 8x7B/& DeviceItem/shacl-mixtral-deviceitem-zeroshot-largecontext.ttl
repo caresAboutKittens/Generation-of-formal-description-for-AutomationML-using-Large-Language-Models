@@ -1,0 +1,170 @@
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape :
+a sh:NodeShape ;
+sh:targetClass https://w3id.org/hsu-aut/AutomationML#DeviceItem ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Name :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasName ;
+sh:datatype xsd:string ;
+sh:minCount 1 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/TypeName :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasTypeName ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/DeviceItemType :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasDeviceItemType ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Customized :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasCustomized ;
+sh:datatype xsd:boolean ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/PositionNumber :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasPositionNumber ;
+sh:datatype xsd:int ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/BuiltIn :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasBuiltIn ;
+sh:datatype xsd:boolean ;
+sh:minCount 0 ;
+sh:defaultValue "false" ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/TypeIdentifier :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasTypeIdentifier ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/TemplateIdentifier :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasTemplateIdentifier ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Manufacturer :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasManufacturer ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/CustomAttributes :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasCustomAttributes ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/FirmwareVersion :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasFirmwareVersion ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Comment :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasComment ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasAddress ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address/1 :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasAddress ;
+sh:index 1 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address/1/StartAddress :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasStartAddress ;
+sh:datatype xsd:int ;
+sh:minCount 1 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address/1/Length :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasLength ;
+sh:datatype xsd:int ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address/1/IoType :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasIoType ;
+sh:datatype xsd:string ;
+sh:minCount 1 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/Address/1/BitOffset :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasBitOffset ;
+sh:datatype xsd:int ;
+sh:minCount 0 ;
+sh:defaultValue "0" ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/PlantDesignationIEC :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasPlantDesignationIEC ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/LocationIdentifierIEC :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasLocationIdentifierIEC ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/ProductDesignationIEC :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasProductDesignationIEC ;
+sh:datatype xsd:string ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/InstallationDate :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasInstallationDate ;
+sh:datatype xsd:dateTime ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/ModuleAssignment :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasModuleAssignment ;
+sh:minCount 0 ;
+.
+
+https://w3id.org/hsu-aut/AutomationML#DeviceItemShape/CommunicationPortProxyInterface :
+a sh:PropertyShape ;
+sh:path https://w3id.org/hsu-aut/AutomationML#hasCommunicationPortProxyInterface ;
+sh:minCount 0 ;
+.

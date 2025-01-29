@@ -1,0 +1,217 @@
+Hi chat,
+
+I need your help in creating SHACL code. But let me give you some context about your task.
+
+All this revolves around the AutomationMarkupLanguage (AML or AutomationML). AML is commonly used in the Automation Industry.
+
+The AML consortium has created multiple Standards described in Whitepapers (Long PDF's describing how elements should be modeled within AML). These are used so that collaborating companies have an easier time exchanging data.
+
+The issue is that these Whitepapers are long and in text form. It will commonly occur that one may receive a file which does not conform to the agreed to standard (AR APC Whitepaper standard for instance). But its hard to tell that at a glance. One needs to manually read through the file and compare the implementation with the Whitepapers definition (which is not really feasible due to time constraints).
+
+So some people got the idea to formalize the Whitepapers - that is - they decided to transcribe the information contained within the whitepaper into SHACL code. The idea being that first one can convert ones AML files into OWL (since SHACL cannot be applied to AML directly), then one can apply the SHACL version of the Whitepaper to the OWL file. This would be a quick way to verify if a file conforms to a given AML Whitepaper standard.
+
+There is one issue though. The Whitepaper, again, is super long and manually creating SHACL code for each part is quite tedious.
+
+Then another idea was born. Perhaps we can give the Whitepaper, along with some relevant auxiliary information, to a Large Language Model (LLM), (This is where you come into play). You are the LLM whose job it is to create the SHACL from/ for the Whitepaper.
+
+That was it for context. Now we will get into the nitty-gritty of the task.
+
+In order to correctly perform the task of creating SHACL for the Whitepaper, you'll require various tidbits of information. Lets start with the most important one, the AutomationML: Application Recommendations Automation Project Configuration (AR APC). This is a long document which describes (among other things) how certain hardware should be modelled with AML. It is split into many parts, each of which describes the structure that a specific hardware should have when modelled in AML.
+
+But, this information does not quite suffice in order to formalize the excerpt into SHACL code. The attributes described in the Whitepaper excerpt follow a specific naming Scheme. The names of the attributes in the excerpt correspond to the names of the attributes that an instance of that Object would have in AML. The problem is that whatever AML file we have, before applying the SHACL to it, we must first convert it into OWL. When converting an AML file to OWL, the names of the attributes change slightly. This may not seem like a huge deal, but SHACL requires precise definitions. Just one typo in the SHACL code can lead to the SHACL shape not being applied to the correct element. Additionally, the Whitepaper by itself is pretty general. It not necessarily clear even how a real-world AML instance of an object would be formatted, just based on the information within the whitepaper and thats before any conversion to OWL.
+
+For this purpose the AML AR APC Library Exists. For each hardware element (which corresponds to one excerpt from the whitepaper), one can see how elements look like when implemented in AML - kinda...
+
+It's great because it gives a basic overview of what elements can look like once implemented within AML, but there is a problem. The library does not actually show you how an instance of an object looks like (lets take PowerPort as an example). The library describes what the roleclass of the object (PowerPort) looks like. The roleclass is basically what an object references in order to say - hey look I am of type PowerPort etc. That means though, particularly after converting the excerpt to OWL, that the layout syntax is not 100% the same, as compared to an instance of the PowerPort object.
+
+This makes sense, one describes the 'class', the other is an instance of it, just something to keep in mind. It's still useful though, because it describes all of the elements that the instance object can have, despite being of type RoleClass and not InternalElement. I will send you both the AML and the OWL Version of the library excerpt. The AML version because its easier to read and the names more so correspond to the Whitepaper excerpt. The OWL is really the heart of the matter though, since the SHACL is applied to the OWL and not the AML. So the SHACL needs to use the OWL names, which as mentioned are altered slightly in the conversion process from AML to OWL, to query the file.
+
+Alright, we have now covered the basics. Soon I will send you the Whitepaper and the library excerpts in AML & OWL. Before I get to that, let me cover some additional information/ hints that you may require in order to properly create the SHACL for the Whitepaper.
+
+The first thing is how to actually identify or target an AML object (when I say AML object, I am referring to an object that originated in AML, the objects you target will be in OWL of course). Notice that the Whitepaper Excerpt will have an attribute of the following name: "Path for Element reference". For example, a PowerPort object will have the value of "AutomationProjectConfigurationRoleClassLib/PowerPort" for its "Path for Element reference" variable. A channel will have a value of "AutomationProjectConfigurationInterfaceClassLib/Channel".
+
+This variable is crucial and is what will actually allow you to identify what type of object you are dealing with. This value can be found in the Whitepaper Excerpt I will send you later. This is the value that your SHACL should target. If you get this value wrong your SHACL shape(s) will not actually target the object (e.g. PowerPort) that it should. Within OWL, you will be able see, that what type of object something is, is defined in the following way:
+"""
+<https://w3id.org/hsu-aut/AutomationML#61C1449F-8E22-441A-A3BF-2EA49FA4ED0A>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FPowerPort> ;
+        ...
+"""
+
+The above demonstrates how a PowerPort object could be defined in OWL. Notice how you can tell its type by the value which was stored in the "Path for Element reference" in the Whitepaper. In this case "AutomationProjectConfigurationRoleClassLib/PowerPort".
+
+Here is where I touch upon the next hurdle. If you look closely at the above example, you will see that the value is actually NOT "AutomationProjectConfigurationRoleClassLib/PowerPort" but rather "AutomationProjectConfigurationRoleClassLib%2FPowerPort" (excluding the https... link part). In the conversion process to OWL the '/' gets serialized to '%2F'. This is important to keep in mind, because you need to reference the object properly within SHACL. You need to set the target class to e.g:
+"""
+targetClass AutomationProjectConfigurationRoleClassLib%2FPowerPort;
+"""
+in order to actually target the Powerport. If you use the value "AutomationProjectConfigurationRoleClassLib/PowerPort" you will actually not target the PowerPort, because in OWL thats not its name (its "AutomationProjectConfigurationRoleClassLib%2FPowerPort").
+
+The next thing to look out for, which was also previously mentioned, is that the names of element attributes change in the conversion from AML to OWL. For the most part, the mapping of the names to OWL is pretty straightforward. Let's take this excerpt as an example:
+"""
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+    <InternalElement>
+        <Attribute Name="Type" AttributeDataType="xs:string">
+            <Value>EtherCAT</Value>
+        </Attribute>
+    </InternalElement>
+</CAEXFile>
+"""
+
+For most AML element attributes, the attribute names just have "has" added to them using camelCase capitalization (when converted to OWL). So the "Name" attribute of the <Attribute> element would be called "hasName" in OWL. The "AttributeDataType" attribute would be called "hasAttributeDataType" in OWL. You will see this pattern when you see the OWL Version of the Library excerpt. Please keep in mind the instance vs RoleClass issue discussed earlier.
+
+When <Value> tags are used and they are nested within an Attribute element, the naming is slightly different. Here the text "EtherCAT", which is between the two <Value> tags can be found in OWL under: "hasAttributeValue". Please keep these naming conventions in mind when creating the SHACL code. SHACL depends on exact and correct syntax. You should be able to gather many of these naming conventions from the OWL version of the Library excerpt.
+
+Additional things to keep in mind are the following:
+- Make sure to define all prefixes that you use within the SHACL that you generate. Even the ones which may seem obvious like rdf or rdfs. I often find that rdf or rdfs is added to the SHACL shapes, but left undefined in the prefixes. Even worse, usually its not needed at all, but still added for some reason. Please make sure to only add namespaces that are actually needed and if you do use a namespace, make sure to define it in the prefixes!
+- Make sure to check that a property is of the correct data type, using something along the lines of: "sh:datatype xsd:string ;" etc. (depending on the data type of course).
+- Take special note of the following instruction (usually for the 'Name' attribute) in the Whitepaper (if its part of the Whitepaper excerpt): 
+  "Note: This attribute is modelled by the standard attribute Name of the relevant CAEX object."
+  This means that, in contrast to e.g. the Type attribute, the 'Name' attribute in AML/CAEX is typically not a nested <Attribute>, but rather a built-in property Name of the <InternalElement>. Its not a sub-Attribute named ‘Name.’
+  Take special care of notes like this, even for other properties, because it can influence how your shacl should be structured.
+- If the Whitepaper states an attribute is optional, do not enforce sh:minCount 1. Instead, let it be sh:maxCount 1 (or if the Whitepaper says [0..n], you might need no upper bound, but if [1..n] then sh:minCount 1, etc.). If the Whitepaper says it’s mandatory, use sh:minCount 1 to reflect that.
+
+Now we arrive at the core of the matter. What follows are the files we have talked about:
+
+The excerpt that we will be formalizing here, is the Device part of the AR APC Whitepaper.
+
+Device Library Excerpt in AML (Remember, this is just for general content):
+"""
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+    <RoleClass Name="Device" RefBaseClassPath="CommunicationRoleClassLib/PhysicalDevice">
+      <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+        <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="Comment" AttributeDataType="xs:string" />
+      <Attribute Name="Manufacturer" AttributeDataType="xs:string" />
+    </RoleClass>
+</CAEXFile>
+"""
+
+OWL Version of the Device Library Excerpt (This should give you an indication of how elements are named - but remember the instance vs RoleClass difference, this is the RoleClass):
+"""
+<https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier%2FTemplateIdentifier> .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FComment>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Comment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Comment" .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier%2FTemplateIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TemplateIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TemplateIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FManufacturer>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Manufacturer" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Manufacturer" .
+"""
+
+Whitepaper definition of Device (This document defines the actual constraints that should be adhered to, these should be implemented in SHACL):
+"""
+# Device
+
+A “Device” is derived from a “PhysicalDevice” according to AutomationML Whitepaper -
+Communication. It is defined as follows.
+
+## Table 5 – Definition Device
+
+### Role class name: Device
+
+### Description: The role class “Device” shall be used in order to represent a collection in which the
+individual HW objects of a slave or rack, including the slave or rack HW item, are brought
+together.
+
+### Parent Class: CommunicationRoleClassLib/PhysicalDevice
+
+### Path for Element reference: AutomationProjectConfigurationRoleClassLib/Device
+
+### Attributes:
+
+“Name” (AttributeDataType=”xs:string”):
+The attribute “Name” defines the name of the
+device.
+This attribute is mandatory.
+Note: This attribute is modelled by the
+standard attribute Name of the relevant CAEX
+object.
+
+“TypeIdentifier” (AttributeDataType=”xs:string”); “TemplateIdentifier” (AttributeDataType=”xs:string”):
+The attribute “TypeIdentifier” defines the
+family identifier of the device type.
+This attribute is optional.
+The attribute “TemplateIdentifier” references
+the path of a template element, for instance a
+library. The syntax is defined by the
+corresponding target system element.
+This attribute is optional.
+
+“Manufacturer” (AttributeDataType=”xs:string”):
+The attribute “Manufacturer” defines the
+manufacturer of the device. The name of the
+manufacturer must be unambiguous and
+unique assigned to the manufacturer.
+This attribute is optional.
+
+“Comment” (AttributeDataType=”xs:string”):
+The attribute “Comment” defines a comment
+for the device. The attribute “Comment”
+follows the Best Practice Recommendation
+Multilingual expressions in AutomationML.
+This attribute is optional.
+
+
+Note: The attribute “TypeIdentifier” has a prefix which describes the semantic of the following identifier
+separated by “:” The following prefixes are allowed: “OrderNumber”, “GSD”, "System”, „CSP+“.In case
+of a missing TypeIdentifier the importing tool shall apply a substitution strategy. It is not ensured that the
+substitution strategy succeeds in all cases.
+
+Examples:
+TypeIdentifier = “GSD:SIEM8139.GSD/DAP”
+TypeIdentifier = "System:Device.Generic”
+TypeIdentifier = "System:Device.S7-1500”
+TypeIdentifier = "System:Device.IQ-R”
+TemplateIdentifier =
+" GlobalLib://TemplateLibrary/Master copies/S7-1500/preconfigured/PLCs/s7-1518F”
+"""
+
+Now you have all the information you need in order to create the SHACL code for the Device Whitepaper Excerpt. Please create the entire SHACL code in one block, so that I can easily copy/paste it into a file.
+
+Create the SHACL in Turtle (.ttl) syntax.
+
+Let's think step by step.

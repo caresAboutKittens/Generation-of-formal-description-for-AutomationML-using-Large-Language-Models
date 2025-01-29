@@ -1,0 +1,36 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/aml#> .
+
+# Define the shape for the Device concept
+ex:DeviceShape a sh:NodeShape ;
+    sh:targetClass aml:Device ;  # Applies to instances of aml:Device
+    sh:property [
+        sh:path aml:hasName ;  # Mandatory attribute Name
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;  # Mandatory
+    ] ;
+    sh:property [
+        sh:path aml:hasTypeIdentifier ;  # Optional attribute TypeIdentifier
+        sh:datatype xsd:string ;
+        sh:pattern "^(OrderNumber|GSD|System|CSP\\+):.*" ;  # Specific allowed prefixes
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasTemplateIdentifier ;  # Optional attribute TemplateIdentifier
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasManufacturer ;  # Optional attribute Manufacturer
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasComment ;  # Optional attribute Comment
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:closed true ;  # Ensures no additional properties beyond those specified are allowed
+    sh:ignoredProperties (rdf:type) .  # rdf:type is allowed implicitly

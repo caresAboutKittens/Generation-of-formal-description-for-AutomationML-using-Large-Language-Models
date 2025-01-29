@@ -1,0 +1,148 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/shapes#> .
+
+################################################################################
+# SHACL Shape for Subnet as per AR APC Whitepaper Excerpt
+################################################################################
+
+ex:SubnetShape
+    a sh:NodeShape ;
+    # Target "Subnet" objects by their AML/OWL type:
+    # (Path for Element reference = "AutomationProjectConfigurationRoleClassLib/Subnet"
+    #  => in OWL becomes "AutomationProjectConfigurationRoleClassLib%2FSubnet")
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+
+    ############################################################################
+    # 1) "Name" attribute (mandatory); mapped to CAEX built-in "hasName"
+    ############################################################################
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have a Name (xs:string)." ;
+    ] ;
+
+    ############################################################################
+    # 2) "Type" attribute (mandatory); realized as a sub-Attribute named "Type"
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:TypeAttributeShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one 'Type' attribute of type string." ;
+    ] ;
+
+    ############################################################################
+    # 3) "CustomAttributes" (ListType) [0..n]; optional, but if present, must
+    #    have sub-attributes with mandatory 'Name'
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:CustomAttributesShape ;
+        # No minCount => 0..n is allowed
+        # (We do not set maxCount => no upper limit)
+        sh:class aml:Attribute ;
+        sh:message "Optional 'CustomAttributes' attribute, if present, must follow definition." ;
+    ] ;
+
+    ############################################################################
+    # 4) Exactly one interface "LogicalEndPoint"
+    ############################################################################
+    sh:property [
+        sh:path aml:hasInterface ;
+        # The Whitepaper states:
+        # "Interfaces: 'LogicalEndPoint' (RefBaseClassPath = CommunicationInterfaceClassLib/LogicalEndPoint)
+        #  A Subnet has exactly one LogicalEndpoint."
+        sh:class aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Subnet must have exactly one LogicalEndPoint interface." ;
+    ] .
+
+
+################################################################################
+# Shape to validate the "Type" attribute node
+################################################################################
+ex:TypeAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        # Must have "hasName" = "Type"
+        sh:path aml:hasName ;
+        sh:in ("Type") ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "The attribute must be named 'Type'." ;
+    ] ;
+    sh:property [
+        # Whitepaper: 'Type' => xs:string
+        sh:path aml:hasAttributeDataType ;
+        sh:in ("xs:string") ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "The 'Type' attribute must have AttributeDataType xs:string." ;
+    ] ;
+    sh:property [
+        # The actual <Value> in AML => "hasAttributeValue" in OWL
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "The 'Type' attribute value must be a string." ;
+    ] .
+
+
+################################################################################
+# Shape to validate the "CustomAttributes" attribute node (if present)
+################################################################################
+ex:CustomAttributesShape
+    a sh:NodeShape ;
+    sh:property [
+        # The node must have hasName = "CustomAttributes"
+        sh:path aml:hasName ;
+        sh:in ("CustomAttributes") ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "The attribute must be named 'CustomAttributes'." ;
+    ] ;
+    sh:property [
+        # If "CustomAttributes" is present, it may have sub-attributes
+        # (here captured by aml:hasPart)
+        sh:path aml:hasPart ;
+        # Whitepaper: "The AttributeName is mandatory if the attribute 'CustomAttributes' exists.
+        #             The attributeName shall be unique. (0..n sub-attributes, but each must have a name.)"
+        # We'll require at least one sub-attribute:
+        sh:node ex:SubCustomAttributeShape ;
+        sh:minCount 1 ; 
+        sh:message "If 'CustomAttributes' is present, at least one sub-attribute must exist (with its own name/value)." ;
+    ] .
+
+################################################################################
+# Shape to validate each sub-attribute of "CustomAttributes"
+################################################################################
+ex:SubCustomAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        # Each sub-attribute must have a name
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each sub-custom attribute must have a valid name (xs:string)." ;
+    ] ;
+    sh:property [
+        # Typically sub-attributes also carry an attributeDataType
+        sh:path aml:hasAttributeDataType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each sub-custom attribute must have an AttributeDataType (e.g. xs:string)." ;
+    ] ;
+    sh:property [
+        # The actual value is typically optional but must be string if present
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:message "If a sub-custom attribute has a value, it must be a string (xs:string)." ;
+    ] .

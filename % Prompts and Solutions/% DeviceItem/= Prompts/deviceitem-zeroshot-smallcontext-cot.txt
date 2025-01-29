@@ -1,0 +1,752 @@
+Your job is to formalize an excerpt from the AutomationML Whitepaper.
+
+The Whitepaper excerpt defines constraints that an AML object should adhere to. Your job is to write the corresponding SHACL code for the Whitepaper excerpt.
+
+The SHACL code should test whether an object conforms to the constraints defined in the Whitepaper excerpt.
+
+DeviceItem Library Excerpt in AML (General structure of the object which will be testet):
+"""
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+  <RoleClass Name="DeviceItem" RefBaseClassPath="CommunicationRoleClassLib/PhysicalDevice">
+    <Attribute Name="TypeName" AttributeDataType="xs:string"></Attribute>
+    <Attribute Name="DeviceItemType" AttributeDataType="xs:string">
+      <Attribute Name="Customized" AttributeDataType="xs:boolean">
+        <DefaultValue>false</DefaultValue>
+      </Attribute>
+    </Attribute>
+    <Attribute Name="PositionNumber" AttributeDataType="xs:int"></Attribute>
+    <Attribute Name="BuiltIn" AttributeDataType="xs:boolean">
+      <DefaultValue>false</DefaultValue>
+    </Attribute>
+    <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+      <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string" />
+    </Attribute>
+    <Attribute Name="Manufacturer" AttributeDataType="xs:string" />
+    <Attribute Name="CustomAttributes">
+      <RefSemantic CorrespondingAttributePath="ListType" />
+      <Attribute Name="AttributeName1" AttributeDataType="xs:string"></Attribute>
+      <Attribute Name="AttributeName2" AttributeDataType="xs:string"></Attribute>
+    </Attribute>
+    <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" />
+    <Attribute Name="PlantDesignation IEC" AttributeDataType="xs:string">
+      <Description>Function oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.3 - Function-oriented structure" />
+    </Attribute>
+    <Attribute Name="LocationIdentifier IEC" AttributeDataType="xs:string">
+      <Description>Location oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.5 - Location-oriented structure" />
+    </Attribute>
+    <Attribute Name="ProductDesignation IEC" AttributeDataType="xs:string">
+      <Description>Product oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.4 - Product-oriented structure" />
+    </Attribute>
+    <Attribute Name="InstallationDate" AttributeDataType="xs:dateTime" />
+    <Attribute Name="Comment" AttributeDataType="xs:string" />
+    <Attribute Name="Address">
+      <RefSemantic CorrespondingAttributePath="OrderedListType" />
+      <Attribute Name="1">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+      <Attribute Name="2">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+      <Attribute Name="3">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+    </Attribute>
+    <ExternalInterface Name="ModuleAssignment" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/ModuleAssignment" ID="110c6f0b-75b7-4c3c-9d05-1b28eeeec5df" />
+    <ExternalInterface Name="CommunicationPortProxyInterface" ID="0bfb4d8a-63d2-4d32-ad0a-3bb3f6673165" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/CommunicationPortProxyInterface" />
+  </RoleClass>
+</CAEXFile>
+"""
+
+OWL Version of the DeviceItem Library Excerpt (General structure of the object which will be testet in OWL):
+"""
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FStartAddress>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "StartAddress" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "StartAddress" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FTypeIdentifier%2FTemplateIdentifier> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FBitOffset>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "BitOffset" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "BitOffset" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FCustomAttributes>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CustomAttributes" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CustomAttributes" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FCustomAttributes%2FAttributeName2> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FCustomAttributes%2FAttributeName1> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#ListType> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FLocationIdentifier%20IEC>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "LocationIdentifier IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDescription>
+                "Location oriented reference designation following IEC 81346" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "LocationIdentifier IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.5%20-%20Location-oriented%20structure> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FBuiltIn>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "BuiltIn" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDefaultValue>
+                "false" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "BuiltIn" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FPositionNumber>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PositionNumber" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PositionNumber" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FStartAddress> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FLength> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FIoType> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FBitOffset> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FIoType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "IoType" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "IoType" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FStartAddress>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "StartAddress" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "StartAddress" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FIoType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "IoType" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "IoType" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FBitOffset>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "BitOffset" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "BitOffset" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FStartAddress> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FLength> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FIoType> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FBitOffset> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FTypeIdentifier%2FTemplateIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TemplateIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TemplateIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FDeviceItemType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "DeviceItemType" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "DeviceItemType" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FDeviceItemType%2FCustomized> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FLength>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Length" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Length" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FManufacturer>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Manufacturer" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Manufacturer" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Address" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Address" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#OrderedListType> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FPlantDesignation%20IEC>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PlantDesignation IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDescription>
+                "Function oriented reference designation following IEC 81346" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PlantDesignation IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.3%20-%20Function-oriented%20structure> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FLength>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Length" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Length" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FStartAddress> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FLength> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FIoType> , <https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F1%2FBitOffset> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FIoType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "IoType" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "IoType" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FFirmwareVersion>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "FirmwareVersion" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "FirmwareVersion" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FDeviceItemType%2FCustomized>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Customized" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDefaultValue>
+                "false" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Customized" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FCustomAttributes%2FAttributeName2>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "AttributeName2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "AttributeName2" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FStartAddress>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "StartAddress" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "StartAddress" .
+
+<https://w3id.org/hsu-aut/AutomationML#0bfb4d8a-63d2-4d32-ad0a-3bb3f6673165>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CommunicationPortProxyInterface" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CommunicationPortProxyInterface" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FComment>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Comment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Comment" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FProductDesignation%20IEC>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "ProductDesignation IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDescription>
+                "Product oriented reference designation following IEC 81346" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "ProductDesignation IEC" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.4%20-%20Product-oriented%20structure> .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FTypeName>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeName" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeName" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FInstallationDate>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "InstallationDate" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:dateTime" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:dateTime" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "InstallationDate" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F3%2FBitOffset>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "BitOffset" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "BitOffset" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FCustomAttributes%2FAttributeName1>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "AttributeName1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "AttributeName1" .
+
+<https://w3id.org/hsu-aut/AutomationML#DeviceItem%2FAddress%2F2%2FLength>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> , <http://www.ontology-of-units-of-measure.org/resource/om-2#Measure> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Length" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:int" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Length" .
+
+<https://w3id.org/hsu-aut/AutomationML#110c6f0b-75b7-4c3c-9d05-1b28eeeec5df>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "ModuleAssignment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "ModuleAssignment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment> .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+"""
+
+Whitepaper definition of DeviceItem (This document defines the actual constraints that should be adhered to):
+"""
+# DeviceItem
+
+A “DeviceItem” is derived from a “PhysicalDevice” according to AutomationML Whitepaper -
+Communication. It is defined as follows.
+
+## Table 6 – Definition DeviceItem
+
+### Role class name: DeviceItem
+
+### Description: The role class “DeviceItem” shall be used in order to represent a general object class for
+HW modules and submodules.
+
+### Parent Class: CommunicationRoleClassLib/PhysicalDevice
+
+### Path for Element reference: AutomationProjectConfigurationRoleClassLib/DeviceItem
+
+### Attributes:
+
+“Name” (AttributeDataType=”xs:string”):
+The attribute “Name” defines the name of the
+DeviceItem.
+This attribute is mandatory.
+Note: This attribute is modelled by the
+standard attribute Name of the relevant CAEX
+object.
+
+“TypeName” (AttributeDataType=”xs:string”):
+The Attribute “TypeName” defines additional
+type information.
+This attribute is optional.
+
+“DeviceItemType” (AttributeDataType=”xs:string”); “Customized” (AttributeDataType=”xs:boolean”):
+The attribute “DeviceItemType” defines the
+classification of the DeviceItem.
+This attribute is optional.
+The subattribute “Customized” indicates if the
+DeviceItemType contains vendor specific
+information (Customized = “true”) or not
+(Customized =”false”). If customized is omitted or
+set to “false” the DeviceItem contains already
+standardized information (Standard values are:
+CPU, HeadModule, Accessory).
+This attribute is optional.
+
+“PositionNumber” (AttributeDataType=”xs:int”):
+The attribute “PositionNumber” defines the slot
+number where this DeviceItem is plugged in.
+This attribute is optional. It is mandatory in
+case of plugable DeviceItems and for
+DeviceItems which can contain plugable
+DeviceItems
+
+“BuiltIn” (AttributeDataType=”xs:boolean”):
+The attribute “BuiltIn” defines that this module
+is a build-in part of another module.
+This attribute is optional.
+The default value is “false”.
+
+“TypeIdentifier” (AttributeDataType=”xs:string”); “TemplateIdentifier” (AttributeDataType=”xs:string”):
+The attribute “TypeIdentifier” defines the
+identifier of the DeviceItem type.
+This attribute is mandatory if “BuiltIn” is “false”.
+The attribute is optional, if “BuiltIn” is true.
+A wildcard shall be “*”.
+The attribute “TemplateIdentifier” references
+the path of a template element, for instance a
+library. The syntax is defined by the
+corresponding target system element. This
+attribute is optional.
+
+“Manufacturer” (AttributeDataType=”xs:string”):
+The attribute “Manufacturer” defines the
+manufacturer of the DeviceItem. The name of
+the manufacturer must be unambiguous and
+unique assigned to the manufacturer.
+This attribute is optional.
+
+“CustomAttributes” (ListType)[0..n];  “AttributeName” (AttributeDataType=”xs:string”):
+The name of the
+CustomAttribute defines
+the property name in the
+target system. The value
+defines the value of this
+CustomAttribute. The
+AttributeName is
+mandatory if the attribute
+“CustomAttributes” exists.
+The AttributeName shall
+be unique. Mapping of
+several custom attributes
+with the same name can
+only be made by making
+the key unique by
+appending a counter like
+#1, #2, #3. Custom
+Attributes can have
+simple or complex data
+types. The description of
+complex values can be
+found in 5.3.
+
+“FirmwareVersion” (AttributeDataType=”xs:string”):
+The attribute “FirmwareVersion” defines the
+firmware version of e.g. a CPU to identify the
+module correctly.
+This attribute is optional.
+
+“Comment” (AttributeDataType=”xs:string”):
+The attribute “Comment” defines a comment
+for the DeviceItem. The attribute “Comment”
+follows the Best Practice Recommendation
+Multilingual expressions in AutomationML.
+This attribute is optional.
+
+“Address” (OrderedListType)[0..n]; “1”:
+“StartAddress” (AttributeDataType=”xs:int”):
+The attribute “Address” is
+optional. The subattribute
+“StartAddress” defines
+the start of the address.
+The subattribute
+“StartAddress” is
+mandatory if the attribute
+“Address” exists.
+“Length” (AttributeDataType=”xs:int”):
+The attribute “Length”
+defines the total width of
+all of the channels on the
+device item.
+This attribute is optional.
+“IoType” (AttributeDataType=”xs:string”):
+The attribute “IoType”
+specifies the direction
+INPUT or OUTPUT.
+The subattribute “IoType”
+is mandatory if the
+attribute “Address” exists.
+“BitOffset” (AttributeDataType=”xsint)”:
+The subattribute
+“BitOffset” defines the
+offset within a
+StartAddress.
+The subattribute
+“BitOffset” is optional.
+The default value is “0”.
+
+“PlantDesignation IEC” (AttributeDataType=” xs:string” and RefSemantic=” IEC 81346-1:2009-07#5.3 - Function-oriented structure IEC81346”):
+The attribute “PlantDesignation IEC” defines
+the function designation for this device item
+according IEC81346. The attribute shall
+contain in the subattribute refSemantic the
+value “IEC 81346-1:2009-07#5.3 - Functionoriented structure” to enable its identification if
+the name is changed. The length of this
+attribute is bus specific.
+This attribute is optional.
+
+“LocationIdentifier IEC” (AttributeDataType=” xs:string” and RefSemantic=” IEC 81346-1:2009-07#5.5 - Location-oriented structure IEC81346”):
+The attribute “LocationIdentifier IEC” defines
+the location designation for this device item
+according IEC81346. The attribute shall
+contain in the subattribute refSemantic the
+value “IEC 81346-1:2009-07#5.5 - Locationoriented structure” to enable its identification if
+the name is changed. The length of this
+attribute is bus specific.
+This attribute is optional.
+
+“ProductDesignation IEC” (AttributeDataType=” xs:string” and RefSemantic=” IEC 81346-1:2009-07#5.4 - Product-oriented structure”):
+The attribute “ProductDesignation IEC” defines
+the product designation for this device item
+according IEC81346. The attribute shall
+contain in the subattribute refSemantic the
+value “IEC 81346-1:2009-07#5.4 - Productoriented structure” to enable its identification if
+the name is changed. The length of this
+attribute is bus specific.
+This attribute is optional.
+
+“InstallationDate” (AttributeDataType=” xs:dateTime):
+The attribute “InstallationDate” defines the
+date of the installation of the DeviceItem.
+This attribute is optional.
+
+### Interfaces:
+
+“ModuleAssignment” (RefBaseClassePath=”AutomationProjectConfigurationInterfaceClassLib/ModuleAssignment”):
+This interface is used to link a module to a
+CPU in case of multiple CPU
+configurations.The direction of the link is
+irrelevant.
+
+“CommunicationPortProxyInterface” (RefBaseClassePath=”AutomationProjectConfigurationInterfaceClassLib/CommunicationPortProxyInterface”):
+This interface is used to manage
+CommunicationPorts of pluggable DeviceItems
+at the DeviceItem where they are plugged. The
+actual CommunicationPort is modelled at the
+'parent' DeviceItem and the relation to the
+pluggable DeviceItem is introduced by linking
+the respective DeviceItems with the
+CommunicationPortProxyInterface. The
+direction of the link is irrelevant.
+A CommunicationPort can be connected at
+maximum to one DeviceItem.
+
+
+Note: The Address attribute is a finite list of variable length. The number of list elements is application
+case dependent.
+
+Note: The attribute “TypeIdentifier” has a prefix which describes the semantic of the following identifier
+separated by “:” The following prefixes are allowed: “OrderNumber”, “GSD”, "System", “CSP+”.
+
+Examples:
+TypeIdentifier = “OrderNumber:3RK1 200-0CE00-0AA2”
+TypeIdentifier = “GSD:SIEM8139.GSD/DAP/DAP 1”
+TypeIdentifier = "System:Rack.Generic”
+TypeIdentifier = “CSP+:AJ65VBTCE2-8T”
+TemplateIdentifier =
+" GlobalLib://TemplateLibrary/Master copies/S7-1500/preconfigured/DIs/16x24VDC BA_Advanced”
+
+Note:
+If BuildIn=true then the identification shall result from the UUID of the first DeviceItem in the parent
+hierarchy with BuiltIn=False and the Position-Number of the DeviceItem.
+
+Note:
+ECAD and Automation Engineering Systems have different perspectives on the structure of devices and
+modules. An exchanged AML file must ensure that both perspectives can be derived from an its content.
+Two scenarios have to be distinguished:
+• A device or module is composed of two device items. The two device items appear in an
+automation engineering system at the same level but the second is modelled as part of the first
+one (main device item). In the ECAD system the composition of the two device items is treated
+as one module. (hierarchical scenario)
+• A device or module is modelled by independent artifacts in the automation system while it is
+handled as a single physical entity in the ECAD system. This is often used to model various
+configurations of the same module / device. (flat scenario)
+
+Both scenarios can be handled by using the product administration of the ECAD system. For this aim
+the ECAD system uses one of the two defined properties on device items, which are handled as built-in
+by the ECAD system:
+• GSD-index
+• sub-module order number
+At least one property has to be defined. If both are given, sub-module order number takes preference
+over GSD-index. The actual names of these properties are ECAD system specific. They are reflected in
+the value of type identifier attribute of the corresponding built-in device item.
+For the flat scenario for all device items the value of its type identifier is used. For the hierarchical
+scenario the main device item uses the value of its type identifier while the built-in device item uses the
+type identifier of the main device item appended with “#BUILTIN” as value for sub-module order number.
+
+An ECAD export algorithm shall work as follows:
+• If no property is defined for the built-in device item, it will be exported from the ECAD system as
+child of the main device item (hierarchical model)
+• If at least one property is defined, the built-in device item will be exported at the level of the main
+device. Built-in device items shall always be positioned following the main device item. If the
+order number possesses “#BUILTIN” as part of its order number for the device item, the built-in
+flag will be set in the AML file.
+
+In case of the flat scenario, PLC engineering systems must export the corresponding type identifier
+value for each device item. For the hierarchical scenario for the main device item its type identifier value
+is exported, while for the built-in device item the value of the main device item’s type identifier value
+appended with with “#BUILTIN” is exported.
+
+Remarks:
+• Version information of built-in devices will be ignored during import. The importing system may
+issue a warning.
+Depending on the different communication systems and bus systems some DeviceItems may contain
+additional, unused or restricted attributes. These attributes and the bus specific parameters are
+described in separate bus specifications. Please refer to these bus specifications for more information.
+"""
+
+Create the SHACL in Turtle (.ttl) syntax.
+
+Create the corresponding SHACL.
+
+Let's think step by step.

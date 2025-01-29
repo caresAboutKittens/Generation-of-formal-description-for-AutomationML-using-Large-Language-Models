@@ -1,0 +1,65 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+
+aut:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aut:RoleClass ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'Name' defines the name of the subnet and is mandatory." ;
+    ] ;
+    sh:property [
+        sh:path aut:hasAttribute/aut:Type ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "The attribute 'Type' defines the identifier of the type of the subnet and is mandatory." ;
+    ] ;
+    sh:property [
+        sh:path aut:hasAttribute/aut:CustomAttributes ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:uniqueLang true ;
+                sh:description "The attribute name of a CustomAttribute must be unique if it exists." ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path aut:hasInterface ;
+        sh:class aut:CommunicationInterfaceClassLib/LogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:description "A Subnet has exactly one LogicalEndpoint interface to connect the subnet to Nodes." ;
+    ] ;
+    sh:description "SHACL Shape to validate Subnet objects according to AutomationML Whitepaper definition." .
+
+# Additional shapes for nested attributes and constraints
+
+aut:CustomAttributesShape
+    a sh:NodeShape ;
+    sh:targetClass aut:Attribute ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:uniqueLang true ;
+        sh:description "CustomAttributes must have unique names if they exist." ;
+    ] ;
+    sh:description "Shape to validate CustomAttributes of Subnet." .
+
+aut:LogicalEndPointShape
+    a sh:NodeShape ;
+    sh:targetClass aut:ExternalInterface ;
+    sh:property [
+        sh:path aut:hasBaseInterfaceClass ;
+        sh:hasValue aut:CommunicationInterfaceClassLib/LogicalEndPoint ;
+        sh:description "LogicalEndPoint interface must have the correct RefBaseClassPath." ;
+    ] ;
+    sh:description "Shape to validate LogicalEndPoint interface of Subnet." .

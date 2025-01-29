@@ -1,0 +1,80 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml:   <https://w3id.org/i40/aml#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+
+ex:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasTypeName ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDeviceItemType ;
+        sh:path aml:hasCustomized ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPositionNumber ;
+        sh:datatype xsd:int ;
+    ] ;
+    sh:property [
+        sh:path aml:hasBuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:hasDefaultValue false ;
+    ] ;
+    sh:property [
+        sh:path aml:hasTypeIdentifier ;
+        sh:path aml:hasTemplateIdentifier ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasManufacturer ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasCustomAttributes ;
+        sh:path ( aml:hasAttributeName1 aml:hasAttributeName2 ) ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasFirmwareVersion ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasComment ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAddress ;
+        sh:path ( aml:hasStartAddress aml:hasLength aml:hasIoType aml:hasBitOffset ) ;
+        sh:datatype xsd:int ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPlantDesignationIEC ;
+        sh:path aml:hasRefSemantic ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasLocationIdentifierIEC ;
+        sh:path aml:hasRefSemantic ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasProductDesignationIEC ;
+        sh:path aml:hasRefSemantic ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path aml:hasInstallationDate ;
+        sh:datatype xsd:dateTime ;
+    ] .

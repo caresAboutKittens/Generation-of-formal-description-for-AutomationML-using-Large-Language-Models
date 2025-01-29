@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Example with CustomAttributes -->
+<CAEXFile>
+    <InternalElement Name="My_Sample_Subnet" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/Subnet" ID="12345678-1234-1234-1234-1234567890AB">
+        
+        <Attribute Name="Type" AttributeDataType="xs:string">
+            <Value>EtherCAT</Value>
+        </Attribute>
+
+        <Attribute Name="CustomAttributes">
+            <RefSemantic CorrespondingAttributePath="ListType" />
+            <Attribute Name="IPAddress" AttributeDataType="xs:string">
+                <Value>192.168.0.1</Value>
+            </Attribute>
+            <Attribute Name="SubnetMask" AttributeDataType="xs:string">
+                <Value>255.255.255.0</Value>
+            </Attribute>
+            <Attribute Name="Gateway" AttributeDataType="xs:string">
+                <Value>192.168.0.254</Value>
+            </Attribute>
+        </Attribute>
+
+        <ExternalInterface Name="LogicalEndPoint_Subnet" RefBaseClassPath="CommunicationInterfaceClassLib/LogicalEndPoint" ID="9ABCDEF0-1234-1234-1234-9ABCDEF01234"/>
+
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Subnet"/>
+    </InternalElement>
+</CAEXFile>

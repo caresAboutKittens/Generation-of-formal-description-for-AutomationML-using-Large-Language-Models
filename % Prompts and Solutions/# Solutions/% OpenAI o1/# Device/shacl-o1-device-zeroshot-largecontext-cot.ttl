@@ -1,0 +1,138 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/shapes#> .
+
+################################################################################
+# SHACL Shape for "Device" as defined in the AR APC Whitepaper
+################################################################################
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    # Target AML objects that have been converted to OWL with type:
+    # "AutomationProjectConfigurationRoleClassLib/Device"
+    # Note '/' becomes '%2F' in OWL.
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+
+    ############################################################################
+    # 1) Mandatory name (standard CAEX "Name" property)
+    ############################################################################
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "A Device must have a mandatory CAEX Name (xsd:string)." ;
+    ] ;
+
+    ############################################################################
+    # 2) Optional "TypeIdentifier" attribute
+    #    - If present, can appear only once, must be a single xsd:string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:TypeIdentifierShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "If present, only one 'TypeIdentifier' allowed, with a single xsd:string value." ;
+    ] ;
+
+    ############################################################################
+    # 3) Optional "TemplateIdentifier" attribute
+    #    - If present, can appear only once, must be a single xsd:string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:TemplateIdentifierShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "If present, only one 'TemplateIdentifier' allowed, with a single xsd:string value." ;
+    ] ;
+
+    ############################################################################
+    # 4) Optional "Manufacturer" attribute
+    #    - If present, can appear only once, must be a single xsd:string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:ManufacturerShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "If present, only one 'Manufacturer' allowed, with a single xsd:string value." ;
+    ] ;
+
+    ############################################################################
+    # 5) Optional "Comment" attribute
+    #    - If present, can appear only once, must be a single xsd:string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:CommentShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "If present, only one 'Comment' allowed, with a single xsd:string value." ;
+    ] ;
+.    
+
+################################################################################
+# Separate node shapes for each sub-attribute, ensuring correct name and datatype
+################################################################################
+
+ex:TypeIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+        sh:message "Attribute must be named 'TypeIdentifier'." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "TypeIdentifier must have exactly one xsd:string value." ;
+    ] .
+
+ex:TemplateIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+        sh:message "Attribute must be named 'TemplateIdentifier'." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "TemplateIdentifier must have exactly one xsd:string value." ;
+    ] .
+
+ex:ManufacturerShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+        sh:message "Attribute must be named 'Manufacturer'." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Manufacturer must have exactly one xsd:string value." ;
+    ] .
+
+ex:CommentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+        sh:message "Attribute must be named 'Comment'." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Comment must have exactly one xsd:string value." ;
+    ] .

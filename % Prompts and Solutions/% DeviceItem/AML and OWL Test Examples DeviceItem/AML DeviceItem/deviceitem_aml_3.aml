@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BuiltIn set to true and TypeIdentifier attribute removed, should still be valid. Unrelated Elements were left to add/ keep noise. -->
+<CAEXFile>
+    <InternalElement Name="MR-J5-10G-RJ" ID="aaec5ed5-d02d-486b-afbb-ed1b297f0a5a">
+        <Attribute Name="BuiltIn" AttributeDataType="xs:boolean">
+            <Value>True</Value>
+        </Attribute>
+        <Attribute Name="PositionNumber" AttributeDataType="xs:string">
+            <Value>0</Value>
+        </Attribute>
+        <ExternalInterface Name="DriveAssignment" ID="5f543395-eb8f-4e8e-8f65-cd57f47d4689" RefBaseClassPath="AutomationProjectConfigurationDriveExtensionInterfaceClassLib/DriveAssignment" />
+        <ExternalInterface Name="AutomationMLComponentConnector" ID="98802f0c-d6ba-45b0-9592-0474821a59c4" RefBaseClassPath="*AutomationMLComponentExtensionICL/AutomationMLComponentConnector" />
+        <InternalElement Name="CN2" ID="6baf05fa-b1cf-4352-b5bc-943106d9a801">
+            <ExternalInterface Name="CN2" ID="4d0c3a98-86b1-4301-9fa7-1f26eb940b34" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/SignalPortInterface" />
+            <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/SignalPort" />
+        </InternalElement>
+        <InternalElement Name="CNP3" ID="f850c465-a42e-473e-be1d-e871b891b7ae">
+            <ExternalInterface Name="CNP3" ID="f69fb54b-b1a6-410a-8041-c8776696287f" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/PowerPortInterface" />
+            <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/PowerPort" />
+        </InternalElement>
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/DeviceItem" />
+        <InternalLink Name="PortToPort" RefPartnerSideA="6baf05fa-b1cf-4352-b5bc-943106d9a801:CN2" RefPartnerSideB="9f5ab179-f3b3-4fc5-b476-1fe9bad55b3e:CN2" />
+        <InternalLink Name="PortToPort" RefPartnerSideA="f850c465-a42e-473e-be1d-e871b891b7ae:CNP3" RefPartnerSideB="197bba96-0e88-458f-bad0-e59460652e28:CNP3" />
+    </InternalElement>
+</CAEXFile>

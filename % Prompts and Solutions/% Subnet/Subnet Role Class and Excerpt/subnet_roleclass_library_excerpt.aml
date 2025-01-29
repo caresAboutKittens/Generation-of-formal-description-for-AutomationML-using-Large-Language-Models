@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+    <RoleClass Name="Subnet" RefBaseClassPath="CommunicationRoleClassLib/LogicalNetwork">
+        <Attribute Name="Type" AttributeDataType="xs:string"></Attribute>
+        <Attribute Name="CustomAttributes">
+            <RefSemantic CorrespondingAttributePath="ListType" />
+            <Attribute Name="AttributeName1" AttributeDataType="xs:string"></Attribute>
+            <Attribute Name="AttributeName2" AttributeDataType="xs:string"></Attribute>
+        </Attribute>
+        <ExternalInterface Name="LogicalEndPoint" RefBaseClassPath="CommunicationInterfaceClassLib/LogicalEndPoint" ID="3e661cba-acfc-43b8-a02b-14ad7061f137" />
+    </RoleClass>
+</CAEXFile>

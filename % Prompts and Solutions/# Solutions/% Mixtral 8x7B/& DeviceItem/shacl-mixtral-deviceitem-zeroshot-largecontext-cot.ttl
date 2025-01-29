@@ -1,0 +1,99 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix automationml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+automationml:DeviceItem a sh:NodeShape ;
+  sh:targetClass automationml:DeviceItem ;
+  sh:property [
+    sh:path automationml:hasName ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:TypeName ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:DeviceItemType ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:Customized ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:PositionNumber ;
+    sh:datatype xsd:int ;
+  ] ;
+  sh:property [
+    sh:path automationml:BuiltIn ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:default "false" ;
+  ] ;
+  sh:property [
+    sh:path automationml:TypeIdentifier ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:TemplateIdentifier ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:Manufacturer ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:CustomAttributes ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:qualifiedValueShape [
+      sh:path automationml:AttributeName ;
+      sh:datatype xsd:string ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+    ]
+  ] ;
+  sh:property [
+    sh:path automationml:FirmwareVersion ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:Comment ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:Address ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:qualifiedValueShape [
+      sh:path automationml:StartAddress ;
+      sh:datatype xsd:int ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+    ]
+  ] ;
+  sh:property [
+    sh:path automationml:PlantDesignationIEC ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:LocationIdentifierIEC ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:ProductDesignationIEC ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:InstallationDate ;
+    sh:datatype xsd:dateTime ;
+  ] .

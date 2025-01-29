@@ -1,0 +1,169 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:    <http://www.example.org/#> .
+
+ex:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+
+    # Name attribute
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # TypeName attribute
+    sh:property [
+        sh:path aml:hasTypeName ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # DeviceItemType attribute
+    sh:property [
+        sh:path aml:hasDeviceItemType ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasDeviceItemType aml:hasPart aml:hasCustomized ) ;
+        sh:datatype xsd:boolean ;
+        sh:defaultValue "false" ;
+    ] ;
+
+    # PositionNumber attribute
+    sh:property [
+        sh:path aml:hasPositionNumber ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # BuiltIn attribute
+    sh:property [
+        sh:path aml:hasBuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:defaultValue "false" ;
+    ] ;
+
+    # TypeIdentifier attribute
+    sh:property [
+        sh:path aml:hasTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasTypeIdentifier aml:hasPart aml:hasTemplateIdentifier ) ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Manufacturer attribute
+    sh:property [
+        sh:path aml:hasManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # CustomAttributes attribute
+    sh:property [
+        sh:path aml:hasCustomAttributes ;
+        sh:class aml:Attribute ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasCustomAttributes aml:hasPart aml:hasName ) ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:uniqueLang true ;
+    ] ;
+
+    # FirmwareVersion attribute
+    sh:property [
+        sh:path aml:hasFirmwareVersion ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Comment attribute
+    sh:property [
+        sh:path aml:hasComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Address attribute
+    sh:property [
+        sh:path aml:hasAddress ;
+        sh:class aml:Attribute ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasAddress aml:hasPart aml:hasStartAddress ) ;
+        sh:datatype xsd:int ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasAddress aml:hasPart aml:hasLength ) ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasAddress aml:hasPart aml:hasIoType ) ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path ( aml:hasAddress aml:hasPart aml:hasBitOffset ) ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+        sh:defaultValue "0" ;
+    ] ;
+
+    # PlantDesignation IEC attribute
+    sh:property [
+        sh:path aml:hasPlantDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue "IEC 81346-1:2009-07#5.3 - Function-oriented structure" ;
+    ] ;
+
+    # LocationIdentifier IEC attribute
+    sh:property [
+        sh:path aml:hasLocationIdentifierIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue "IEC 81346-1:2009-07#5.5 - Location-oriented structure" ;
+    ] ;
+
+    # ProductDesignation IEC attribute
+    sh:property [
+        sh:path aml:hasProductDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue "IEC 81346-1:2009-07#5.4 - Product-oriented structure" ;
+    ] ;
+
+    # InstallationDate attribute
+    sh:property [
+        sh:path aml:hasInstallationDate ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # ModuleAssignment interface
+    sh:property [
+        sh:path aml:hasInterface ;
+        sh:class aml:AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # CommunicationPortProxyInterface
+    sh:property [
+        sh:path aml:hasInterface ;
+        sh:class aml:AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface ;
+        sh:maxCount 1 ;
+    ] .

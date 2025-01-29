@@ -1,0 +1,643 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:    <http://example.org/deviceitem-shapes#> .
+
+#################################################################
+# Top-Level Shape for DeviceItem
+#
+# Targets all instances that are typed as:
+#   aml:AutomationProjectConfigurationRoleClassLib%2FDeviceItem
+#################################################################
+ex:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+
+    #################################################################
+    ## 1) "Name" is mandatory (built-in AML/CAEX Name, not an attribute).
+    ##    => Must have aml:hasName (xsd:string), minCount 1
+    #################################################################
+    sh:property [
+        sh:description "DeviceItem must have a CAEX/AML Name (mandatory)" ;
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A DeviceItem must have exactly one 'Name' (the CAEX built-in Name)" ;
+    ] ;
+
+    #################################################################
+    ## 2) "TypeName" is optional (0..1), xs:string if present.
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'TypeName' (0..1), must be xsd:string if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_TypeNameShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'TypeName' attribute allowed, must be xsd:string if present" ;
+    ] ;
+
+    #################################################################
+    ## 3) "DeviceItemType" (optional), sub-attribute "Customized" (xs:boolean, optional).
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'DeviceItemType' (0..1)" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_DeviceItemTypeShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'DeviceItemType' attribute, must be xsd:string, with optional 'Customized'" ;
+    ] ;
+
+    #################################################################
+    ## 4) "PositionNumber" (xs:int) is optional. 
+    ##    Whitepaper says it is mandatory if pluggable, but that
+    ##    condition is not enforced here except as a note.
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'PositionNumber' (0..1), must be xsd:int if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_PositionNumberShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'PositionNumber' attribute, must be xsd:int if present" ;
+    ] ;
+
+    #################################################################
+    ## 5) "BuiltIn" (xs:boolean) is optional, default=false.
+    ##    We do not strictly check default="false" here, but
+    ##    we do ensure if present, it's xsd:boolean.
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'BuiltIn' (0..1), must be xsd:boolean if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_BuiltInShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'BuiltIn' attribute, must be xsd:boolean if present" ;
+    ] ;
+
+    #################################################################
+    ## 6) "TypeIdentifier" (xs:string), mandatory if BuiltIn=false,
+    ##    optional if BuiltIn=true. The logic is shown only partially
+    ##    here, so we always allow 0..1. If present, must be xsd:string.
+    ##    Has optional sub-attribute "TemplateIdentifier" (xs:string).
+    #################################################################
+    sh:property [
+        sh:description "Attribute 'TypeIdentifier' (0..1). In real usage, check BuiltIn=false => mandatory." ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_TypeIdentifierShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'TypeIdentifier' attribute, must be xsd:string. Optional 'TemplateIdentifier'." ;
+    ] ;
+
+    #################################################################
+    ## 7) "Manufacturer" (xs:string), optional (0..1)
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'Manufacturer' (0..1), must be xsd:string if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_ManufacturerShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'Manufacturer' attribute, must be xsd:string if present" ;
+    ] ;
+
+    #################################################################
+    ## 8) "CustomAttributes" ([0..1] if we treat as a single attribute
+    ##    with multiple sub-attributes). Each sub-attribute's name
+    ##    is mandatory if it exists, etc.
+    #################################################################
+    sh:property [
+        sh:description "Optional attribute 'CustomAttributes' (0..1). Contains 0..n sub-attributes." ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_CustomAttributesShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'CustomAttributes' attribute. Each sub-attribute must have a name." ;
+    ] ;
+
+    #################################################################
+    ## 9) "FirmwareVersion" (xs:string), optional (0..1)
+    #################################################################
+    sh:property [
+        sh:description "Optional 'FirmwareVersion' (0..1), must be xsd:string if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_FirmwareVersionShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'FirmwareVersion' attribute, must be xsd:string if present" ;
+    ] ;
+
+    #################################################################
+    ## 10) "Comment" (xs:string), optional (0..1)
+    #################################################################
+    sh:property [
+        sh:description "Optional 'Comment' (0..1), must be xsd:string if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_CommentShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'Comment' attribute, must be xsd:string if present" ;
+    ] ;
+
+    #################################################################
+    ## 11) "Address" => 0..n, each is an ordered list subattribute
+    ##     named "1","2","3",..., each with StartAddress (mandatory),
+    ##     IoType (mandatory), Length (optional), BitOffset (optional).
+    #################################################################
+    sh:property [
+        sh:description "Optional repeated 'Address' attributes (0..n). Each has sub-attributes like StartAddress, IoType, etc." ;
+        sh:path aml:hasAttribute ;
+        sh:node ex:DeviceItem_AddressShape ;
+        sh:minCount 0 ;  # can appear zero or more times
+        # no maxCount => unbounded
+        sh:message "If 'Address' is present, must follow constraints on sub-attributes" ;
+    ] ;
+
+    #################################################################
+    ## 12) "PlantDesignation IEC" (xs:string), optional, must have
+    ##     refSemantic=IEC 81346-1:2009-07#5.3 if present.
+    #################################################################
+    sh:property [
+        sh:description "Optional 'PlantDesignation IEC' (0..1), must be xsd:string if present, check refSemantic" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_PlantDesignationIECShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'PlantDesignation IEC' attribute, must have semanticRef of 5.3 if present" ;
+    ] ;
+
+    #################################################################
+    ## 13) "LocationIdentifier IEC" (xs:string), optional, must have
+    ##     refSemantic=IEC 81346-1:2009-07#5.5 if present.
+    #################################################################
+    sh:property [
+        sh:description "Optional 'LocationIdentifier IEC' (0..1), must be xsd:string if present, check refSemantic" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_LocationIdentifierIECShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'LocationIdentifier IEC' attribute, must have semanticRef of 5.5 if present" ;
+    ] ;
+
+    #################################################################
+    ## 14) "ProductDesignation IEC" (xs:string), optional, must have
+    ##     refSemantic=IEC 81346-1:2009-07#5.4 if present.
+    #################################################################
+    sh:property [
+        sh:description "Optional 'ProductDesignation IEC' (0..1), must be xsd:string if present, check refSemantic" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_ProductDesignationIECShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'ProductDesignation IEC' attribute, must have semanticRef of 5.4 if present" ;
+    ] ;
+
+    #################################################################
+    ## 15) "InstallationDate" (xs:dateTime) => optional (0..1)
+    #################################################################
+    sh:property [
+        sh:description "Optional 'InstallationDate' (0..1), must be xsd:dateTime if present" ;
+        sh:path aml:hasAttribute ;
+        sh:qualifiedValueShape ex:DeviceItem_InstallationDateShape ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'InstallationDate' attribute, must be xsd:dateTime if present" ;
+    ] ;
+
+    #################################################################
+    ## 16) "ModuleAssignment" interface => optional, 0..1,
+    ##     type=AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment
+    #################################################################
+    sh:property [
+        sh:description "Optional interface 'ModuleAssignment' (0..1)" ;
+        sh:path aml:hasInterface ;
+        sh:node ex:DeviceItem_ModuleAssignmentInterfaceShape ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'ModuleAssignment' interface." ;
+    ] ;
+
+    #################################################################
+    ## 17) "CommunicationPortProxyInterface" => optional, 0..1,
+    ##     type=AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface
+    #################################################################
+    sh:property [
+        sh:description "Optional interface 'CommunicationPortProxyInterface' (0..1)" ;
+        sh:path aml:hasInterface ;
+        sh:node ex:DeviceItem_CommunicationPortProxyInterfaceShape ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'CommunicationPortProxyInterface' interface." ;
+    ] ;
+    .
+    
+#################################################################
+# Shapes for each optional or mandatory AML Attribute
+#################################################################
+
+### (2) TypeName
+ex:DeviceItem_TypeNameShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeName" ;
+        sh:message "This attribute must be named 'TypeName'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "TypeName must have at most one string value" ;
+    ] .
+
+### (3) DeviceItemType (with sub-attribute Customized)
+ex:DeviceItem_DeviceItemTypeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "DeviceItemType" ;
+        sh:message "This attribute must be named 'DeviceItemType'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "DeviceItemType must have at most one string value" ;
+    ] ;
+    # Sub-attribute "Customized" is optional
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:DeviceItem_DeviceItemType_CustomizedShape ;
+        sh:maxCount 1 ;
+        sh:message "If 'Customized' subattribute is present, only allow one" ;
+    ] .
+
+ex:DeviceItem_DeviceItemType_CustomizedShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Customized" ;
+        sh:message "This subattribute must be named 'Customized'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:message "Customized must be a single boolean value" ;
+    ] .
+
+### (4) PositionNumber
+ex:DeviceItem_PositionNumberShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "PositionNumber" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+        sh:message "PositionNumber must be an integer" ;
+    ] .
+
+### (5) BuiltIn
+ex:DeviceItem_BuiltInShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "BuiltIn" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:message "BuiltIn must be a boolean value" ;
+    ] .
+
+### (6) TypeIdentifier (with sub-attribute TemplateIdentifier)
+ex:DeviceItem_TypeIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+        sh:message "This attribute must be named 'TypeIdentifier'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "TypeIdentifier must be a string value" ;
+    ] ;
+    # Optional TemplateIdentifier
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:DeviceItem_TemplateIdentifierShape ;
+        sh:maxCount 1 ;
+        sh:message "If 'TemplateIdentifier' subattribute is present, only allow one" ;
+    ] .
+
+ex:DeviceItem_TemplateIdentifierShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+        sh:message "Subattribute must be named 'TemplateIdentifier'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "TemplateIdentifier must be a single string value" ;
+    ] .
+
+### (7) Manufacturer
+ex:DeviceItem_ManufacturerShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "Manufacturer must be a string" ;
+    ] .
+
+### (8) CustomAttributes, each subattribute has mandatory name
+ex:DeviceItem_CustomAttributesShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "CustomAttributes" ;
+        sh:message "Must be named 'CustomAttributes'." ;
+    ] ;
+    # 0..n sub-attributes
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:DeviceItem_CustomAttributes_SubAttrShape ;
+        sh:minCount 0 ;
+        # no maxCount => unbounded
+        sh:message "All sub-attributes under CustomAttributes must have a name." ;
+    ] .
+
+ex:DeviceItem_CustomAttributes_SubAttrShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "CustomAttribute sub-attribute must have a name (xs:string)" ;
+    ] ;
+    # If you want to enforce a string value too:
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "CustomAttribute sub-attribute value must be a string if present" ;
+    ] .
+
+### (9) FirmwareVersion
+ex:DeviceItem_FirmwareVersionShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "FirmwareVersion" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "FirmwareVersion must be a string" ;
+    ] .
+
+### (10) Comment
+ex:DeviceItem_CommentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "Comment must be a string" ;
+    ] .
+
+### (11) Address => each 'Address' can appear multiple times
+ex:DeviceItem_AddressShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Address" ;
+        sh:message "Must be named 'Address'." ;
+    ] ;
+    # The sub-entries "1", "2", "3", etc. each has StartAddress, IoType, ...
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:DeviceItem_AddressIndexShape ;
+        sh:minCount 0 ; 
+        # no maxCount => unbounded 
+        sh:message "Each address sub-entry must meet the constraints of StartAddress,IoType,Length,BitOffset" ;
+    ] .
+
+ex:DeviceItem_AddressIndexShape
+    a sh:NodeShape ;
+    # We do not check the name "1","2","3", etc. specifically,
+    # but require the mandatory sub-attributes.
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:qualifiedValueShape ex:DeviceItem_AddressIndex_StartAddressShape ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "StartAddress is mandatory if 'Address' exists" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:qualifiedValueShape ex:DeviceItem_AddressIndex_IoTypeShape ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "IoType is mandatory if 'Address' exists" ;
+    ] ;
+    # Length is optional
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:qualifiedValueShape ex:DeviceItem_AddressIndex_LengthShape ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'Length' per sub-address" ;
+    ] ;
+    # BitOffset is optional
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:qualifiedValueShape ex:DeviceItem_AddressIndex_BitOffsetShape ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "At most one 'BitOffset' per sub-address" ;
+    ] .
+
+# StartAddress (mandatory)
+ex:DeviceItem_AddressIndex_StartAddressShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "StartAddress" ;
+        sh:message "Sub-attribute must be named 'StartAddress'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:int ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "StartAddress must be an integer" ;
+    ] .
+
+# IoType (mandatory)
+ex:DeviceItem_AddressIndex_IoTypeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "IoType" ;
+        sh:message "Sub-attribute must be named 'IoType'" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "IoType must be a string (e.g., 'INPUT' or 'OUTPUT')" ;
+    ] .
+
+# Length (optional)
+ex:DeviceItem_AddressIndex_LengthShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Length" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+        sh:message "Length must be an integer if present" ;
+    ] .
+
+# BitOffset (optional)
+ex:DeviceItem_AddressIndex_BitOffsetShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "BitOffset" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+        sh:message "BitOffset must be an integer if present" ;
+    ] .
+
+### (12) PlantDesignation IEC
+ex:DeviceItem_PlantDesignationIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "PlantDesignation IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "PlantDesignation IEC must be a string" ;
+    ] ;
+    # Must have semantic ref: IEC 81346-1:2009-07#5.3 ...
+    sh:property [
+        sh:path aml:hasSemanticRef ;
+        sh:hasValue aml:IEC%2081346-1%3A2009-07%235.3%20-%20Function-oriented%20structure ;
+        sh:maxCount 1 ;
+        sh:message "Must reference IEC 81346-1:2009-07#5.3 - Function-oriented structure" ;
+    ] .
+
+### (13) LocationIdentifier IEC
+ex:DeviceItem_LocationIdentifierIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "LocationIdentifier IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "LocationIdentifier IEC must be a string" ;
+    ] ;
+    # Must have semantic ref: IEC 81346-1:2009-07#5.5 ...
+    sh:property [
+        sh:path aml:hasSemanticRef ;
+        sh:hasValue aml:IEC%2081346-1%3A2009-07%235.5%20-%20Location-oriented%20structure ;
+        sh:maxCount 1 ;
+        sh:message "Must reference IEC 81346-1:2009-07#5.5 - Location-oriented structure" ;
+    ] .
+
+### (14) ProductDesignation IEC
+ex:DeviceItem_ProductDesignationIECShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "ProductDesignation IEC" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:message "ProductDesignation IEC must be a string" ;
+    ] ;
+    # Must have semantic ref: IEC 81346-1:2009-07#5.4 ...
+    sh:property [
+        sh:path aml:hasSemanticRef ;
+        sh:hasValue aml:IEC%2081346-1%3A2009-07%235.4%20-%20Product-oriented%20structure ;
+        sh:maxCount 1 ;
+        sh:message "Must reference IEC 81346-1:2009-07#5.4 - Product-oriented structure" ;
+    ] .
+
+### (15) InstallationDate
+ex:DeviceItem_InstallationDateShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "InstallationDate" ;
+    ] ;
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+        sh:message "InstallationDate must be a dateTime if present" ;
+    ] .
+
+### (16) ModuleAssignment Interface
+ex:DeviceItem_ModuleAssignmentInterfaceShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "ModuleAssignment" ;
+        sh:message "Interface must be named 'ModuleAssignment'" ;
+    ] ;
+    # Check that the interface is typed as ModuleAssignment
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue aml:AutomationProjectConfigurationInterfaceClassLib%2FModuleAssignment ;
+        sh:message "Interface must be of type 'ModuleAssignment'" ;
+    ] .
+
+### (17) CommunicationPortProxyInterface
+ex:DeviceItem_CommunicationPortProxyInterfaceShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "CommunicationPortProxyInterface" ;
+        sh:message "Interface must be named 'CommunicationPortProxyInterface'" ;
+    ] ;
+    # Check that the interface is typed as CommunicationPortProxyInterface
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue aml:AutomationProjectConfigurationInterfaceClassLib%2FCommunicationPortProxyInterface ;
+        sh:message "Interface must be of type 'CommunicationPortProxyInterface'" ;
+    ] .

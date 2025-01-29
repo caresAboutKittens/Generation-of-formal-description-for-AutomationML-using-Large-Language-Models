@@ -1,0 +1,141 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:  <http://example.org#> .
+
+#################################################################
+## SHACL shape for "Device" according to the AR APC Whitepaper ##
+#################################################################
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    
+    # Target the OWL class for "Device"
+    # (remember that '/' in AML is converted to '%2F' in OWL)
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+    
+    ############################################################################
+    # 1) Name (mandatory)
+    #
+    #   Whitepaper states:
+    #   “Name” is a built-in CAEX object attribute (not an Attribute element)
+    #   - AttributeDataType="xs:string"
+    #   - Mandatory
+    ############################################################################
+    sh:property [
+        sh:path aml:hasName ;       # The CAEX built-in 'Name' property in OWL is aml:hasName
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;             # Mandatory => must appear at least once
+        sh:maxCount 1 ;
+        sh:description "Device Name (mandatory, string)" ;
+    ] ;
+    
+    ############################################################################
+    # 2) TypeIdentifier (optional) with sub-Attribute "TemplateIdentifier" (optional)
+    #
+    #   Whitepaper states:
+    #   “TypeIdentifier” => optional [0..1], string
+    #   “TemplateIdentifier” => optional [0..1], string
+    #   “TemplateIdentifier” is nested inside “TypeIdentifier” as a sub-Attribute
+    ############################################################################
+    sh:property [
+        # At the top level, the device might have an Attribute named "TypeIdentifier"
+        sh:path aml:hasAttribute ;  
+        sh:minCount 0 ;            # optional in the Whitepaper => can be absent
+        sh:maxCount 1 ;            # at most one "TypeIdentifier" attribute
+        sh:node [
+            # Inside that attribute node, check that it is indeed named "TypeIdentifier"
+            sh:property [
+                sh:path aml:hasName ;
+                sh:hasValue "TypeIdentifier" ;
+                sh:message "The attribute must be named TypeIdentifier" ;
+            ] ;
+            
+            # Also ensure that, if present, the attribute value is a string
+            sh:property [
+                sh:path aml:hasAttributeValue ;
+                sh:datatype xsd:string ;
+                sh:minCount 0 ;     # it can be empty, but if present, must be a string
+                sh:maxCount 1 ;
+                sh:description "TypeIdentifier value (string)" ;
+            ] ;
+
+            # Next, check the optional sub-attribute "TemplateIdentifier"
+            sh:property [
+                # "TemplateIdentifier" is inside "TypeIdentifier" via aml:hasPart
+                sh:path aml:hasPart ;
+                sh:minCount 0 ;    # "TemplateIdentifier" is optional
+                sh:maxCount 1 ;
+                sh:node [
+                    # Must be named "TemplateIdentifier"
+                    sh:property [
+                        sh:path aml:hasName ;
+                        sh:hasValue "TemplateIdentifier" ;
+                        sh:message "The sub-attribute must be named TemplateIdentifier" ;
+                    ] ;
+                    # If present, must have a string value
+                    sh:property [
+                        sh:path aml:hasAttributeValue ;
+                        sh:datatype xsd:string ;
+                        sh:minCount 0 ;
+                        sh:maxCount 1 ;
+                        sh:description "TemplateIdentifier value (string)" ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+        sh:description "Optional TypeIdentifier with nested TemplateIdentifier" ;
+    ] ;
+    
+    ############################################################################
+    # 3) Manufacturer (optional)
+    #   Whitepaper states:
+    #   “Manufacturer” => optional [0..1], string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:minCount 0 ;     # optional
+        sh:maxCount 1 ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:hasValue "Manufacturer" ;
+                sh:message "The attribute must be named Manufacturer" ;
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeValue ;
+                sh:datatype xsd:string ;
+                sh:minCount 0 ;
+                sh:maxCount 1 ;
+                sh:description "Manufacturer (string)" ;
+            ] ;
+        ] ;
+        sh:description "Optional Manufacturer attribute" ;
+    ] ;
+
+    ############################################################################
+    # 4) Comment (optional)
+    #   Whitepaper states:
+    #   “Comment” => optional [0..1], string
+    ############################################################################
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:minCount 0 ;    # optional
+        sh:maxCount 1 ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:hasValue "Comment" ;
+                sh:message "The attribute must be named Comment" ;
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeValue ;
+                sh:datatype xsd:string ;
+                sh:minCount 0 ;
+                sh:maxCount 1 ;
+                sh:description "Comment (string)" ;
+            ] ;
+        ] ;
+        sh:description "Optional Comment attribute" ;
+    ] ;
+.

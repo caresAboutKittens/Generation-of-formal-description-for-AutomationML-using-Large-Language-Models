@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TypeIdentifier attribute changed from string to boolean -->
+<CAEXFile>
+    <InternalElement Name="EK1" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/Device" ID="2689ECE0-A607-411D-B42D-5D7C49F17A78">
+        <Attribute Name="TypeIdentifier" AttributeDataType="xs:boolean">
+            <Value>1</Value>
+        </Attribute>
+        <InternalElement Name="0" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/DeviceItem" ID="4998454D-6D83-4A63-A89A-C1B6ED777CBD">	</InternalElement>
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Device"/>
+    </InternalElement>
+</CAEXFile>

@@ -1,0 +1,185 @@
+###############################################################################
+## Prefix Declarations
+###############################################################################
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml:  <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:   <https://example.org/shapes#> .
+
+###############################################################################
+## Top-Level Shape for Subnet
+## Adjust sh:targetClass, sh:targetNode, or sh:targetSubjectsOf to match how
+## you identify "Subnet" instances in your AutomationML–RDF data.
+###############################################################################
+ex:SubnetShape
+    a sh:NodeShape ;
+    
+    ## Option A) If you have a specific class aml:Subnet (or similar), use:
+    # sh:targetClass aml:Subnet ;
+    
+    ## Option B) If your Subnet resource is known by a specific IRI:
+    # sh:targetNode <https://w3id.org/hsu-aut/AutomationML#Subnet> ;
+    
+    ## Option C) If Subnet is recognized by refBaseClass path or some other criterion,
+    ## you might use a SPARQL-based target or other approach.
+
+    ###############################################################################
+    ## 1) Must be derived from CommunicationRoleClassLib/LogicalNetwork
+    ###############################################################################
+    sh:property [
+        sh:path aml:hasRefBaseClass ; 
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#CommunicationRoleClassLib%2FLogicalNetwork> ;
+        sh:message "A Subnet must derive from CommunicationRoleClassLib/LogicalNetwork."
+    ] ;
+    
+    ###############################################################################
+    ## 2) Must have a mandatory "Type" attribute (xs:string).
+    ##    In the OWL snippet, the 'Type' attribute typically appears as a separate node
+    ##    with aml:hasName "Type" and aml:hasDataType "xs:string". We check that
+    ##    such a node exists among the subnet's attributes/parts.
+    ###############################################################################
+    sh:property [
+        # Adjust the path to however your model links Subnet to its child attributes;
+        # for example if the Subnet node has aml:hasPart pointing to the “Type” node:
+        sh:path aml:hasPart ;
+        sh:node ex:SubnetTypeAttributeShape ;
+        sh:minCount 1 ;  # Must appear at least once
+        sh:maxCount 1 ;  # Usually exactly one "Type" attribute
+        sh:message "Subnet must have exactly one 'Type' attribute of type xs:string."
+    ] ;
+    
+    ###############################################################################
+    ## 3) If "CustomAttributes" exists, it must be a list-type attribute, and each
+    ##    child custom-attribute must have a unique name and be xs:string.
+    ###############################################################################
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:SubnetCustomAttributesShape ;
+        sh:maxCount 1 ; # "CustomAttributes" is typically 0..1 in the Whitepaper
+        sh:message "If present, 'CustomAttributes' must conform to the Whitepaper constraints."
+    ] ;
+    
+    ###############################################################################
+    ## 4) Must have exactly one "LogicalEndPoint" interface
+    ##    In AML→RDF, an ExternalInterface might link from the Subnet or be typed
+    ##    with aml:CommunicationInterfaceClassLib/LogicalEndPoint, etc.
+    ###############################################################################
+    sh:property [
+        # Adjust the path to how your data model references the interface; for instance:
+        sh:path aml:hasPart ;
+        sh:node ex:LogicalEndPointShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one LogicalEndPoint interface."
+    ] ;
+.
+
+###############################################################################
+## Shape for the mandatory "Type" attribute
+###############################################################################
+ex:SubnetTypeAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Type" ;
+        sh:message "Attribute node must have aml:hasName 'Type'."
+    ] ;
+    sh:property [
+        sh:path aml:hasDataType ;
+        sh:hasValue "xs:string" ;
+        sh:message "The 'Type' attribute must have aml:hasDataType 'xs:string'."
+    ] ;
+.
+
+###############################################################################
+## Shape for "CustomAttributes" (the container attribute).
+###############################################################################
+ex:SubnetCustomAttributesShape
+    a sh:NodeShape ;
+    
+    ## 3a) Must have name "CustomAttributes".
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "CustomAttributes" ;
+        sh:message "This node must have the name 'CustomAttributes'."
+    ] ;
+    
+    ## 3b) Must reference the ListType semantic (Whitepaper says "CustomAttributes" is a ListType).
+    sh:property [
+        sh:path aml:hasSemanticRef ;
+        sh:hasValue aml:ListType ;
+        sh:message "CustomAttributes attribute must reference 'ListType'."
+    ] ;
+    
+    ## 3c) May contain 0..n sub-attributes, each of which must have a unique name.
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:CustomAttributeEntryShape ;
+        sh:message "All sub-attributes of 'CustomAttributes' must follow the constraints."
+        # No minCount specified => zero or more
+        # No maxCount => unbounded
+    ] ;
+.
+
+###############################################################################
+## Shape for each sub-attribute inside "CustomAttributes"
+###############################################################################
+ex:CustomAttributeEntryShape
+    a sh:NodeShape ;
+    
+    ## Must have a name and that name must be an xs:string
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each CustomAttribute entry must have a non-empty name (xs:string)."
+    ] ;
+    
+    ## The Whitepaper says each sub-attribute name must be unique among its siblings.
+    ## SHACL does not have a built-in “unique among siblings” property constraint,
+    ## so we illustrate a SPARQL-based constraint here:
+    sh:sparql [
+      sh:message "CustomAttribute name must be unique among siblings under the same CustomAttributes parent."
+      ; sh:prefixes [
+          sh:declare [
+            sh:prefix "aml"
+            ; sh:namespace "https://w3id.org/hsu-aut/AutomationML#"
+          ]
+        ]
+      ; sh:select """
+        SELECT ?this
+        WHERE {
+          # 'parent' hasPart ?this, ?other
+          ?parent aml:hasPart ?this, ?other .
+          FILTER (?this != ?other)
+          
+          # Both must have the same name
+          ?this  aml:hasName ?name .
+          ?other aml:hasName ?name .
+        }
+      """
+    ] ;
+.
+
+###############################################################################
+## Shape for the "LogicalEndPoint" interface
+###############################################################################
+ex:LogicalEndPointShape
+    a sh:NodeShape ;
+    
+    ## Must be typed as a CommunicationInterfaceClassLib/LogicalEndPoint
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:message "The ExternalInterface must be typed as 'CommunicationInterfaceClassLib/LogicalEndPoint'."
+    ] ;
+    
+    ## Must have the name "LogicalEndPoint"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "LogicalEndPoint" ;
+        sh:message "The ExternalInterface must have aml:hasName = 'LogicalEndPoint'."
+    ] ;
+.

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Type attribute missing -->
+<CAEXFile>
+    <InternalElement Name="CC-Link IE TSN" ID="f0e33c9f-63fa-4e90-bd0b-6d82af5bae29">
+        <ExternalInterface Name="LogicalEndPoint" ID="34ac4a07-5da8-41bf-b22f-85f0cb77c810" RefBaseClassPath="CommunicationInterfaceClassLib/LogicalEndPoint" />
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Subnet" />
+    </InternalElement>
+</CAEXFile>

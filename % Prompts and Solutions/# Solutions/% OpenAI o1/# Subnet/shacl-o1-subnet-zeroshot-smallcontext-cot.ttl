@@ -1,0 +1,216 @@
+#################################################################
+## Prefixes
+#################################################################
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix amlc: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix :     <#> .
+
+#################################################################
+## 1) Main shape for Subnet
+##    - Must derive from LogicalNetwork
+##    - Must have a Name
+##    - Must have exactly one Type attribute
+##    - Optionally has CustomAttributes
+##    - Must have exactly one LogicalEndPoint interface
+#################################################################
+:SubnetShape
+    a sh:NodeShape ;
+    
+    ## Depending on your data, use one of these as a target:
+    ## If your Subnet is typed as a class:
+    # sh:targetClass amlc:Subnet ;
+    ##
+    ## Or if your instance is typed as amlc:RoleClass but with a
+    ## specific name "Subnet":
+    # sh:target [ 
+    #   a sh:SPARQLTarget ;
+    #   sh:select """
+    #     SELECT ?subnet WHERE {
+    #       ?subnet a amlc:RoleClass ;
+    #               amlc:hasName "Subnet" .
+    #     }
+    #   """
+    # ] ;
+    
+    #################################################################
+    ## 1a) Must derive from CommunicationRoleClassLib/LogicalNetwork
+    #################################################################
+    sh:property [
+        sh:path amlc:hasRefBaseClassPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:pattern "CommunicationRoleClassLib/LogicalNetwork" ;
+        sh:message "Subnet must derive from CommunicationRoleClassLib/LogicalNetwork."
+    ] ;
+    
+    #################################################################
+    ## 1b) Subnet Name is mandatory
+    ##
+    ## In CAEX, 'Name' is the standard mandatory attribute of the object.
+    ## If your mapping makes this an explicit amlc:hasName triple,
+    ## the shape below ensures there's exactly one string for it.
+    #################################################################
+    sh:property [
+        sh:path amlc:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have a Name."
+    ] ;
+    
+    #################################################################
+    ## 2) Must have exactly one 'Type' attribute with dataType = xs:string
+    #################################################################
+    sh:property [
+        sh:path amlc:hasPart ;
+        sh:node :SubnetTypeAttributeShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one 'Type' attribute of type xs:string."
+    ] ;
+    
+    #################################################################
+    ## 3) Optional 'CustomAttributes' with child attributes
+    ##    The shape is invoked if 'CustomAttributes' exists. 
+    #################################################################
+    sh:property [
+        sh:path amlc:hasPart ;
+        sh:node :CustomAttributesShape ;
+        sh:description "Check constraints if 'CustomAttributes' is present." ;
+        sh:maxCount 1 ;  # In AML typically a single 'CustomAttributes' container
+        sh:message "If 'CustomAttributes' exist, it can appear only once."
+    ] ;
+    
+    #################################################################
+    ## 4) Must have exactly one 'LogicalEndPoint' interface
+    ##    referencing 'CommunicationInterfaceClassLib/LogicalEndPoint'
+    #################################################################
+    sh:property [
+        sh:path amlc:hasPart ;
+        sh:node :LogicalEndPointShape ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one LogicalEndPoint interface."
+    ] ;
+.
+
+#################################################################
+## Shape for the 'Type' attribute
+## - Must have hasName = "Type"
+## - Must have hasAttributeDataType = "xs:string"
+#################################################################
+:SubnetTypeAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path amlc:hasName ;
+        sh:pattern "^Type$" ;
+        sh:flags "i" ;
+        sh:message "The attribute must have the name 'Type'."
+    ] ;
+    sh:property [
+        sh:path amlc:hasAttributeDataType ;
+        sh:in ("xs:string") ;
+        sh:message "The 'Type' attribute must have dataType = 'xs:string'."
+    ] ;
+.
+
+#################################################################
+## Shape for 'CustomAttributes'
+##  - Must have hasName = "CustomAttributes"
+##  - Must have >=1 child attributes
+##  - Child names must be unique
+#################################################################
+:CustomAttributesShape
+    a sh:NodeShape ;
+    
+    ## Must be named "CustomAttributes"
+    sh:property [
+        sh:path amlc:hasName ;
+        sh:pattern "^CustomAttributes$" ;
+        sh:flags "i" ;
+        sh:message "This attribute must be named 'CustomAttributes'."
+    ] ;
+    
+    ## Must have at least one child attribute
+    sh:property [
+        sh:path amlc:hasPart ;
+        sh:node :CustomAttributeChildShape ;
+        sh:minCount 1 ;
+        sh:message "If 'CustomAttributes' exists, it must contain at least one child attribute."
+    ] ;
+    
+    ## The child attribute names must be unique
+    sh:constraint [
+        sh:sparql """
+            SELECT $this
+            WHERE {
+              {
+                SELECT ?name (COUNT(*) AS ?count)
+                WHERE {
+                  $this amlc:hasPart ?child .
+                  ?child amlc:hasName ?name .
+                }
+                GROUP BY ?name
+                HAVING (?count > 1)
+              }
+            }
+        """;
+        sh:message "All 'CustomAttributes' child names must be unique."
+    ] ;
+.
+
+#################################################################
+## Shape for each child of 'CustomAttributes'
+##  - Must have a non-empty name (AttributeName)
+##  - The Whitepaper says each child must be xs:string,
+##    so we check 'hasAttributeDataType = xs:string'
+#################################################################
+:CustomAttributeChildShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path amlc:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each custom attribute must have a non-empty 'Name'."
+    ] ;
+    sh:property [
+        sh:path amlc:hasAttributeDataType ;
+        sh:in ("xs:string") ;
+        sh:message "Each custom attribute must have dataType = 'xs:string'."
+    ] ;
+.
+
+#################################################################
+## Shape for the 'LogicalEndPoint' interface
+##  - Must have hasName = "LogicalEndPoint"
+##  - Must be typed as CommunicationInterfaceClassLib/LogicalEndPoint
+##  - (In some mappings: must haveRefBaseClass, etc.)
+#################################################################
+:LogicalEndPointShape
+    a sh:NodeShape ;
+    
+    ## Must have name "LogicalEndPoint"
+    sh:property [
+        sh:path amlc:hasName ;
+        sh:pattern "^LogicalEndPoint$" ;
+        sh:flags "i" ;
+        sh:message "LogicalEndPoint interface must have name 'LogicalEndPoint'."
+    ] ;
+    
+    ## Must be an ExternalInterface of type "CommunicationInterfaceClassLib/LogicalEndPoint"
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue amlc:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:message "Must be typed as CommunicationInterfaceClassLib/LogicalEndPoint."
+    ] ;
+    
+    ## Optionally check the reference base class
+    sh:property [
+        sh:path amlc:hasRefBaseClass ;
+        sh:hasValue amlc:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:message "hasRefBaseClass must point to CommunicationInterfaceClassLib/LogicalEndPoint."
+    ] ;
+.

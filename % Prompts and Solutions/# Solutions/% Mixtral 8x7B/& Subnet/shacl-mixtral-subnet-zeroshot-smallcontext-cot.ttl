@@ -1,0 +1,35 @@
+@prefix sh: http://www.w3.org/ns/shacl# .
+@prefix xs: http://www.w3.org/2001/XMLSchema# .
+@prefix sda: http://www.w3.org/ns/shacl/data-shape# .\
+
+https://w3id.org/hsu-aut/AutomationML#SubnetShape
+a sh:NodeShape ;
+sh:targetClass https://w3id.org/hsu-aut/AutomationML#Subnet ;
+sh:property [
+sh:path https://w3id.org/hsu-aut/AutomationML#Name ;
+sh:minCount 1 ;
+sh:maxCount 1 ;
+sh:datatype xs:string
+], [
+sh:path https://w3id.org/hsu-aut/AutomationML#Type ;
+sh:minCount 1 ;
+sh:maxCount 1 ;
+sh:datatype xs:string
+], [
+sh:path https://w3id.org/hsu-aut/AutomationML#CustomAttributes ;
+sh:minCount 0 ;
+sh:maxCount 1 ;
+sh:qualifiedValueShape [
+sh:path https://w3id.org/hsu-aut/AutomationML#AttributeName ;
+sh:minCount 1 ;
+sh:maxCount "*" ;
+sh:datatype xs:string ;
+sh:unique ( sda:value )
+]
+], [
+sh:path https://w3id.org/hsu-aut/AutomationML#LogicalEndPoint ;
+sh:minCount 1 ;
+sh:maxCount 1 ;
+sh:nodeKind sh:IRI
+] ;
+.

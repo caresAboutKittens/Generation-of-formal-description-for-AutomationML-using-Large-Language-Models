@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Subnet missing name -->
+<CAEXFile>
+    <InternalElement RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/Subnet" ID="61C1449F-8E22-441A-A3BF-2EA49FA4ED0A">
+        <Attribute Name="Type" AttributeDataType="xs:string">
+            <Value>EtherCAT</Value>
+        </Attribute>
+        <ExternalInterface Name="LogicalEndPoint_Subnet" RefBaseClassPath="CommunicationInterfaceClassLib/LogicalEndPoint" ID="B63250AF-4BF3-43B5-A9C6-31FB3ED2EEA1"/>
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Subnet"/>
+    </InternalElement>
+</CAEXFile>

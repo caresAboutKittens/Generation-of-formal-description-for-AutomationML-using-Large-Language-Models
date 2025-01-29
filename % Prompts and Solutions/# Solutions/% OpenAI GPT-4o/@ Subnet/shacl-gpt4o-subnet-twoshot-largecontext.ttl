@@ -1,0 +1,54 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:    <http://www.example.org/#> .
+
+# Node Shape for Subnet
+ex:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FSubnet ; 
+    sh:property [
+        sh:path aml:hasName ;    
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have a mandatory 'Name' attribute of type xs:string." ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have a mandatory 'Type' attribute of type xs:string." ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FCustomAttributes ;
+        sh:class aml:Attribute ;
+        sh:message "If present, 'CustomAttributes' must be structured correctly as a list of attributes." ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FCustomAttributes%2FAttributeName1 ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:message "If 'CustomAttributes' exists, 'AttributeName1' must be a string." ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FCustomAttributes%2FAttributeName2 ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:message "If 'CustomAttributes' exists, 'AttributeName2' must be a string." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasInterface ;
+        sh:class aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Subnet must have exactly one LogicalEndPoint interface." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasRefBaseClass ;
+        sh:hasValue aml:CommunicationRoleClassLib%2FLogicalNetwork ;
+        sh:message "Subnet must derive from LogicalNetwork in the RoleClass hierarchy." ;
+    ] .

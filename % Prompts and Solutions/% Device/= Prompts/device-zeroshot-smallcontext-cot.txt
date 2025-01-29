@@ -1,0 +1,147 @@
+Your job is to formalize an excerpt from the AutomationML Whitepaper.
+
+The Whitepaper excerpt defines constraints that an AML object should adhere to. Your job is to write the corresponding SHACL code for the Whitepaper excerpt.
+
+The SHACL code should test whether an object conforms to the constraints defined in the Whitepaper excerpt.
+
+Device Library Excerpt in AML (General structure of the object which will be testet):
+"""
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+    <RoleClass Name="Device" RefBaseClassPath="CommunicationRoleClassLib/PhysicalDevice">
+      <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+        <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="Comment" AttributeDataType="xs:string" />
+      <Attribute Name="Manufacturer" AttributeDataType="xs:string" />
+    </RoleClass>
+</CAEXFile>
+"""
+
+OWL Version of the Device Library Excerpt (General structure of the object which will be testet in OWL):
+"""
+<https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TypeIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier%2FTemplateIdentifier> .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FComment>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Comment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Comment" .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FTypeIdentifier%2FTemplateIdentifier>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "TemplateIdentifier" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "TemplateIdentifier" .
+
+<https://w3id.org/hsu-aut/AutomationML#Device%2FManufacturer>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Manufacturer" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Manufacturer" .
+"""
+
+Whitepaper definition of Device (This document defines the actual constraints that should be adhered to):
+"""
+# Device
+
+A “Device” is derived from a “PhysicalDevice” according to AutomationML Whitepaper -
+Communication. It is defined as follows.
+
+## Table 5 – Definition Device
+
+### Role class name: Device
+
+### Description: The role class “Device” shall be used in order to represent a collection in which the
+individual HW objects of a slave or rack, including the slave or rack HW item, are brought
+together.
+
+### Parent Class: CommunicationRoleClassLib/PhysicalDevice
+
+### Path for Element reference: AutomationProjectConfigurationRoleClassLib/Device
+
+### Attributes:
+
+“Name” (AttributeDataType=”xs:string”):
+The attribute “Name” defines the name of the
+device.
+This attribute is mandatory.
+Note: This attribute is modelled by the
+standard attribute Name of the relevant CAEX
+object.
+
+“TypeIdentifier” (AttributeDataType=”xs:string”); “TemplateIdentifier” (AttributeDataType=”xs:string”):
+The attribute “TypeIdentifier” defines the
+family identifier of the device type.
+This attribute is optional.
+The attribute “TemplateIdentifier” references
+the path of a template element, for instance a
+library. The syntax is defined by the
+corresponding target system element.
+This attribute is optional.
+
+“Manufacturer” (AttributeDataType=”xs:string”):
+The attribute “Manufacturer” defines the
+manufacturer of the device. The name of the
+manufacturer must be unambiguous and
+unique assigned to the manufacturer.
+This attribute is optional.
+
+“Comment” (AttributeDataType=”xs:string”):
+The attribute “Comment” defines a comment
+for the device. The attribute “Comment”
+follows the Best Practice Recommendation
+Multilingual expressions in AutomationML.
+This attribute is optional.
+
+
+Note: The attribute “TypeIdentifier” has a prefix which describes the semantic of the following identifier
+separated by “:” The following prefixes are allowed: “OrderNumber”, “GSD”, "System”, „CSP+“.In case
+of a missing TypeIdentifier the importing tool shall apply a substitution strategy. It is not ensured that the
+substitution strategy succeeds in all cases.
+
+Examples:
+TypeIdentifier = “GSD:SIEM8139.GSD/DAP”
+TypeIdentifier = "System:Device.Generic”
+TypeIdentifier = "System:Device.S7-1500”
+TypeIdentifier = "System:Device.IQ-R”
+TemplateIdentifier =
+" GlobalLib://TemplateLibrary/Master copies/S7-1500/preconfigured/PLCs/s7-1518F”
+"""
+
+Create the SHACL in Turtle (.ttl) syntax.
+
+Create the corresponding SHACL.
+
+Let's think step by step.

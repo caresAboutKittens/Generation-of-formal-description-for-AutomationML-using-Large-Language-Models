@@ -1,0 +1,77 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+# Shape to validate the Device class
+aml:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:Device ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; # "Name" is mandatory
+        sh:description "The attribute 'Name' defines the name of the device and is mandatory." ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ; # "TypeIdentifier" is mandatory
+                sh:description "The attribute 'TypeIdentifier' defines the family identifier of the device type and is optional." ;
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+                sh:description "The attribute 'TypeIdentifier' must have AttributeDataType 'xs:string'." ;
+            ] ;
+            sh:property [
+                sh:path aml:hasPart ;
+                sh:node [
+                    sh:property [
+                        sh:path aml:hasName ;
+                        sh:datatype xsd:string ;
+                        sh:description "The attribute 'TemplateIdentifier' references a path of a template element and is optional." ;
+                    ] ;
+                    sh:property [
+                        sh:path aml:hasAttributeDataType ;
+                        sh:hasValue "xs:string" ;
+                        sh:description "The attribute 'TemplateIdentifier' must have AttributeDataType 'xs:string'." ;
+                    ] ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:description "The attribute 'Manufacturer' defines the manufacturer of the device and is optional." ;
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+                sh:description "The attribute 'Manufacturer' must have AttributeDataType 'xs:string'." ;
+            ] ;
+        ] ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:description "The attribute 'Comment' defines a comment for the device and is optional." ;
+            ] ;
+            sh:property [
+                sh:path aml:hasAttributeDataType ;
+                sh:hasValue "xs:string" ;
+                sh:description "The attribute 'Comment' must have AttributeDataType 'xs:string'." ;
+            ] ;
+        ] ;
+    ] ;
+    sh:closed true ; # No additional attributes are allowed
+    sh:ignoredProperties ( rdf:type ) . # Ignore rdf:type for validation purposes

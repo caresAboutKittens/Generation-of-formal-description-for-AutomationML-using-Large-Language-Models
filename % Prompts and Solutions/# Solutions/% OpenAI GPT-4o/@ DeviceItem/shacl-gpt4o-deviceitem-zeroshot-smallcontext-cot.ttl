@@ -1,0 +1,168 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# Shape to validate DeviceItem
+aut:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aut:DeviceItem ;
+    sh:property [
+        sh:path aut:Name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; # Mandatory
+        sh:description "The attribute `Name` defines the name of the DeviceItem. This attribute is mandatory." ;
+    ] ;
+    sh:property [
+        sh:path aut:TypeName ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `TypeName` defines additional type information. This attribute is optional." ;
+    ] ;
+    sh:property [
+        sh:path aut:DeviceItemType ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `DeviceItemType` defines the classification of the DeviceItem. This attribute is optional." ;
+    ] ;
+    sh:property [
+        sh:path aut:DeviceItemType/aut:Customized ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ; # Optional
+        sh:defaultValue "false" ;
+        sh:description "The subattribute `Customized` indicates vendor-specific information." ;
+    ] ;
+    sh:property [
+        sh:path aut:PositionNumber ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `PositionNumber` defines the slot number where this DeviceItem is plugged in. It is mandatory for pluggable DeviceItems." ;
+    ] ;
+    sh:property [
+        sh:path aut:BuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ; # Optional
+        sh:defaultValue "false" ;
+        sh:description "The attribute `BuiltIn` defines that this module is a built-in part of another module. Default value is `false`." ;
+    ] ;
+    sh:property [
+        sh:path aut:TypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Conditional
+        sh:description "The attribute `TypeIdentifier` is mandatory if `BuiltIn` is `false`. The wildcard is `*`. It references the identifier of the DeviceItem type." ;
+    ] ;
+    sh:property [
+        sh:path aut:TypeIdentifier/aut:TemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `TemplateIdentifier` references the path of a template element, e.g., a library." ;
+    ] ;
+    sh:property [
+        sh:path aut:Manufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `Manufacturer` defines the manufacturer of the DeviceItem." ;
+    ] ;
+    sh:property [
+        sh:path aut:FirmwareVersion ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `FirmwareVersion` defines the firmware version to identify the module." ;
+    ] ;
+    sh:property [
+        sh:path aut:Comment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `Comment` defines a comment for the DeviceItem." ;
+    ] ;
+    sh:property [
+        sh:path aut:InstallationDate ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `InstallationDate` defines the installation date of the DeviceItem." ;
+    ] ;
+    sh:property [
+        sh:path aut:Address ;
+        sh:node aut:AddressShape ;
+        sh:maxCount 1 ; # Optional
+        sh:description "The attribute `Address` is a list. Contains subattributes like `StartAddress`, `Length`, `IoType`, and `BitOffset`." ;
+    ] ;
+    sh:property [
+        sh:path aut:PlantDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Function designation for the DeviceItem according to IEC 81346." ;
+    ] ;
+    sh:property [
+        sh:path aut:LocationIdentifierIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Location designation for the DeviceItem according to IEC 81346." ;
+    ] ;
+    sh:property [
+        sh:path aut:ProductDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Product designation for the DeviceItem according to IEC 81346." ;
+    ] ;
+    sh:property [
+        sh:path aut:ModuleAssignment ;
+        sh:node aut:ModuleAssignmentShape ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Link a module to a CPU for multiple CPU configurations." ;
+    ] ;
+    sh:property [
+        sh:path aut:CommunicationPortProxyInterface ;
+        sh:node aut:CommunicationPortProxyInterfaceShape ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Manage CommunicationPorts of pluggable DeviceItems." ;
+    ] .
+
+# Shape for Address
+aut:AddressShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:StartAddress ;
+        sh:datatype xsd:int ;
+        sh:minCount 1 ; # Mandatory
+        sh:description "Defines the start of the address." ;
+    ] ;
+    sh:property [
+        sh:path aut:Length ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ; # Optional
+        sh:description "Defines the total width of all channels on the DeviceItem." ;
+    ] ;
+    sh:property [
+        sh:path aut:IoType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; # Mandatory
+        sh:description "Specifies the direction (INPUT or OUTPUT)." ;
+    ] ;
+    sh:property [
+        sh:path aut:BitOffset ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ; # Optional
+        sh:defaultValue "0" ;
+        sh:description "Defines the offset within a StartAddress. Default value is `0`." ;
+    ] .
+
+# Shape for ModuleAssignment
+aut:ModuleAssignmentShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:RefBaseClassPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; # Mandatory
+        sh:description "Reference to ModuleAssignment class path." ;
+    ] .
+
+# Shape for CommunicationPortProxyInterface
+aut:CommunicationPortProxyInterfaceShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aut:RefBaseClassPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; # Mandatory
+        sh:description "Reference to CommunicationPortProxyInterface class path." ;
+    ] .

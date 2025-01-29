@@ -1,0 +1,129 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+aml:DeviceItem a sh:NodeShape ;
+  sh:targetClass aml:DeviceItem ;
+  sh:property [
+    sh:path aml:Name ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:TypeName ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:DeviceItemType ;
+    sh:path aml:Customized ;
+    sh:datatype xsd:boolean ;
+    sh:defaultValue false ;
+  ] ;
+  sh:property [
+    sh:path aml:PositionNumber ;
+    sh:datatype xsd:int ;
+  ] ;
+  sh:property [
+    sh:path aml:BuiltIn ;
+    sh:datatype xsd:boolean ;
+    sh:defaultValue false ;
+  ] ;
+  sh:property [
+    sh:path aml:TypeIdentifier ;
+    sh:path aml:TemplateIdentifier ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:Manufacturer ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:CustomAttributes ;
+    sh:path (aml:CustomAttributes/aml:AttributeName*) ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:qualifiedValueShape aml:CustomAttributeShape ;
+  ] ;
+  sh:property [
+    sh:path aml:FirmwareVersion ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:PlantDesignationIEC ;
+    sh:path aml:PlantDesignationIEC/aml:hasAttributeDescription ;
+    sh:path aml:PlantDesignationIEC/aml:hasSemanticRef ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:LocationIdentifierIEC ;
+    sh:path aml:LocationIdentifierIEC/aml:hasAttributeDescription ;
+    sh:path aml:LocationIdentifierIEC/aml:hasSemanticRef ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:ProductDesignationIEC ;
+    sh:path aml:ProductDesignationIEC/aml:hasAttributeDescription ;
+    sh:path aml:ProductDesignationIEC/aml:hasSemanticRef ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:InstallationDate ;
+    sh:datatype xsd:dateTime ;
+  ] ;
+  sh:property [
+    sh:path aml:Address ;
+    sh:path (aml:Address/aml:*) ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:qualifiedValueShape aml:AddressShape ;
+  ] ;
+  sh:property [
+    sh:path aml:ModuleAssignment ;
+    sh:nodeKind sh:IRI ;
+  ] ;
+  sh:property [
+    sh:path aml:CommunicationPortProxyInterface ;
+    sh:nodeKind sh:IRI ;
+  ] .
+
+aml:CustomAttributeShape a sh:NodeShape ;
+  sh:property [
+    sh:path aml:AttributeName ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:AttributeDataType ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] .
+
+aml:AddressShape a sh:NodeShape ;
+  sh:property [
+    sh:path aml:StartAddress ;
+    sh:datatype xsd:int ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:Length ;
+    sh:datatype xsd:int ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:IoType ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:BitOffset ;
+    sh:datatype xsd:int ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+  ] .

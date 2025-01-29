@@ -1,0 +1,40 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<https://w3id.org/hsu-aut/AutomationML#Device>
+  a owl:Class ;
+  rdfs:label "Device" ;
+  sh:targetClass <https://w3id.org/hsu-aut/AutomationML#Device> ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#CommunicationRoleClassLib/PhysicalDevice>) ];
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#Device/Name>) ];
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#Device/TypeIdentifier>) ];
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#Device/TemplateIdentifier>) ];
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#Device/Manufacturer>) ];
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path [ sh:inversePath (owl:hasValue <https://w3id.org/hsu-aut/AutomationML#Device/Comment>) ];
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] .

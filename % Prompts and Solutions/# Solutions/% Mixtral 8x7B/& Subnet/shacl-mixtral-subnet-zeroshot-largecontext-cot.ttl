@@ -1,0 +1,47 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix automationml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+automationml:SubnetShape
+  a sh:NodeShape ;
+  sh:targetClass automationml:Subnet ;
+  sh:property [
+    sh:path automationml:hasName ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:Subnet_hasType ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:Subnet_hasCustomAttributes ;
+    sh:minCount 1 ;
+    sh:maxCount * ;
+    sh:qualifiedValueShape [
+      sh:path automationml:hasAttributeName ;
+      sh:datatype xsd:string ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+    ]
+  ] ;
+  sh:property [
+    sh:path automationml:Subnet_hasLogicalEndPoint ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] .
+
+automationml:Subnet_hasType a sh:PropertyShape ;
+  sh:path automationml:Subnet/automationml:hasType ;
+  sh:class xsd:string .
+
+automationml:Subnet_hasCustomAttributes a sh:PropertyShape ;
+  sh:path automationml:Subnet/automationml:hasCustomAttributes ;
+  sh:class automationml:CustomAttributes .
+
+automationml:Subnet_hasLogicalEndPoint a sh:PropertyShape ;
+  sh:path automationml:Subnet/automationml:hasLogicalEndPoint ;
+  sh:class automationml:LogicalEndPoint .

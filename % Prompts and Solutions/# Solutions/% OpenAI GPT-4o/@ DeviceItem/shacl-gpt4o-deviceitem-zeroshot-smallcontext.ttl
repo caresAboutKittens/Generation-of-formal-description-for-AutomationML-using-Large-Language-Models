@@ -1,0 +1,206 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+# Shape for DeviceItem
+aml:DeviceItemShape
+    a sh:NodeShape ;
+    sh:targetClass aml:DeviceItem ;
+    
+    # "Name" attribute (mandatory)
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # "TypeName" attribute (optional)
+    sh:property [
+        sh:path aml:TypeName ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # "DeviceItemType" and "Customized" (optional)
+    sh:property [
+        sh:path aml:DeviceItemType ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:property [
+            sh:path aml:Customized ;
+            sh:datatype xsd:boolean ;
+            sh:minCount 0 ;
+            sh:maxCount 1 ;
+            sh:defaultValue false ;
+        ] ;
+    ] ;
+
+    # "PositionNumber" attribute (optional but mandatory in certain cases)
+    sh:property [
+        sh:path aml:PositionNumber ;
+        sh:datatype xsd:int ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # "BuiltIn" attribute (optional, default false)
+    sh:property [
+        sh:path aml:BuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:defaultValue false ;
+    ] ;
+
+    # "TypeIdentifier" and "TemplateIdentifier"
+    sh:property [
+        sh:path aml:TypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:property [
+            sh:path aml:TemplateIdentifier ;
+            sh:datatype xsd:string ;
+            sh:minCount 0 ;
+            sh:maxCount 1 ;
+        ] ;
+    ] ;
+
+    # "Manufacturer" (optional)
+    sh:property [
+        sh:path aml:Manufacturer ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # "CustomAttributes" (optional list)
+    sh:property [
+        sh:path aml:CustomAttributes ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ] ;
+        ] ;
+    ] ;
+
+    # "FirmwareVersion" (optional)
+    sh:property [
+        sh:path aml:FirmwareVersion ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # "Comment" (optional)
+    sh:property [
+        sh:path aml:Comment ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # "Address" list
+    sh:property [
+        sh:path aml:Address ;
+        sh:node [
+            sh:property [
+                sh:path aml:StartAddress ;
+                sh:datatype xsd:int ;
+                sh:minCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:Length ;
+                sh:datatype xsd:int ;
+                sh:minCount 0 ;
+            ] ;
+            sh:property [
+                sh:path aml:IoType ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aml:BitOffset ;
+                sh:datatype xsd:int ;
+                sh:minCount 0 ;
+                sh:defaultValue 0 ;
+            ] ;
+        ] ;
+    ] ;
+
+    # "PlantDesignation IEC" (optional)
+    sh:property [
+        sh:path aml:PlantDesignation_IEC ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:property [
+            sh:path aml:hasSemanticRef ;
+            sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC_81346-1:2009-07#5.3> ;
+        ] ;
+    ] ;
+
+    # "LocationIdentifier IEC" (optional)
+    sh:property [
+        sh:path aml:LocationIdentifier_IEC ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:property [
+            sh:path aml:hasSemanticRef ;
+            sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC_81346-1:2009-07#5.5> ;
+        ] ;
+    ] ;
+
+    # "ProductDesignation IEC" (optional)
+    sh:property [
+        sh:path aml:ProductDesignation_IEC ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:property [
+            sh:path aml:hasSemanticRef ;
+            sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC_81346-1:2009-07#5.4> ;
+        ] ;
+    ] ;
+
+    # "InstallationDate" (optional)
+    sh:property [
+        sh:path aml:InstallationDate ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+
+    # Interfaces
+    sh:property [
+        sh:path aml:ModuleAssignment ;
+        sh:node aml:ModuleAssignmentShape ;
+    ] ;
+    sh:property [
+        sh:path aml:CommunicationPortProxyInterface ;
+        sh:node aml:CommunicationPortProxyInterfaceShape ;
+    ] .
+
+# Shape for ModuleAssignment interface
+aml:ModuleAssignmentShape
+    a sh:NodeShape ;
+    sh:targetClass aml:ModuleAssignment ;
+    sh:property [
+        sh:path aml:hasRefBaseClass ;
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib/ModuleAssignment> ;
+    ] .
+
+# Shape for CommunicationPortProxyInterface
+aml:CommunicationPortProxyInterfaceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:CommunicationPortProxyInterface ;
+    sh:property [
+        sh:path aml:hasRefBaseClass ;
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib/CommunicationPortProxyInterface> ;
+    ] .

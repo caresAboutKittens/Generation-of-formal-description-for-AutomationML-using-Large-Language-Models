@@ -1,0 +1,66 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:    <http://www.example.org/#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix aml:   <https://w3id.org/i40/aml#> .
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+
+    # Constraint for mandatory Name attribute
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Device must have a Name attribute of type xs:string and it is mandatory."@en ;
+    ] ;
+
+    # Constraint for optional TypeIdentifier and TemplateIdentifier
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FDevice%2FTypeIdentifier ;
+        sh:message "Device may have a TypeIdentifier attribute."@en ;
+    ] ;
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FDevice%2FTypeIdentifier%2FTemplateIdentifier ;
+        sh:message "TypeIdentifier may optionally include a TemplateIdentifier attribute."@en ;
+    ] ;
+
+    # Constraint for optional Manufacturer attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FDevice%2FManufacturer ;
+        sh:message "Device may have a Manufacturer attribute of type xs:string."@en ;
+    ] ;
+
+    # Constraint for optional Comment attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FDevice%2FComment ;
+        sh:message "Device may have a Comment attribute of type xs:string."@en ;
+    ] ;
+
+    # Constraint for TypeIdentifier prefixes
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:or (
+            [ sh:pattern "^OrderNumber:" ]
+            [ sh:pattern "^GSD:" ]
+            [ sh:pattern "^System:" ]
+            [ sh:pattern "^CSP\\+:" ]
+        ) ;
+        sh:message "TypeIdentifier must start with a valid prefix: OrderNumber, GSD, System, or CSP+."@en ;
+    ] ;
+
+    # Ensure TemplateIdentifier follows the syntax of a target system element
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:pattern "^GlobalLib://" ;
+        sh:message "TemplateIdentifier must follow the defined syntax, starting with GlobalLib://."@en ;
+    ] ;
+.

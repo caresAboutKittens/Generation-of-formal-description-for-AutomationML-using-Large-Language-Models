@@ -1,0 +1,45 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+# Shape for Subnet
+aml:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:Subnet%2FCustomAttributes ;
+        sh:node [
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:uniqueLang true ;
+            ] ;
+        ] ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aml:hasLogicalEndPoint ;
+        sh:node [
+            sh:path aml:hasBaseInterfaceClass ;
+            sh:class aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+            sh:minCount 1 ;
+            sh:maxCount 1 ;
+        ] ;
+    ] ;
+.

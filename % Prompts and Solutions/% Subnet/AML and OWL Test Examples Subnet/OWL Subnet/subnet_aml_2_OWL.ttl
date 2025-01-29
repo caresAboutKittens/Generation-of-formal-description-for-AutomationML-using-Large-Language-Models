@@ -1,0 +1,95 @@
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FType>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Type" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "EtherCAT" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Type" .
+
+<https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FGateway>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Gateway" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "192.168.0.254" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "Gateway" .
+
+<https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CustomAttributes" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CustomAttributes" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FSubnetMask> , <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FIPAddress> , <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FGateway> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSemanticRef>
+                <https://w3id.org/hsu-aut/AutomationML#ListType> .
+
+<https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FSubnetMask>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "SubnetMask" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "255.255.255.0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "SubnetMask" .
+
+<https://w3id.org/hsu-aut/AutomationML#9ABCDEF0-1234-1234-1234-9ABCDEF01234>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "LogicalEndPoint_Subnet" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "LogicalEndPoint_Subnet" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#CommunicationInterfaceClassLib%2FLogicalEndPoint> .
+
+<https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes%2FIPAddress>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "IPAddress" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "192.168.0.1" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "IPAddress" .
+
+<https://w3id.org/hsu-aut/AutomationML#12345678-1234-1234-1234-1234567890AB>
+        a       <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSubnet> , <https://w3id.org/hsu-aut/AutomationML#InternalElement> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "My_Sample_Subnet" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes> , <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FType> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FType> , <https://w3id.org/hsu-aut/AutomationML#My_Sample_Subnet%2FCustomAttributes> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasInterface>
+                <https://w3id.org/hsu-aut/AutomationML#9ABCDEF0-1234-1234-1234-9ABCDEF01234> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "My_Sample_Subnet" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseSystemUnitClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectSystemUnitClassLib%2FSubnet> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSubnet> .

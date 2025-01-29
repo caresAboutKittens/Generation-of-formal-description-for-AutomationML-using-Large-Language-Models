@@ -1,0 +1,55 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+### SHACL Shape for Subnet ###
+aut:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FSubnet ;  # Targeting the Subnet RoleClass
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;  # "Name" is mandatory
+    ] ;
+    sh:property [
+        sh:path aut:Subnet%2FType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;  # "Type" is mandatory
+    ] ;
+    sh:property [
+        sh:path aut:Subnet%2FCustomAttributes ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;  # "AttributeName" is mandatory if "CustomAttributes" exists
+                sh:uniqueLang true ;  # "AttributeName" must be unique
+            ] ;
+            sh:path aut:hasPart ;
+            sh:maxCount 1 ;  # Constraint for individual custom attributes
+        ] ;
+        sh:maxCount 1 ;  # "CustomAttributes" can only occur once as a list
+    ] ;
+    sh:property [
+        sh:path aut:hasRefBaseClass ;
+        sh:hasValue aut:CommunicationRoleClassLib%2FLogicalNetwork ;  # Ensures it derives from LogicalNetwork
+    ] ;
+    sh:property [
+        sh:path aut:hasBaseInterfaceClass ;
+        sh:hasValue aut:CommunicationInterfaceClassLib%2FLogicalEndPoint ;  # Ensures the LogicalEndPoint interface
+    ] ;
+    sh:property [
+        sh:path aut:LogicalEndPoint ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;  # LogicalEndPoint must have a name
+            ] ;
+        ] ;
+        sh:maxCount 1 ;  # Exactly one LogicalEndPoint
+    ] ;
+    sh:closed true ;  # Prevents additional properties not defined here
+    sh:ignoredProperties ( rdf:type ) .  # Allows rdf:type for metadata

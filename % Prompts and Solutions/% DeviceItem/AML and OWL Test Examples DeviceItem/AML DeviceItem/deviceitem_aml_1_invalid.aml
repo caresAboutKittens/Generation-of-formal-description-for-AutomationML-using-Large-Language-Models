@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PlantDesignation IEC Attribute is empty and of type bool -->
+<CAEXFile>
+    <InternalElement Name="0" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/DeviceItem" ID="4998454D-6D83-4A63-A89A-C1B6ED777CBD">
+        <Attribute Name="PositionNumber" AttributeDataType="xs:int">
+            <Value>0</Value>
+        </Attribute>
+        <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+            <Value>OrderNumber:EK1100</Value>
+        </Attribute>
+        <Attribute Name="PlantDesignation IEC" AttributeDataType="xs:bool"></Attribute>
+        <Attribute Name="LocationIdentifier IEC" AttributeDataType="xs:string">
+            <Value>+S1-EK1</Value>
+        </Attribute>
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/DeviceItem"/>
+    </InternalElement>
+</CAEXFile>

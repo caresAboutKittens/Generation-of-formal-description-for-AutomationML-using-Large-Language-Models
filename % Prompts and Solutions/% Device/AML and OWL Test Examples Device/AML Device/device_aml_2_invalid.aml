@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Name of Device is Missing -->
+<CAEXFile>
+    <InternalElement ID="0372b881-9ce7-47d4-a346-eee6f3e4d3d2">
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Device" />
+    </InternalElement>
+</CAEXFile>

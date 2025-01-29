@@ -1,0 +1,143 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aut:  <https://w3id.org/hsu-aut/AutomationML#> .
+
+#################################################################
+## 1) A top-level shape for the Device
+#################################################################
+
+aut:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aut:Device ;
+    
+    ## 1.1) "Name" is mandatory. 
+    ## The Whitepaper states that the "Name" attribute is mandatory
+    ## (modelled by the CAEX object name in AML).
+    ## Here, we assume it is exposed in RDF by "aut:hasName".
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;              # must have at least one
+        sh:maxCount 1 ;              # typically only one name
+        sh:description "A Device must have exactly one 'Name' (mandatory)." ;
+    ] ;
+    
+    ## 1.2) "TypeIdentifier" is optional, but if present:
+    ##      - must be xs:string
+    ##      - if it has a value, it should (optionally) match allowed prefixes
+    ## We capture that by pointing to a shape that enforces the constraints
+    ## on the node that hasName "TypeIdentifier".
+    sh:property [
+        sh:path aut:hasPart ;            # the Device can point to attributes via hasPart
+        sh:node aut:TypeIdentifierShape ;
+        sh:maxCount 1 ;                  # at most one TypeIdentifier attribute
+        sh:description "Optional TypeIdentifier attribute." ;
+    ] ;
+    
+    ## 1.3) "Manufacturer" is optional, but if present must be xs:string.
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node aut:ManufacturerShape ;
+        sh:maxCount 1 ;
+        sh:description "Optional Manufacturer attribute (xs:string)." ;
+    ] ;
+
+    ## 1.4) "Comment" is optional, but if present must be xs:string.
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node aut:CommentShape ;
+        sh:maxCount 1 ;
+        sh:description "Optional Comment attribute (xs:string)." ;
+    ] .
+
+#################################################################
+## 2) Common shape: every Attribute must be typed as aut:Attribute,
+##    have an appropriate name, and must use xs:string as its datatype.
+#################################################################
+
+aut:GenericAttributeShape
+    a sh:NodeShape ;
+    sh:targetClass aut:Attribute ;
+
+    # The Whitepaper expects "AttributeDataType=xs:string" for these attributes
+    sh:property [
+        sh:path aut:hasAttributeDataType ;
+        sh:in ("xs:string") ;
+        sh:message "AttributeDataType must be xs:string." ;
+    ] ;
+    # Possibly also store it redundantly in aut:hasDataType
+    sh:property [
+        sh:path aut:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "DataType must be xs:string." ;
+    ] .
+    
+#################################################################
+## 3) Specific shapes for each known attribute type
+##    (TypeIdentifier, Comment, Manufacturer, etc.).
+##    They extend the generic attribute shape but also have
+##    unique constraints (especially for TypeIdentifier).
+#################################################################
+
+### 3.1) TypeIdentifierShape
+aut:TypeIdentifierShape
+    a sh:NodeShape ;
+    sh:node aut:GenericAttributeShape ;  # must also fulfill the generic constraints
+    sh:property [
+        sh:path aut:hasName ;
+        sh:pattern "^TypeIdentifier$" ;
+        sh:message "This node must haveName 'TypeIdentifier'." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    # If you store the actual string value in `aut:hasValue`, 
+    # you can enforce the allowed prefixes for the TypeIdentifier:
+    # “OrderNumber:…”, “GSD:…”, “System:…”, “CSP+:…”
+    # *Optional* but demonstrates how to enforce prefix constraints:
+    sh:property [
+        sh:path aut:hasValue ;
+        sh:datatype xsd:string ;
+        # We require 0 or 1 occurrences. If present, must match the prefix pattern.
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:pattern "^(OrderNumber|GSD|System|CSP\\+):.*$" ;
+        sh:message "TypeIdentifier value must start with one of {OrderNumber, GSD, System, CSP+} followed by ':'." ;
+    ] .
+
+### 3.2) TemplateIdentifierShape (if you wish to validate it separately)
+aut:TemplateIdentifierShape
+    a sh:NodeShape ;
+    sh:node aut:GenericAttributeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:pattern "^TemplateIdentifier$" ;
+        sh:message "This node must haveName 'TemplateIdentifier'." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+### 3.3) ManufacturerShape
+aut:ManufacturerShape
+    a sh:NodeShape ;
+    sh:node aut:GenericAttributeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:pattern "^Manufacturer$" ;
+        sh:message "This node must haveName 'Manufacturer'." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+### 3.4) CommentShape
+aut:CommentShape
+    a sh:NodeShape ;
+    sh:node aut:GenericAttributeShape ;
+    sh:property [
+        sh:path aut:hasName ;
+        sh:pattern "^Comment$" ;
+        sh:message "This node must haveName 'Comment'." ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+

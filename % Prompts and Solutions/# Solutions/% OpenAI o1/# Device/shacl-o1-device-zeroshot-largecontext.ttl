@@ -1,0 +1,159 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex: <http://example.org/myShapes#> .
+
+#################################################################
+# SHACL shape for Device instances, as per the AR APC Whitepaper
+#################################################################
+ex:DeviceShape
+    a sh:NodeShape ;
+    # IMPORTANT:  The Device in OWL has the type 
+    #             AutomationProjectConfigurationRoleClassLib%2FDevice
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+
+    ##################################################################################
+    # 1) The built-in Name property of the AML/CAEX InternalElement (mandatory)
+    ##################################################################################
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;   # Mandatory
+        sh:maxCount 1 ;
+        sh:name "Device Name (mandatory)" ;
+        sh:description "The standard CAEX/AML Name of the InternalElement, as required by the Whitepaper." ;
+    ] ;
+
+    ##################################################################################
+    # 2) The TypeIdentifier attribute (optional).
+    #    This includes a nested TemplateIdentifier (also optional).
+    ##################################################################################
+    sh:property [
+        sh:path aut:hasAttribute ;
+        sh:node ex:TypeIdentifierShape ;
+        sh:minCount 0 ;          # Because it's optional
+        sh:maxCount 1 ;          # Typically only one TypeIdentifier
+        sh:name "TypeIdentifier (optional)" ;
+        sh:description "Optional TypeIdentifier attribute. If present, must be a single string. May contain an optional TemplateIdentifier sub-attribute." ;
+    ] ;
+
+    ##################################################################################
+    # 3) The Manufacturer attribute (optional)
+    ##################################################################################
+    sh:property [
+        sh:path aut:hasAttribute ;
+        sh:node ex:ManufacturerShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:name "Manufacturer (optional)" ;
+        sh:description "Optional Manufacturer attribute. If present, must be a single string." ;
+    ] ;
+
+    ##################################################################################
+    # 4) The Comment attribute (optional)
+    ##################################################################################
+    sh:property [
+        sh:path aut:hasAttribute ;
+        sh:node ex:CommentShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:name "Comment (optional)" ;
+        sh:description "Optional Comment attribute. If present, must be a single string." ;
+    ] ;
+.  # end of ex:DeviceShape
+
+
+#################################################################
+# Sub-shape: TypeIdentifier Attribute
+#################################################################
+ex:TypeIdentifierShape
+    a sh:NodeShape ;
+    # Must have aut:hasName = "TypeIdentifier"
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+        sh:name "Attribute name must be TypeIdentifier" ;
+    ] ;
+    # The TypeIdentifier attribute must have at most one string value
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;  # If the TypeIdentifier node exists, it must have a string value
+        sh:maxCount 1 ;
+        sh:name "TypeIdentifier value" ;
+    ] ;
+    # Optional sub-attribute "TemplateIdentifier" 
+    sh:property [
+        sh:path aut:hasPart ;
+        sh:node ex:TemplateIdentifierShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:name "TemplateIdentifier (optional)" ;
+    ] ;
+.
+
+
+#################################################################
+# Sub-shape: TemplateIdentifier (inside TypeIdentifier)
+#################################################################
+ex:TemplateIdentifierShape
+    a sh:NodeShape ;
+    # Must have aut:hasName = "TemplateIdentifier"
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+        sh:name "Attribute name must be TemplateIdentifier" ;
+    ] ;
+    # If present, must have a single string value
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name "TemplateIdentifier value" ;
+    ] ;
+.
+
+
+#################################################################
+# Sub-shape: Manufacturer (optional)
+#################################################################
+ex:ManufacturerShape
+    a sh:NodeShape ;
+    # Must have aut:hasName = "Manufacturer"
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "Manufacturer" ;
+        sh:name "Attribute name must be Manufacturer" ;
+    ] ;
+    # If present, must have a single string value
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name "Manufacturer value" ;
+    ] ;
+.
+
+
+#################################################################
+# Sub-shape: Comment (optional)
+#################################################################
+ex:CommentShape
+    a sh:NodeShape ;
+    # Must have aut:hasName = "Comment"
+    sh:property [
+        sh:path aut:hasName ;
+        sh:hasValue "Comment" ;
+        sh:name "Attribute name must be Comment" ;
+    ] ;
+    # If present, must have a single string value
+    sh:property [
+        sh:path aut:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name "Comment value" ;
+    ] ;
+.

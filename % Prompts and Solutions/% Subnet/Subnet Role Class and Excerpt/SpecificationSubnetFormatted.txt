@@ -1,0 +1,57 @@
+# Subnet
+
+A “Subnet” is derived from a “LogicalNetwork” according to AutomationML Whitepaper -
+Communication. It is defined as follows.
+
+## Table 4 – Definition Subnet
+
+### Role class name: Subnet
+
+### Description: The role class “Subnet” shall be used in order to represent storing and managing of
+properties and functionality of networks.
+
+### Parent Class: CommunicationRoleClassLib/LogicalNetwork
+
+### Path for Element reference: AutomationProjectConfigurationRoleClassLib/Subnet
+
+### Attributes:
+
+“Name” (AttributeDataType=”xs:string”):
+The attribute “Name” defines the name of the
+subnet.
+Note: This attribute is modelled by the
+standard attribute Name of the relevant CAEX
+object.
+This attribute is mandatory.
+
+“Type” (AttributeDataType=”xs:string”):
+The attribute “Type” defines the identifier of
+the type of the subnet. The value of the type
+is defined in the bus specific specification.
+This attribute is mandatory.
+
+“CustomAttributes” (ListType)[0..n]; “AttributeName” (AttributeDataType=”xs:string”):
+The name of the CustomAttribute defines the
+property name in the target system. The
+value defines the value of this
+CustomAttribute. The AttributeName is
+mandatory if the attribute “CustomAttributes”
+exists. The AttributeName shall be unique.
+Mapping of several custom attributes with the
+same name can only be made by making the
+key unique by appending a counter like #1,
+#2, #3. Custom Attributes can have simple or
+complex data types. The description of
+complex values can be found in 5.3.
+
+### Interfaces “LogicalEndPoint”(RefBaseClassePath=”CommunicationInterfaceClassLib/LogicalEndPoint”):
+This interface is used to link node elements
+to a subnet. The direction of the link is
+irrelevant. A Subnet has exactly one
+LogicalEndpoint to connect the subnet to
+Nodes.
+
+
+Depending on the different communication systems and bus systems a Subnet may contain additional
+attributes. These attributes and the bus specific parameters are described in separate bus
+specifications. Please refer to these bus specifications for more information.

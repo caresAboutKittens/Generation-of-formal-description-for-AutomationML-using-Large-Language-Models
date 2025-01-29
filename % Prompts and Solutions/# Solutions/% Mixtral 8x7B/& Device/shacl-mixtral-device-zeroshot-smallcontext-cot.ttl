@@ -1,0 +1,123 @@
+sh:ShapeID a sh:NodeShape ;
+  sh:targetClass automationml:Device ;
+  sh:property [
+    sh:path automationml:hasName ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttributeDataType ;
+    sh:hasValue xs:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttribute ;
+    sh:name "TypeIdentifier" ;
+    sh:property [
+      sh:path sh:value ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasAttributeDataType ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasName ;
+      sh:hasValue "TypeIdentifier" ;
+    ] ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttribute ;
+    sh:name "TemplateIdentifier" ;
+    sh:property [
+      sh:path sh:value ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasAttributeDataType ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasName ;
+      sh:hasValue "TemplateIdentifier" ;
+    ] ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttribute ;
+    sh:name "Manufacturer" ;
+    sh:property [
+      sh:path sh:value ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasAttributeDataType ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasName ;
+      sh:hasValue "Manufacturer" ;
+    ] ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttribute ;
+    sh:name "Comment" ;
+    sh:property [
+      sh:path sh:value ;
+      sh:datatype xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasAttributeDataType ;
+      sh:hasValue xs:string ;
+    ] ;
+    sh:property [
+      sh:path automationml:hasName ;
+      sh:hasValue "Comment" ;
+    ] ;
+  ] .
+
+  sh:ShapeID a sh:NodeShape ;
+  sh:targetClass automationml:TypeIdentifier ;
+  sh:property [
+    sh:path sh:value ;
+    sh:datatype xs:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasAttributeDataType ;
+    sh:hasValue xs:string ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasName ;
+    sh:hasValue "TypeIdentifier" ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasPrefix ;
+    sh:nodeKind sh:IRI ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path automationml:hasIdentifier ;
+    sh:datatype xs:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:sparql [
+    sh:message "The TypeIdentifier must have a prefix from the allowed list." ;
+    sh:select """
+      PREFIX automationml: <https://w3id.org/hsu-aut/AutomationML#>
+      PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+      
+      CONSTRUCT { ?this a automationml:TypeIdentifier }
+      WHERE {
+        BIND(STR(?this) AS ?typeIdentifier)
+        FILTER(CONTAINS(STR(?typeIdentifier), ":"))
+        BIND(SUBSTR(STR(?typeIdentifier), STRINDEX(STR(?typeIdentifier), ":") + 1) AS ?identifier)
+        FILTER NOT EXISTS {
+          VALUES ?prefix {
+            "OrderNumber" "GSD" "System" "CSP+"
+          }
+          ?prefixes a automationml:Prefix ;
+                     automationml:hasPrefixValue ?prefix .
+          ?prefixes automationml:hasIdentifier ?identifier .
+        }
+      }
+    """ ;
+  ] .

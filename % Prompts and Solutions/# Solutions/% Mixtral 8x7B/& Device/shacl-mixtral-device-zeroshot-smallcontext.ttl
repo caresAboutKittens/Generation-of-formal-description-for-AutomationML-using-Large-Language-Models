@@ -1,0 +1,41 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+
+:DeviceShape
+  a sh:NodeShape ;
+  sh:targetClass aml:Device ;
+  sh:property [
+    sh:path aml:Name ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path aml:TypeIdentifier ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:TemplateIdentifier ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:Manufacturer ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:Comment ;
+    sh:datatype xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:hasAttributeDataType ;
+    sh:hasValue xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:hasDataType ;
+    sh:hasValue xsd:string ;
+  ] ;
+  sh:property [
+    sh:path aml:hasName ;
+    sh:hasValue xsd:string ;
+  ] .

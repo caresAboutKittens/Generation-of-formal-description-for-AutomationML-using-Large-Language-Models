@@ -1,0 +1,66 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+
+# SHACL Shape for Subnet
+aml:SubnetShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FSubnet ;
+    sh:property [
+        # Constraint for the Name attribute
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one 'Name' attribute of type xs:string.";
+    ] ;
+    sh:property [
+        # Constraint for the Type attribute
+        sh:path aml:hasAttribute ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FSubnet%2FType ;
+        sh:property [
+            sh:path aml:hasName ;
+            sh:hasValue "Type" ;
+            sh:message "Subnet 'Type' attribute must have the name 'Type'.";
+        ] ;
+        sh:property [
+            sh:path aml:hasAttributeDataType ;
+            sh:hasValue "xs:string" ;
+            sh:message "Subnet 'Type' attribute must have the data type xs:string.";
+        ] ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one 'Type' attribute of type xs:string.";
+    ] ;
+    sh:property [
+        # Constraint for CustomAttributes
+        sh:path aml:hasAttribute ;
+        sh:class aml:AutomationProjectConfigurationRoleClassLib%2FSubnet%2FCustomAttributes ;
+        sh:property [
+            sh:path aml:hasName ;
+            sh:hasValue "CustomAttributes" ;
+            sh:message "CustomAttributes must have the name 'CustomAttributes'.";
+        ] ;
+        sh:property [
+            sh:path aml:hasPart ;
+            sh:nodeKind sh:IRI ;
+            sh:property [
+                sh:path aml:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:message "Each CustomAttribute must have a 'Name' of type xs:string.";
+            ] ;
+        ] ;
+        sh:maxCount 1 ;
+        sh:message "Subnet can have at most one 'CustomAttributes' attribute.";
+    ] ;
+    sh:property [
+        # Constraint for LogicalEndPoint interface
+        sh:path aml:hasInterface ;
+        sh:class aml:CommunicationInterfaceClassLib%2FLogicalEndPoint ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Subnet must have exactly one LogicalEndPoint interface.";
+    ] .

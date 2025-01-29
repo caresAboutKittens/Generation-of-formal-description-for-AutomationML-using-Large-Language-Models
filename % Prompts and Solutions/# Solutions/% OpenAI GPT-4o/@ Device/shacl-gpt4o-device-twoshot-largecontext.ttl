@@ -1,0 +1,82 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex:    <http://www.example.org/#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix aml:   <https://w3id.org/hsu-aut/AutomationML#> .
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ; 
+
+    # Name attribute
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Device must have exactly one 'Name' attribute of type xs:string."@en ;
+    ] ;
+
+    # TypeIdentifier attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:Attribute ;
+        sh:qualifiedValueShape [
+            sh:path aml:hasName ;
+            sh:hasValue "TypeIdentifier" ;
+        ] ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "Device may have at most one 'TypeIdentifier' attribute."@en ;
+    ] ;
+    sh:property [
+        sh:path [ aml:hasAttribute aml:hasName "TypeIdentifier" ] ;
+        sh:datatype xsd:string ;
+        sh:message "TypeIdentifier must be of type xs:string if present."@en ;
+    ] ;
+
+    # TemplateIdentifier sub-attribute of TypeIdentifier
+    sh:property [
+        sh:path [ aml:hasAttribute aml:hasName "TypeIdentifier" aml:hasPart aml:hasName "TemplateIdentifier" ] ;
+        sh:datatype xsd:string ;
+        sh:message "TemplateIdentifier must be of type xs:string if present."@en ;
+    ] ;
+
+    # Manufacturer attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:Attribute ;
+        sh:qualifiedValueShape [
+            sh:path aml:hasName ;
+            sh:hasValue "Manufacturer" ;
+        ] ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "Device may have at most one 'Manufacturer' attribute."@en ;
+    ] ;
+    sh:property [
+        sh:path [ aml:hasAttribute aml:hasName "Manufacturer" ] ;
+        sh:datatype xsd:string ;
+        sh:message "Manufacturer must be of type xs:string if present."@en ;
+    ] ;
+
+    # Comment attribute
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:class aml:Attribute ;
+        sh:qualifiedValueShape [
+            sh:path aml:hasName ;
+            sh:hasValue "Comment" ;
+        ] ;
+        sh:qualifiedMinCount 0 ;
+        sh:qualifiedMaxCount 1 ;
+        sh:message "Device may have at most one 'Comment' attribute."@en ;
+    ] ;
+    sh:property [
+        sh:path [ aml:hasAttribute aml:hasName "Comment" ] ;
+        sh:datatype xsd:string ;
+        sh:message "Comment must be of type xs:string if present."@en ;
+    ] ;
+.

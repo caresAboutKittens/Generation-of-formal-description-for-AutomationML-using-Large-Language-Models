@@ -1,0 +1,124 @@
+<https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FPositionNumber>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PositionNumber" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "0" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:string" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PositionNumber" .
+
+<https://w3id.org/hsu-aut/AutomationML#4d0c3a98-86b1-4301-9fa7-1f26eb940b34>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FSignalPortInterface> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CN2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FSignalPortInterface> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CN2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FSignalPortInterface> .
+
+<https://w3id.org/hsu-aut/AutomationML#aaec5ed5-d02d-486b-afbb-ed1b297f0a5a>
+        a       <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDeviceItem> , <https://w3id.org/hsu-aut/AutomationML#InternalElement> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "MR-J5-10G-RJ" ;
+        <http://www.ontologydesignpatterns.org/cp/owl/partof.owl#hasPart>
+                <https://w3id.org/hsu-aut/AutomationML#f850c465-a42e-473e-be1d-e871b891b7ae> , <https://w3id.org/hsu-aut/AutomationML#6baf05fa-b1cf-4352-b5bc-943106d9a801> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttribute>
+                <https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FPositionNumber> , <https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FBuiltIn> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeIE>
+                <https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FBuiltIn> , <https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FPositionNumber> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasInterface>
+                <https://w3id.org/hsu-aut/AutomationML#5f543395-eb8f-4e8e-8f65-cd57f47d4689> , <https://w3id.org/hsu-aut/AutomationML#98802f0c-d6ba-45b0-9592-0474821a59c4> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "MR-J5-10G-RJ" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FDeviceItem> .
+
+<https://w3id.org/hsu-aut/AutomationML#98802f0c-d6ba-45b0-9592-0474821a59c4>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#%2AAutomationMLComponentExtensionICL%2FAutomationMLComponentConnector> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "AutomationMLComponentConnector" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#%2AAutomationMLComponentExtensionICL%2FAutomationMLComponentConnector> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "AutomationMLComponentConnector" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#%2AAutomationMLComponentExtensionICL%2FAutomationMLComponentConnector> .
+
+<http://www.w3id.org/hsu-aut/MappingResult>
+        a       <http://www.w3.org/2002/07/owl#Ontology> ;
+        <http://www.w3.org/2002/07/owl#imports>
+                <https://w3id.org/hsu-aut/AutomationML> .
+
+<https://w3id.org/hsu-aut/AutomationML#f850c465-a42e-473e-be1d-e871b891b7ae>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FPowerPort> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CNP3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasInterface>
+                <https://w3id.org/hsu-aut/AutomationML#f69fb54b-b1a6-410a-8041-c8776696287f> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CNP3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FPowerPort> .
+
+<https://w3id.org/hsu-aut/AutomationML#f69fb54b-b1a6-410a-8041-c8776696287f>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FPowerPortInterface> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CNP3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FPowerPortInterface> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CNP3" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationInterfaceClassLib%2FPowerPortInterface> .
+
+<https://w3id.org/hsu-aut/AutomationML#6baf05fa-b1cf-4352-b5bc-943106d9a801>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalElement> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSignalPort> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "CN2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasInterface>
+                <https://w3id.org/hsu-aut/AutomationML#4d0c3a98-86b1-4301-9fa7-1f26eb940b34> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "CN2" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasSupportedRoleClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationRoleClassLib%2FSignalPort> .
+
+<https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FPortToPort>
+        a       <https://w3id.org/hsu-aut/AutomationML#InternalLink> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "PortToPort" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "PortToPort" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefPartnerSideA>
+                <https://w3id.org/hsu-aut/AutomationML#f850c465-a42e-473e-be1d-e871b891b7ae%3ACNP3> , <https://w3id.org/hsu-aut/AutomationML#6baf05fa-b1cf-4352-b5bc-943106d9a801%3ACN2> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefPartnerSideB>
+                <https://w3id.org/hsu-aut/AutomationML#9f5ab179-f3b3-4fc5-b476-1fe9bad55b3e%3ACN2> , <https://w3id.org/hsu-aut/AutomationML#197bba96-0e88-458f-bad0-e59460652e28%3ACNP3> .
+
+<https://w3id.org/hsu-aut/AutomationML#5f543395-eb8f-4e8e-8f65-cd57f47d4689>
+        a       <https://w3id.org/hsu-aut/AutomationML#ExternalInterface> , <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationDriveExtensionInterfaceClassLib%2FDriveAssignment> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "DriveAssignment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasBaseInterfaceClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationDriveExtensionInterfaceClassLib%2FDriveAssignment> ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "DriveAssignment" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasRefBaseClass>
+                <https://w3id.org/hsu-aut/AutomationML#AutomationProjectConfigurationDriveExtensionInterfaceClassLib%2FDriveAssignment> .
+
+<https://w3id.org/hsu-aut/AutomationML#MR-J5-10G-RJ%2FBuiltIn>
+        a       <https://w3id.org/hsu-aut/AutomationML#Attribute> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "BuiltIn" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasAttributeValue>
+                "false" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasDataType>
+                "xs:boolean" ;
+        <https://w3id.org/hsu-aut/AutomationML#hasName>
+                "BuiltIn" .

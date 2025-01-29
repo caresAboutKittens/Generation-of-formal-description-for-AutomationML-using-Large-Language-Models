@@ -1,0 +1,169 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:  <http://www.example.org/#> .
+
+##################################################################
+## SHACL Shapes for AR APC "Device" Whitepaper Excerpt
+## 
+## This shape checks instances that are typed as:
+##   aml:AutomationProjectConfigurationRoleClassLib%2FDevice
+##
+## It enforces the following:
+##  - A mandatory Name (the CAEX built-in Name, not a sub-attribute)
+##  - An optional TypeIdentifier attribute (if present, must be a string),
+##    which can optionally contain a TemplateIdentifier sub-attribute
+##  - Optional Manufacturer attribute (if present, must be a string)
+##  - Optional Comment attribute (if present, must be a string)
+##################################################################
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    sh:targetClass aml:AutomationProjectConfigurationRoleClassLib%2FDevice ;
+
+    ## 1) Mandatory "Name" (CAEX built-in)
+    sh:property [
+        sh:path aml:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Device must have a CAEX Name (standard CAEX object name)." ;
+    ] ;
+
+    ## 2) Optional "TypeIdentifier" (sub-attribute)
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:TypeIdentifierShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'TypeIdentifier' attribute is allowed." ;
+    ] ;
+
+    ## 3) Optional "Manufacturer" (sub-attribute)
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:ManufacturerShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'Manufacturer' attribute is allowed." ;
+    ] ;
+
+    ## 4) Optional "Comment" (sub-attribute)
+    sh:property [
+        sh:path aml:hasAttribute ;
+        sh:node ex:CommentShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'Comment' attribute is allowed." ;
+    ] ;
+.
+
+##################################################################
+## Shape for the "TypeIdentifier" attribute
+##   - Must have name "TypeIdentifier"
+##   - Must have a string value (if present)
+##   - May optionally contain one "TemplateIdentifier" sub-attribute
+##################################################################
+ex:TypeIdentifierShape
+    a sh:NodeShape ;
+
+    ## Must be named "TypeIdentifier"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TypeIdentifier" ;
+        sh:message "Attribute must be named 'TypeIdentifier'." ;
+    ] ;
+
+    ## If present, must have a string value
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "If 'TypeIdentifier' exists, it must have a string value." ;
+    ] ;
+
+    ## Optional "TemplateIdentifier" sub-attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TemplateIdentifierShape ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "At most one 'TemplateIdentifier' sub-attribute is allowed." ;
+    ] ;
+.
+
+##################################################################
+## Shape for the (optional) "TemplateIdentifier" sub-attribute
+##   - Must have name "TemplateIdentifier"
+##   - Must have a string value (if present)
+##################################################################
+ex:TemplateIdentifierShape
+    a sh:NodeShape ;
+
+    ## Must be named "TemplateIdentifier"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "TemplateIdentifier" ;
+        sh:message "Sub-attribute must be named 'TemplateIdentifier'." ;
+    ] ;
+
+    ## If present, must have a string value
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "If 'TemplateIdentifier' sub-attribute exists, it must have a string value." ;
+    ] ;
+.
+
+##################################################################
+## Shape for the optional "Manufacturer" attribute
+##   - Must have name "Manufacturer"
+##   - Must have a string value (if present)
+##################################################################
+ex:ManufacturerShape
+    a sh:NodeShape ;
+
+    ## Must be named "Manufacturer"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Manufacturer" ;
+        sh:message "Attribute must be named 'Manufacturer'." ;
+    ] ;
+
+    ## If present, must have a string value
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "If 'Manufacturer' exists, it must have a string value." ;
+    ] ;
+.
+
+##################################################################
+## Shape for the optional "Comment" attribute
+##   - Must have name "Comment"
+##   - Must have a string value (if present)
+##################################################################
+ex:CommentShape
+    a sh:NodeShape ;
+
+    ## Must be named "Comment"
+    sh:property [
+        sh:path aml:hasName ;
+        sh:hasValue "Comment" ;
+        sh:message "Attribute must be named 'Comment'." ;
+    ] ;
+
+    ## If present, must have a string value
+    sh:property [
+        sh:path aml:hasAttributeValue ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "If 'Comment' exists, it must have a string value." ;
+    ] ;
+.

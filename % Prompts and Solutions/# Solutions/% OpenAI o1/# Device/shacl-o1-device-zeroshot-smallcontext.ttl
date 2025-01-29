@@ -1,0 +1,170 @@
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aml: <https://w3id.org/hsu-aut/AutomationML#> .
+@prefix ex:  <http://example.org/shapes#> .
+
+################################################################
+# Device Shape: Ensures that each Device has:
+#   - Exactly one "Name" attribute (mandatory)
+#   - Zero or one "TypeIdentifier" attribute (optional)
+#   - Zero or one "TemplateIdentifier" attribute (optional)
+#   - Zero or one "Manufacturer" attribute (optional)
+#   - Zero or one "Comment" attribute (optional)
+################################################################
+
+ex:DeviceShape
+    a sh:NodeShape ;
+    
+    # Target: each instance that is declared as an AML Device
+    sh:targetClass aml:Device ;
+    
+    # 1) Mandatory "Name" attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:NameAttributeShape ;
+        sh:name "Mandatory Name Attribute" ;
+        sh:description "Device MUST have exactly one Name attribute of type xs:string" ;
+        sh:minCount 1 ;  # mandatory
+        sh:maxCount 1 ;
+    ] ;
+    
+    # 2) Optional "TypeIdentifier" attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TypeIdentifierAttributeShape ;
+        sh:name "Optional TypeIdentifier Attribute" ;
+        sh:description "Device may have a TypeIdentifier attribute. If present, must be xs:string." ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # 3) Optional "TemplateIdentifier" attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:TemplateIdentifierAttributeShape ;
+        sh:name "Optional TemplateIdentifier Attribute" ;
+        sh:description "Device may have a TemplateIdentifier attribute, xs:string." ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # 4) Optional "Manufacturer" attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:ManufacturerAttributeShape ;
+        sh:name "Optional Manufacturer Attribute" ;
+        sh:description "Device may have a Manufacturer attribute, xs:string." ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # 5) Optional "Comment" attribute
+    sh:property [
+        sh:path aml:hasPart ;
+        sh:node ex:CommentAttributeShape ;
+        sh:name "Optional Comment Attribute" ;
+        sh:description "Device may have a Comment attribute, xs:string." ;
+        sh:maxCount 1 ;
+    ] .
+    
+
+################################################################
+# Sub-shapes for each kind of Attribute
+################################################################
+
+# 1) NameAttributeShape
+#    Must have aml:hasName "Name" and must have xs:string as DataType
+ex:NameAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        # The Whitepaper states this attribute name is "Name"
+        sh:in ("Name") ;
+        sh:message "The attribute must be called 'Name'." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        # Many AML models use aml:hasDataType; some also use aml:hasAttributeDataType.
+        # Adjust as needed if your data uses only one property or uses them differently.
+        sh:path aml:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "Name attribute must have data type 'xs:string'." ;
+        sh:severity sh:Violation ;
+    ] .
+
+# 2) TypeIdentifierAttributeShape
+#    Must have aml:hasName "TypeIdentifier", be xs:string.
+#    (Optional) If you have a property like aml:hasValue for the actual string, 
+#    you can add a prefix pattern constraint to enforce the allowed prefixes.
+ex:TypeIdentifierAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:in ("TypeIdentifier") ;
+        sh:message "The attribute must be called 'TypeIdentifier'." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "TypeIdentifier attribute must have data type 'xs:string'." ;
+        sh:severity sh:Violation ;
+    ] .
+    
+#    If your instance data uses something like:
+#      :Device/TypeIdentifier aml:hasValue "GSD:SIEM8139.GSD/DAP" .
+#    You can add a pattern constraint below to ensure an allowed prefix:
+#
+#    sh:property [
+#        sh:path aml:hasValue ;
+#        sh:pattern "^(OrderNumber|GSD|System|CSP\\+):.*" ;
+#        sh:message "TypeIdentifier must start with one of: OrderNumber:, GSD:, System:, CSP+: ..." ;
+#        sh:severity sh:Violation ;
+#    ] .
+
+
+# 3) TemplateIdentifierAttributeShape
+ex:TemplateIdentifierAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:in ("TemplateIdentifier") ;
+        sh:message "Attribute must be called 'TemplateIdentifier'." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "TemplateIdentifier attribute must have data type 'xs:string'." ;
+        sh:severity sh:Violation ;
+    ] .
+
+
+# 4) ManufacturerAttributeShape
+ex:ManufacturerAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:in ("Manufacturer") ;
+        sh:message "Attribute must be called 'Manufacturer'." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "Manufacturer attribute must have data type 'xs:string'." ;
+        sh:severity sh:Violation ;
+    ] .
+
+# 5) CommentAttributeShape
+ex:CommentAttributeShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path aml:hasName ;
+        sh:in ("Comment") ;
+        sh:message "Attribute must be called 'Comment'." ;
+        sh:severity sh:Violation ;
+    ] ;
+    sh:property [
+        sh:path aml:hasDataType ;
+        sh:in ("xs:string") ;
+        sh:message "Comment attribute must have data type 'xs:string'." ;
+        sh:severity sh:Violation ;
+    ] .

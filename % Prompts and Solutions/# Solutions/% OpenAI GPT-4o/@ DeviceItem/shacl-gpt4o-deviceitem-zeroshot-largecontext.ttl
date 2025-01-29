@@ -1,0 +1,164 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aut: <https://w3id.org/hsu-aut/AutomationML#> .
+
+aut:DeviceItemShape a sh:NodeShape ;
+    sh:targetClass aut:AutomationProjectConfigurationRoleClassLib%2FDeviceItem ;
+    
+    # Name attribute
+    sh:property [
+        sh:path aut:hasName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # TypeName attribute
+    sh:property [
+        sh:path aut:hasTypeName ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # DeviceItemType and Customized attributes
+    sh:property [
+        sh:path aut:hasDeviceItemType ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aut:hasDeviceItemType/aut:Customized ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:defaultValue "false"^^xsd:boolean ;
+    ] ;
+    
+    # PositionNumber attribute
+    sh:property [
+        sh:path aut:hasPositionNumber ;
+        sh:datatype xsd:int ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # BuiltIn attribute
+    sh:property [
+        sh:path aut:hasBuiltIn ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:defaultValue "false"^^xsd:boolean ;
+    ] ;
+    
+    # TypeIdentifier and TemplateIdentifier attributes
+    sh:property [
+        sh:path aut:hasTypeIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path aut:hasTypeIdentifier/aut:TemplateIdentifier ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Manufacturer attribute
+    sh:property [
+        sh:path aut:hasManufacturer ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # CustomAttributes list
+    sh:property [
+        sh:path aut:hasCustomAttributes ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasName ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+        ] ;
+    ] ;
+    
+    # FirmwareVersion attribute
+    sh:property [
+        sh:path aut:hasFirmwareVersion ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Comment attribute
+    sh:property [
+        sh:path aut:hasComment ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # Address list
+    sh:property [
+        sh:path aut:hasAddress ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasStartAddress ;
+                sh:datatype xsd:int ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aut:hasLength ;
+                sh:datatype xsd:int ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aut:hasIoType ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path aut:hasBitOffset ;
+                sh:datatype xsd:int ;
+                sh:maxCount 1 ;
+                sh:defaultValue "0"^^xsd:int ;
+            ] ;
+        ] ;
+    ] ;
+    
+    # PlantDesignation IEC attribute
+    sh:property [
+        sh:path aut:hasPlantDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.3%20-%20Function-oriented%20structure> ;
+    ] ;
+    
+    # LocationIdentifier IEC attribute
+    sh:property [
+        sh:path aut:hasLocationIdentifierIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.5%20-%20Location-oriented%20structure> ;
+    ] ;
+    
+    # ProductDesignation IEC attribute
+    sh:property [
+        sh:path aut:hasProductDesignationIEC ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:hasValue <https://w3id.org/hsu-aut/AutomationML#IEC%2081346-1%3A2009-07%235.4%20-%20Product-oriented%20structure> ;
+    ] ;
+    
+    # InstallationDate attribute
+    sh:property [
+        sh:path aut:hasInstallationDate ;
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+    ] ;
+    
+    # ModuleAssignment interface
+    sh:property [
+        sh:path aut:hasExternalInterface ;
+        sh:node [
+            sh:property [
+                sh:path aut:hasRefBaseClass ;
+                sh:hasValue aut:AutomationProjectConfigurationInterfaceClass

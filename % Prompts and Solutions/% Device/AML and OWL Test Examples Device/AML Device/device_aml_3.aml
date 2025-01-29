@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Example including optional elements -->
+<CAEXFile>
+    <InternalElement Name="EK2" RefBaseSystemUnitPath="AutomationProjectSystemUnitClassLib/Device" ID="33D50E6F-7C92-4324-8322-AAC1DB1ACF85">
+        
+        <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+            <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string">
+                <Value>GlobalLib://TemplateLibrary/Master copies/S7-1500/preconfigured/PLCs/s7-1518F</Value>
+            </Attribute>
+            <Value>System:Device.SafetyCoupler</Value>
+        </Attribute>
+
+        <Attribute Name="Comment" AttributeDataType="xs:string">
+            <Value>Please consider that the type is of cruicial importance in interdependence for distribution of the rail system.</Value>
+        </Attribute>
+
+        <Attribute Name="Manufacturer" AttributeDataType="xs:string">
+            <Value>EKS InTec GmbH</Value>
+        </Attribute>
+
+        <SupportedRoleClass RefRoleClassPath="AutomationProjectConfigurationRoleClassLib/Device"/>
+    </InternalElement>
+</CAEXFile>

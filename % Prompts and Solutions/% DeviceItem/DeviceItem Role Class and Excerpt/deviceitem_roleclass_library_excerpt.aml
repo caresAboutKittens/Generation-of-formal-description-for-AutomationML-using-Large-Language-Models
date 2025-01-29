@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CAEXFile>
+  <RoleClass Name="DeviceItem" RefBaseClassPath="CommunicationRoleClassLib/PhysicalDevice">
+    <Attribute Name="TypeName" AttributeDataType="xs:string"></Attribute>
+    <Attribute Name="DeviceItemType" AttributeDataType="xs:string">
+      <Attribute Name="Customized" AttributeDataType="xs:boolean">
+        <DefaultValue>false</DefaultValue>
+      </Attribute>
+    </Attribute>
+    <Attribute Name="PositionNumber" AttributeDataType="xs:int"></Attribute>
+    <Attribute Name="BuiltIn" AttributeDataType="xs:boolean">
+      <DefaultValue>false</DefaultValue>
+    </Attribute>
+    <Attribute Name="TypeIdentifier" AttributeDataType="xs:string">
+      <Attribute Name="TemplateIdentifier" AttributeDataType="xs:string" />
+    </Attribute>
+    <Attribute Name="Manufacturer" AttributeDataType="xs:string" />
+    <Attribute Name="CustomAttributes">
+      <RefSemantic CorrespondingAttributePath="ListType" />
+      <Attribute Name="AttributeName1" AttributeDataType="xs:string"></Attribute>
+      <Attribute Name="AttributeName2" AttributeDataType="xs:string"></Attribute>
+    </Attribute>
+    <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" />
+    <Attribute Name="PlantDesignation IEC" AttributeDataType="xs:string">
+      <Description>Function oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.3 - Function-oriented structure" />
+    </Attribute>
+    <Attribute Name="LocationIdentifier IEC" AttributeDataType="xs:string">
+      <Description>Location oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.5 - Location-oriented structure" />
+    </Attribute>
+    <Attribute Name="ProductDesignation IEC" AttributeDataType="xs:string">
+      <Description>Product oriented reference designation following IEC 81346</Description>
+      <RefSemantic CorrespondingAttributePath="IEC 81346-1:2009-07#5.4 - Product-oriented structure" />
+    </Attribute>
+    <Attribute Name="InstallationDate" AttributeDataType="xs:dateTime" />
+    <Attribute Name="Comment" AttributeDataType="xs:string" />
+    <Attribute Name="Address">
+      <RefSemantic CorrespondingAttributePath="OrderedListType" />
+      <Attribute Name="1">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+      <Attribute Name="2">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+      <Attribute Name="3">
+        <Attribute Name="StartAddress" AttributeDataType="xs:int" />
+        <Attribute Name="Length" AttributeDataType="xs:int" />
+        <Attribute Name="IoType" AttributeDataType="xs:string" />
+        <Attribute Name="BitOffset" AttributeDataType="xs:int" />
+      </Attribute>
+    </Attribute>
+    <ExternalInterface Name="ModuleAssignment" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/ModuleAssignment" ID="110c6f0b-75b7-4c3c-9d05-1b28eeeec5df" />
+    <ExternalInterface Name="CommunicationPortProxyInterface" ID="0bfb4d8a-63d2-4d32-ad0a-3bb3f6673165" RefBaseClassPath="AutomationProjectConfigurationInterfaceClassLib/CommunicationPortProxyInterface" />
+  </RoleClass>
+</CAEXFile>
